@@ -2,6 +2,7 @@ import { Navbar } from "@/components/navbar";
 import { HeroCarousel } from "@/components/hero-carousel";
 import { ServicesReels } from "@/components/services-reels";
 import { Testimonials } from "@/components/testimonials";
+import { HealthTips } from "@/components/health-tips";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
         <HeroCarousel />
         <ServicesReels />
         <Testimonials />
+        <HealthTips />
       </main>
     </>
   );
