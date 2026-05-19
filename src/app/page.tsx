@@ -3,6 +3,7 @@ import { HeroCarousel } from "@/components/hero-carousel";
 import { ServicesReels } from "@/components/services-reels";
 import { Testimonials } from "@/components/testimonials";
 import { HealthTips } from "@/components/health-tips";
+import { Footer } from "@/components/footer";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
         <Testimonials />
         <HealthTips />
       </main>
+      <Footer />
     </>
   );
 }
