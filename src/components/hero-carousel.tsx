@@ -19,6 +19,7 @@ export function HeroCarousel() {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const startAutoplay = useCallback(() => {
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
       api?.scrollNext();
@@ -35,14 +36,25 @@ export function HeroCarousel() {
   useEffect(() => {
     if (!api) return;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Embla provides imperative API; initial snap must be read once on mount
     setCurrent(api.selectedScrollSnap());
     const onSelect = () => setCurrent(api.selectedScrollSnap());
     api.on("select", onSelect);
     startAutoplay();
 
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        stopAutoplay();
+      } else {
+        startAutoplay();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
     return () => {
       stopAutoplay();
       api.off("select", onSelect);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [api, startAutoplay, stopAutoplay]);
 
@@ -51,12 +63,14 @@ export function HeroCarousel() {
       className="group relative w-full overflow-hidden"
       onMouseEnter={stopAutoplay}
       onMouseLeave={startAutoplay}
+      aria-roledescription="carousel"
+      aria-label="Featured services"
     >
       <Carousel setApi={setApi} opts={{ loop: true }} className="w-full">
         <CarouselContent>
           {slides.map((slide) => (
             <CarouselItem key={slide.id}>
-              <div className="relative flex min-h-[520px] items-center bg-gradient-to-br from-primary/10 via-background to-primary/5 md:min-h-[600px]">
+              <div className="relative flex min-h-[460px] items-center bg-gradient-to-br from-primary/10 via-background to-primary/5 md:min-h-[600px]">
                 <div className="absolute inset-0 -z-0 opacity-40">
                   <div className="absolute -left-20 top-20 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
                   <div className="absolute right-10 bottom-10 h-80 w-80 rounded-full bg-[var(--mdw-accent-green)]/10 blur-3xl" />
@@ -74,17 +88,17 @@ export function HeroCarousel() {
                       {slide.description}
                     </p>
                     <Button
-                      asChild
                       size="lg"
                       className="mt-2 w-fit rounded-lg bg-[var(--mdw-accent-green)] px-8 text-base text-white hover:bg-[var(--mdw-accent-green)]/90"
+                      render={
+                        <a
+                          href={getWhatsAppUrl(slide.headline + " — I'd like to book.")}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        />
+                      }
                     >
-                      <a
-                        href={getWhatsAppUrl(slide.headline + " — I'd like to book.")}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {slide.ctaText}
-                      </a>
+                      {slide.ctaText}
                     </Button>
                   </div>
                   <div className="hidden items-center justify-center md:flex">
@@ -104,14 +118,14 @@ export function HeroCarousel() {
 
         <button
           onClick={() => api?.scrollPrev()}
-          className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 opacity-0 shadow-md transition-opacity hover:bg-white group-hover:opacity-100"
+          className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-md transition-opacity hover:bg-white group-hover:opacity-100 lg:opacity-0 opacity-70 md:opacity-50 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           aria-label="Previous slide"
         >
           <ChevronLeft className="h-5 w-5 text-foreground" />
         </button>
         <button
           onClick={() => api?.scrollNext()}
-          className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 opacity-0 shadow-md transition-opacity hover:bg-white group-hover:opacity-100"
+          className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-md transition-opacity hover:bg-white group-hover:opacity-100 lg:opacity-0 opacity-70 md:opacity-50 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           aria-label="Next slide"
         >
           <ChevronRight className="h-5 w-5 text-foreground" />
@@ -123,8 +137,9 @@ export function HeroCarousel() {
           <button
             key={idx}
             onClick={() => api?.scrollTo(idx)}
+            aria-current={current === idx ? "true" : undefined}
             className={cn(
-              "h-2.5 rounded-full transition-all",
+              "h-2.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
               current === idx
                 ? "w-8 bg-primary"
                 : "w-2.5 bg-primary/30 hover:bg-primary/50"

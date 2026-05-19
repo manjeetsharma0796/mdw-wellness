@@ -1,24 +1,35 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { getWhatsAppUrl } from "@/data/site";
 
 export function WhatsAppFab() {
+  const shouldReduce = useReducedMotion();
+
   return (
     <motion.a
       href={getWhatsAppUrl()}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ delay: 1, type: "spring", stiffness: 200, damping: 12 }}
+      initial={shouldReduce ? false : { scale: 0, opacity: 0 }}
+      animate={shouldReduce ? undefined : { scale: 1, opacity: 1 }}
+      transition={
+        shouldReduce
+          ? undefined
+          : { delay: 1, type: "spring", stiffness: 200, damping: 12 }
+      }
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg ring-4 ring-[var(--mdw-accent-green)]/20"
+      className="fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] right-[max(1.5rem,env(safe-area-inset-right))] z-50 flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg ring-4 ring-[var(--mdw-accent-green)]/20 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mdw-accent-green)]"
       style={{ backgroundColor: "var(--mdw-accent-green)" }}
     >
-      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--mdw-accent-green)] opacity-20" />
+      {!shouldReduce && (
+        <span
+          aria-hidden="true"
+          className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--mdw-accent-green)] opacity-20"
+        />
+      )}
       <svg
         viewBox="0 0 24 24"
         className="relative h-7 w-7 fill-current"

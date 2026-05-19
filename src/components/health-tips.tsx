@@ -1,4 +1,4 @@
-import { Calendar, User, BookOpen } from "lucide-react";
+import { Calendar, User, BookOpen, Activity, Footprints, HeartHandshake } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { healthTips } from "@/data/health-tips";
@@ -9,6 +9,12 @@ const categoryColors: Record<string, string> = {
   "Back Care": "bg-blue-50 text-blue-700",
   Posture: "bg-emerald-50 text-emerald-700",
   Recovery: "bg-amber-50 text-amber-700",
+};
+
+const categoryIcons: Record<string, typeof BookOpen> = {
+  "Back Care": Activity,
+  Posture: Footprints,
+  Recovery: HeartHandshake,
 };
 
 export function HealthTips() {
@@ -28,10 +34,11 @@ export function HealthTips() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {healthTips.map((tip) => {
             const categoryClass =
               categoryColors[tip.category] ?? "bg-primary/10 text-primary";
+            const CategoryIcon = categoryIcons[tip.category] ?? BookOpen;
             return (
               <Card
                 key={tip.id}
@@ -39,7 +46,7 @@ export function HealthTips() {
               >
                 <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <BookOpen className="h-12 w-12 text-primary/40" strokeWidth={1.5} />
+                    <CategoryIcon className="h-12 w-12 text-primary/40" strokeWidth={1.5} aria-hidden />
                   </div>
                   <div className="absolute left-3 top-3">
                     <Badge className={`${categoryClass} border-0 hover:opacity-90`}>
@@ -48,7 +55,7 @@ export function HealthTips() {
                   </div>
                 </div>
                 <CardContent className="flex flex-col gap-3 p-5 pt-4">
-                  <h3 className="text-lg font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
+                  <h3 className="line-clamp-2 text-lg font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
                     {tip.title}
                   </h3>
                   <p className="line-clamp-2 text-sm text-muted-foreground">
@@ -72,7 +79,8 @@ export function HealthTips() {
                     href={getWhatsAppUrl(`Hi, I'd like to know more about: ${tip.title}`)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-1 inline-flex w-fit items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-[var(--mdw-primary-dark)]"
+                    aria-label={`Read more about ${tip.title}`}
+                    className="mt-1 inline-flex w-fit items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-[var(--mdw-primary-dark)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm"
                   >
                     Read More
                     <span aria-hidden className="transition-transform group-hover:translate-x-0.5">&rarr;</span>

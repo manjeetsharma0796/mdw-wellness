@@ -8,7 +8,7 @@ export const navItems: NavItem[] = [
   { label: "Online Consultation", href: "#services" },
   { label: "Home Therapy", href: "#services" },
   { label: "About Us", href: "#about" },
-  { label: "Vitals Check", href: "#vitals" },
+  { label: "MDW Wellness Vitals Check", href: "#vitals" },
 ];
 
 export const footerLinks = {
@@ -17,6 +17,6 @@ export const footerLinks = {
     { label: "About Us", href: "#about" },
     { label: "Online Consultation", href: "#services" },
     { label: "Home Therapy", href: "#services" },
-    { label: "Vitals Check", href: "#vitals" },
+    { label: "MDW Wellness Vitals Check", href: "#vitals" },
   ],
 };

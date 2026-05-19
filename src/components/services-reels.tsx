@@ -20,7 +20,12 @@ function ServiceCard({ service }: { service: Service }) {
   const Icon = serviceIcons[service.title] ?? Play;
 
   const handleMouseEnter = () => {
-    videoRef.current?.play().catch(() => {});
+    if (
+      typeof window !== "undefined" &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      videoRef.current?.play().catch(() => {});
+    }
   };
 
   const handleMouseLeave = () => {
@@ -31,10 +36,10 @@ function ServiceCard({ service }: { service: Service }) {
   };
 
   return (
-    <motion.div
+    <motion.article
       whileHover={{ scale: 1.03 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="group relative aspect-[9/16] w-52 flex-shrink-0 cursor-pointer snap-center overflow-hidden rounded-2xl bg-border shadow-sm sm:w-56 md:w-60"
+      className="group relative aspect-[9/16] w-52 flex-shrink-0 cursor-pointer snap-center overflow-hidden rounded-2xl bg-muted shadow-sm sm:w-56 md:w-60 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -45,11 +50,13 @@ function ServiceCard({ service }: { service: Service }) {
           muted
           loop
           playsInline
+          preload="metadata"
+          aria-label={`${service.title} preview video`}
           className="absolute inset-0 h-full w-full object-cover"
         />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/25 via-primary/10 to-[var(--mdw-accent-green)]/10">
-          <Icon className="h-16 w-16 text-primary/50" strokeWidth={1.5} />
+          <Icon className="h-16 w-16 text-primary/50" strokeWidth={1.5} aria-hidden />
         </div>
       )}
 
@@ -59,12 +66,12 @@ function ServiceCard({ service }: { service: Service }) {
           href={getWhatsAppUrl(`Hi, I'm interested in ${service.title}.`)}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-1 inline-block text-sm text-white/90 opacity-0 transition-opacity group-hover:opacity-100"
+          className="mt-1 inline-block text-sm text-white/90 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm"
         >
           Learn More &rarr;
         </a>
       </div>
-    </motion.div>
+    </motion.article>
   );
 }
 
