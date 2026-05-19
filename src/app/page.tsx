@@ -4,6 +4,7 @@ import { ServicesReels } from "@/components/services-reels";
 import { Testimonials } from "@/components/testimonials";
 import { HealthTips } from "@/components/health-tips";
 import { Footer } from "@/components/footer";
+import { WhatsAppFab } from "@/components/whatsapp-fab";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <HealthTips />
       </main>
       <Footer />
+      <WhatsAppFab />
     </>
   );
 }
