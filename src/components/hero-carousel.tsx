@@ -89,6 +89,7 @@ export function HeroCarousel() {
                     </p>
                     <Button
                       size="lg"
+                      nativeButton={false}
                       className="mt-2 w-fit rounded-lg bg-[var(--mdw-accent-green)] px-8 text-base text-white hover:bg-[var(--mdw-accent-green)]/90"
                       render={
                         <a

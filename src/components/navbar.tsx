@@ -56,6 +56,7 @@ export function Navbar() {
             </a>
           ))}
           <Button
+            nativeButton={false}
             className="rounded-lg bg-[var(--mdw-accent-green)] px-5 text-white hover:bg-[var(--mdw-accent-green)]/90"
             render={<a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" />}
           >
@@ -78,6 +79,7 @@ export function Navbar() {
               {navItems.map((item) => (
                 <SheetClose
                   key={item.label}
+                  nativeButton={false}
                   render={
                     <a
                       href={item.href}
@@ -89,8 +91,10 @@ export function Navbar() {
                 </SheetClose>
               ))}
               <SheetClose
+                nativeButton={false}
                 render={
                   <Button
+                    nativeButton={false}
                     className="mt-4 w-full rounded-lg bg-[var(--mdw-accent-green)] text-white hover:bg-[var(--mdw-accent-green)]/90"
                     render={<a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" />}
                   />
