@@ -125,7 +125,7 @@ All other tokens unchanged. The change propagates automatically through every co
 
 **Top half — Video masonry:**
 - CSS columns-based masonry layout: 3 columns desktop, 2 columns tablet, 1 column mobile
-- 6-8 video tiles with intentionally varied heights (mix of 9:16 portrait, 1:1 square, 4:3 landscape posters)
+- 6 video tiles with intentionally varied heights (mix of 9:16 portrait, 1:1 square, 4:3 landscape posters)
 - Each tile:
   - Poster image (gradient placeholder until real assets) filling the tile
   - Centered Play icon overlay (white, with subtle dark backdrop circle)
@@ -203,7 +203,7 @@ All other tokens unchanged. The change propagates automatically through every co
 - `src/components/why-choose-us.tsx` — 5-item icon grid
 - `src/components/video-testimonials.tsx` — masonry of video tiles with modal
 - `src/data/why-choose-us.ts` — 5 benefit items
-- `src/data/video-testimonials.ts` — 6-8 video testimonial entries
+- `src/data/video-testimonials.ts` — 6 video testimonial entries
 
 ### Updated files
 - `src/app/globals.css` — `--mdw-primary` → `#018bc4`, `--mdw-primary-dark` → `#016a96`
