@@ -27,10 +27,8 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-white/95 backdrop-blur-sm shadow-sm"
-          : "bg-transparent"
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white",
+        scrolled && "shadow-sm"
       )}
     >
       <nav
@@ -40,7 +38,7 @@ export function Navbar() {
         <a
           href="#home"
           aria-label="MDW Wellness home"
-          className="rounded-md text-xl font-semibold tracking-tight text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          className="rounded-md text-xl font-bold tracking-tight text-[var(--mdw-secondary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
           {siteConfig.name}
         </a>
@@ -50,7 +48,7 @@ export function Navbar() {
             <a
               key={item.label}
               href={item.href}
-              className="rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              className="rounded-md text-sm font-medium text-[var(--mdw-secondary)]/80 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
               {item.label}
             </a>
@@ -83,7 +81,7 @@ export function Navbar() {
                   render={
                     <a
                       href={item.href}
-                      className="rounded-md px-2 py-2.5 text-base font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                      className="rounded-md px-2 py-2.5 text-base font-medium text-[var(--mdw-secondary)]/80 transition-colors hover:bg-accent hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                     />
                   }
                 >
@@ -106,6 +104,7 @@ export function Navbar() {
           </SheetContent>
         </Sheet>
       </nav>
+      <div className="absolute inset-x-0 bottom-0 h-px bg-primary/20" />
     </header>
   );
 }

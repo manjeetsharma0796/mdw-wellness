@@ -70,18 +70,14 @@ export function HeroCarousel() {
         <CarouselContent>
           {slides.map((slide) => (
             <CarouselItem key={slide.id}>
-              <div className="relative flex min-h-[460px] items-center bg-gradient-to-br from-primary/20 via-primary/5 to-[var(--mdw-accent-green)]/10 md:min-h-[600px]">
-                <div className="absolute inset-0 -z-0 opacity-70">
-                  <div className="absolute -left-20 top-20 h-96 w-96 rounded-full bg-primary/25 blur-3xl" />
-                  <div className="absolute right-10 bottom-10 h-80 w-80 rounded-full bg-primary/15 blur-3xl" />
-                </div>
+              <div className="relative flex min-h-[460px] items-center bg-primary/8 md:min-h-[600px]">
                 <div className="relative mx-auto grid w-full max-w-7xl gap-8 px-4 md:grid-cols-2 md:px-8">
                   <div className="flex flex-col justify-center gap-5 py-12">
-                    <div className="inline-flex w-fit items-center gap-2 rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-[var(--mdw-primary-dark)]">
+                    <div className="inline-flex w-fit items-center gap-2 rounded-full bg-white text-[var(--mdw-secondary)] border border-primary/20 shadow-sm px-3 py-1 text-xs font-medium">
                       <HeartPulse className="h-3.5 w-3.5" />
                       MDW Wellness
                     </div>
-                    <h1 className="text-3xl font-semibold leading-tight tracking-tight text-foreground md:text-5xl">
+                    <h1 className="text-3xl font-semibold leading-tight tracking-tight text-[var(--mdw-secondary)] md:text-5xl">
                       {slide.headline}
                     </h1>
                     <p className="max-w-lg text-base text-muted-foreground md:text-lg">
@@ -104,8 +100,8 @@ export function HeroCarousel() {
                   </div>
                   <div className="hidden items-center justify-center md:flex">
                     <div className="relative h-80 w-80 lg:h-96 lg:w-96">
-                      <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-primary/50 via-primary/30 to-primary/10" />
-                      <div className="absolute inset-4 rounded-[1.75rem] bg-white/80 backdrop-blur-sm shadow-xl" />
+                      <div className="absolute inset-0 rounded-[2rem] bg-primary" />
+                      <div className="absolute inset-4 rounded-[1.75rem] bg-white shadow-xl" />
                       <div className="absolute inset-0 flex items-center justify-center">
                         <HeartPulse className="h-20 w-20 text-primary" strokeWidth={1.75} />
                       </div>
