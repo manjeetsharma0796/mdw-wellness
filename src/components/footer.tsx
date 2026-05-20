@@ -1,7 +1,6 @@
 import { Phone, Mail, MapPin } from "lucide-react";
 import { siteConfig, getWhatsAppUrl } from "@/data/site";
 import { footerLinks } from "@/data/navigation";
-import { healthTips } from "@/data/health-tips";
 
 function InstagramIcon({ className }: { className?: string }) {
   return (
@@ -27,10 +26,38 @@ function YoutubeIcon({ className }: { className?: string }) {
   );
 }
 
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
+
+function LinkedInIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+    </svg>
+  );
+}
+
+function MedialIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+      <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <text x="12" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="currentColor" fontFamily="system-ui, sans-serif">M</text>
+    </svg>
+  );
+}
+
 const socialLinks = [
-  { icon: InstagramIcon, href: siteConfig.socials.instagram, label: "Instagram" },
   { icon: FacebookIcon, href: siteConfig.socials.facebook, label: "Facebook" },
+  { icon: InstagramIcon, href: siteConfig.socials.instagram, label: "Instagram" },
   { icon: YoutubeIcon, href: siteConfig.socials.youtube, label: "YouTube" },
+  { icon: XIcon, href: siteConfig.socials.x, label: "X" },
+  { icon: LinkedInIcon, href: siteConfig.socials.linkedin, label: "LinkedIn" },
+  { icon: MedialIcon, href: siteConfig.socials.medial, label: "Medial" },
 ];
 
 export function Footer() {
@@ -49,7 +76,7 @@ export function Footer() {
           <p className="text-sm leading-relaxed text-white/80">
             {siteConfig.description}
           </p>
-          <div className="mt-2 flex gap-3">
+          <div className="mt-2 flex flex-wrap gap-3">
             {socialLinks.map(({ icon: Icon, href, label }) => (
               <a
                 key={label}
@@ -67,10 +94,10 @@ export function Footer() {
 
         <div>
           <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
-            Quick Links
+            Our Policies
           </h4>
           <ul className="flex flex-col gap-2.5">
-            {footerLinks.quickLinks.map((link) => (
+            {footerLinks.policies.map((link) => (
               <li key={link.label}>
                 <a
                   href={link.href}
@@ -85,22 +112,29 @@ export function Footer() {
 
         <div>
           <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
-            Health Tips
+            Know Us
           </h4>
           <ul className="flex flex-col gap-2.5">
-            {healthTips.slice(0, 3).map((tip) => (
-              <li key={tip.id}>
-                <a
-                  href={getWhatsAppUrl(`Hi, I'd like to know more about: ${tip.title}`)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Read more about ${tip.title}`}
-                  className="line-clamp-2 text-sm transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
-                >
-                  {tip.title}
-                </a>
-              </li>
-            ))}
+            {footerLinks.knowUs.map((link) => {
+              const isContactSupport = link.href === "#contact-support";
+              const href = isContactSupport
+                ? getWhatsAppUrl("Hi, I need help with MDW Wellness.")
+                : link.href;
+              const externalProps = isContactSupport
+                ? { target: "_blank", rel: "noopener noreferrer" as const }
+                : {};
+              return (
+                <li key={link.label}>
+                  <a
+                    href={href}
+                    {...externalProps}
+                    className="text-sm transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </div>
 

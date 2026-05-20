@@ -12,11 +12,14 @@ export const navItems: NavItem[] = [
 ];
 
 export const footerLinks = {
-  quickLinks: [
-    { label: "Home", href: "#home" },
+  policies: [
+    { label: "Terms and Conditions", href: "#terms" },
+    { label: "Privacy Policy", href: "#privacy" },
+    { label: "Grievance Redressal", href: "#grievance" },
+  ],
+  knowUs: [
+    { label: "FAQ", href: "#faq" },
     { label: "About Us", href: "#about" },
-    { label: "Online Consultation", href: "#services" },
-    { label: "Home Therapy", href: "#services" },
-    { label: "MDW Wellness Vitals Check", href: "#vitals" },
+    { label: "Contact Support", href: "#contact-support" },
   ],
 };

@@ -5,13 +5,16 @@ export const siteConfig = {
     "Expert physiotherapy and wellness services — online consultations, home therapy, and comprehensive vitals checks.",
   whatsappNumber: "919999999999",
   whatsappMessage: "Hi, I'd like to book a consultation with MDW Wellness.",
-  phone: "+91 99999 99999",
-  email: "info@mdwwellness.in",
-  address: "New Delhi, India",
+  phone: "+91 6291495007",
+  email: "support@mydawaiwala.com",
+  address: "26/1A, Ekbalpore Road, Kidderpore, Kolkata 23",
   socials: {
-    instagram: "https://instagram.com/mdwwellness",
-    facebook: "https://facebook.com/mdwwellness",
-    youtube: "https://youtube.com/@mdwwellness",
+    instagram: "https://instagram.com/mydawaiwala",
+    facebook: "https://facebook.com/mydawaiwala",
+    youtube: "https://youtube.com/@mydawaiwala",
+    x: "https://x.com/mydawaiwala",
+    linkedin: "https://linkedin.com/company/mydawaiwala",
+    medial: "https://medial.app/user/my-dawai-wala-2a2cbadfe91d9",
   },
 } as const;
 

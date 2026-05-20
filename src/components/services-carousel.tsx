@@ -1,0 +1,231 @@
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  Activity,
+  Bandage,
+  ChevronLeft,
+  ChevronRight,
+  Home,
+  Play,
+  Stethoscope,
+  Trophy,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import { SectionWrapper } from "@/components/section-wrapper";
+import { services } from "@/data/services";
+import { getWhatsAppUrl } from "@/data/site";
+import { cn } from "@/lib/utils";
+
+const serviceIcons: Record<string, typeof Play> = {
+  "Online Consultation": Stethoscope,
+  "Home Therapy": Home,
+  "Pain Management": Activity,
+  "Sports Rehabilitation": Trophy,
+  "Post-Surgery Recovery": Bandage,
+};
+
+export function ServicesCarousel() {
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [muted, setMuted] = useState(true);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
+  const prefersReducedMotion = useCallback(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }, []);
+
+  useEffect(() => {
+    if (!api) return;
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Embla provides imperative API; initial snap must be read once on mount
+    setCurrent(api.selectedScrollSnap());
+    const onSelect = () => setCurrent(api.selectedScrollSnap());
+    api.on("select", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
+
+  useEffect(() => {
+    const reduced = prefersReducedMotion();
+    videoRefs.current.forEach((video, idx) => {
+      if (!video) return;
+      if (idx === current) {
+        try {
+          video.currentTime = 0;
+        } catch {
+          // ignore — video may not be ready
+        }
+        if (!reduced) {
+          video.play().catch(() => {});
+        }
+      } else {
+        video.pause();
+      }
+    });
+  }, [current, prefersReducedMotion]);
+
+  return (
+    <SectionWrapper id="services">
+      <div className="mx-auto max-w-7xl">
+        <h2 className="text-center text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+          Our Services
+        </h2>
+        <p className="mx-auto mt-3 max-w-xl text-center text-muted-foreground">
+          Expert care tailored to your needs.
+        </p>
+
+        <div
+          className="group relative mt-10"
+          aria-roledescription="carousel"
+          aria-label="Services"
+        >
+          <Carousel
+            setApi={setApi}
+            opts={{ loop: true, align: "center" }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-4">
+              {services.map((service, idx) => {
+                const Icon = serviceIcons[service.title] ?? Play;
+                const isActive = idx === current;
+                return (
+                  <CarouselItem
+                    key={service.id}
+                    className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
+                  >
+                    <div
+                      onClick={() => api?.scrollTo(idx)}
+                      className={cn(
+                        "relative aspect-[9/16] w-full overflow-hidden rounded-2xl bg-muted shadow-sm cursor-pointer transition-opacity",
+                        !isActive && "opacity-60"
+                      )}
+                    >
+                      {service.videoSrc ? (
+                        <video
+                          ref={(el) => {
+                            videoRefs.current[idx] = el;
+                          }}
+                          src={service.videoSrc}
+                          muted={muted}
+                          loop
+                          playsInline
+                          preload="metadata"
+                          aria-label={`${service.title} preview video`}
+                          className="absolute inset-0 h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/25 via-primary/10 to-[var(--mdw-accent-green)]/10">
+                          <Icon
+                            className="h-16 w-16 text-primary/50"
+                            strokeWidth={1.5}
+                            aria-hidden
+                          />
+                        </div>
+                      )}
+
+                      {isActive && !service.videoSrc && (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="rounded-full bg-white/30 p-4 backdrop-blur-sm">
+                            <Play
+                              className="h-8 w-8 text-white"
+                              fill="currentColor"
+                              aria-hidden
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      {isActive && service.videoSrc && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setMuted((m) => !m);
+                          }}
+                          className="absolute right-3 top-3 z-10 bg-white/20 text-white backdrop-blur-sm hover:bg-white/30"
+                          aria-label={muted ? "Unmute" : "Mute"}
+                        >
+                          {muted ? <VolumeX /> : <Volume2 />}
+                        </Button>
+                      )}
+
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 pt-20">
+                        <h3 className="text-base font-semibold text-white">
+                          {service.title}
+                        </h3>
+                        {isActive && (
+                          <Button
+                            size="sm"
+                            nativeButton={false}
+                            className="mt-3 rounded-lg bg-[var(--mdw-accent-green)] text-white hover:bg-[var(--mdw-accent-green)]/90"
+                            render={
+                              <a
+                                href={getWhatsAppUrl(
+                                  `Hi, I'm interested in ${service.title}.`
+                                )}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                              />
+                            }
+                          >
+                            Book on WhatsApp
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </CarouselItem>
+                );
+              })}
+            </CarouselContent>
+
+            <button
+              onClick={() => api?.scrollPrev()}
+              className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-md transition-opacity hover:bg-white group-hover:opacity-100 lg:opacity-0 opacity-70 md:opacity-50 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              aria-label="Previous service"
+            >
+              <ChevronLeft className="h-5 w-5 text-foreground" />
+            </button>
+            <button
+              onClick={() => api?.scrollNext()}
+              className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-md transition-opacity hover:bg-white group-hover:opacity-100 lg:opacity-0 opacity-70 md:opacity-50 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              aria-label="Next service"
+            >
+              <ChevronRight className="h-5 w-5 text-foreground" />
+            </button>
+          </Carousel>
+
+          <div className="mt-6 flex justify-center gap-2">
+            {services.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => api?.scrollTo(idx)}
+                aria-current={current === idx ? "true" : undefined}
+                className={cn(
+                  "h-2.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+                  current === idx
+                    ? "w-8 bg-primary"
+                    : "w-2.5 bg-primary/30 hover:bg-primary/50"
+                )}
+                aria-label={`Go to service ${idx + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </SectionWrapper>
+  );
+}
