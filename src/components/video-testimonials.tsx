@@ -8,13 +8,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { SectionWrapper } from "@/components/section-wrapper";
-import { videoTestimonials, type VideoTestimonial } from "@/data/video-testimonials";
+import { videoTestimonials, type VideoTestimonial, type TileSize } from "@/data/video-testimonials";
 import { cn } from "@/lib/utils";
 
-const aspectClasses: Record<VideoTestimonial["aspectRatio"], string> = {
-  portrait: "aspect-[9/16]",
-  square: "aspect-square",
-  landscape: "aspect-[4/3]",
+const sizeClasses: Record<TileSize, string> = {
+  large: "sm:col-span-2 sm:row-span-2",
+  wide: "sm:col-span-2 sm:row-span-1",
+  tall: "sm:col-span-1 sm:row-span-2",
+  small: "sm:col-span-1 sm:row-span-1",
 };
 
 export function VideoTestimonials() {
@@ -48,16 +49,15 @@ export function VideoTestimonials() {
           </p>
         </div>
 
-        <div className="mt-10 columns-1 sm:columns-2 lg:columns-3 gap-4 [column-fill:_balance]">
+        <div className="mt-10 grid auto-rows-[140px] sm:auto-rows-[180px] lg:auto-rows-[200px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 [grid-auto-flow:dense]">
           {videoTestimonials.map((t) => (
-            <div key={t.id} className="mb-4 break-inside-avoid">
+            <div key={t.id} className={cn(sizeClasses[t.size], "h-full w-full")}>
               <button
                 type="button"
                 onClick={() => setActive(t)}
                 aria-label={`Play testimonial from ${t.name} — ${t.condition}`}
                 className={cn(
-                  "group relative w-full overflow-hidden rounded-2xl bg-muted shadow-sm cursor-pointer transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-                  aspectClasses[t.aspectRatio]
+                  "group relative h-full w-full overflow-hidden rounded-2xl bg-muted shadow-sm cursor-pointer transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 )}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/25 via-primary/10 to-[var(--mdw-accent-green)]/10" />

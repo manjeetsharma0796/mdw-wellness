@@ -1,20 +1,26 @@
-import { CheckCircle2 } from "lucide-react";
+import { HeartPulse, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionWrapper } from "@/components/section-wrapper";
 import { getWhatsAppUrl } from "@/data/site";
-
-const bullets = [
-  "Video consult with expert physio",
-  "30-minute focused session",
-  "Personalized treatment plan",
-  "Follow-up via WhatsApp",
-];
 
 export function OnlineConsultation() {
   return (
     <SectionWrapper id="online-consult" className="bg-primary/5">
       <div className="mx-auto max-w-[640px] rounded-2xl border border-primary/15 bg-white p-8 shadow-md md:p-10">
-        <span className="w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+        <div className="relative flex aspect-[21/9] w-full items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-primary/25 via-primary/10 to-[var(--mdw-accent-green)]/10">
+          <div className="relative flex items-end">
+            <HeartPulse
+              className="h-24 w-24 text-primary/40"
+              strokeWidth={1.5}
+              aria-hidden
+            />
+            <Stethoscope
+              className="ml-4 h-12 w-12 text-[var(--mdw-accent-green)]/70"
+              aria-hidden
+            />
+          </div>
+        </div>
+        <span className="mt-6 inline-block w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
           Online Consultation
         </span>
         <div className="mt-4 flex items-baseline gap-1.5">
@@ -24,20 +30,6 @@ export function OnlineConsultation() {
         <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
           Talk to a Certified Physiotherapist Today
         </h2>
-        <ul className="mt-4 flex flex-col gap-2.5">
-          {bullets.map((item) => (
-            <li
-              key={item}
-              className="flex items-start gap-2 text-sm text-muted-foreground"
-            >
-              <CheckCircle2
-                className="mt-0.5 h-4 w-4 flex-shrink-0 text-[var(--mdw-accent-green)]"
-                aria-hidden
-              />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
         <Button
           size="lg"
           nativeButton={false}
@@ -52,9 +44,6 @@ export function OnlineConsultation() {
         >
           Book on WhatsApp
         </Button>
-        <p className="mt-4 text-xs text-muted-foreground">
-          No hidden charges · Money-back if not satisfied
-        </p>
       </div>
     </SectionWrapper>
   );

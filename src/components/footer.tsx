@@ -170,24 +170,10 @@ export function Footer() {
       </nav>
 
       <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs md:flex-row md:px-8">
+        <div className="mx-auto max-w-7xl px-4 py-5 text-center text-xs md:px-8">
           <p>
             &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
-          <div className="flex gap-4">
-            <a
-              href="#"
-              className="hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
-            >
-              Privacy Policy
-            </a>
-            <a
-              href="#"
-              className="hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
-            >
-              Terms of Service
-            </a>
-          </div>
         </div>
       </div>
     </footer>

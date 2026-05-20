@@ -1,4 +1,4 @@
-export type VideoAspect = "portrait" | "square" | "landscape";
+export type TileSize = "large" | "wide" | "tall" | "small";
 
 export interface VideoTestimonial {
   id: number;
@@ -6,7 +6,7 @@ export interface VideoTestimonial {
   condition: string;
   posterSrc: string;
   videoSrc: string | null;
-  aspectRatio: VideoAspect;
+  size: TileSize;
 }
 
 export const videoTestimonials: VideoTestimonial[] = [
@@ -16,7 +16,7 @@ export const videoTestimonials: VideoTestimonial[] = [
     condition: "Back Pain Recovery",
     posterSrc: "/images/vt-1.jpg",
     videoSrc: null,
-    aspectRatio: "portrait",
+    size: "large",
   },
   {
     id: 2,
@@ -24,7 +24,7 @@ export const videoTestimonials: VideoTestimonial[] = [
     condition: "Sports Injury",
     posterSrc: "/images/vt-2.jpg",
     videoSrc: null,
-    aspectRatio: "square",
+    size: "wide",
   },
   {
     id: 3,
@@ -32,7 +32,7 @@ export const videoTestimonials: VideoTestimonial[] = [
     condition: "Post-Surgery Rehab",
     posterSrc: "/images/vt-3.jpg",
     videoSrc: null,
-    aspectRatio: "landscape",
+    size: "small",
   },
   {
     id: 4,
@@ -40,7 +40,7 @@ export const videoTestimonials: VideoTestimonial[] = [
     condition: "Neck & Shoulder Pain",
     posterSrc: "/images/vt-4.jpg",
     videoSrc: null,
-    aspectRatio: "portrait",
+    size: "small",
   },
   {
     id: 5,
@@ -48,7 +48,7 @@ export const videoTestimonials: VideoTestimonial[] = [
     condition: "Posture Correction",
     posterSrc: "/images/vt-5.jpg",
     videoSrc: null,
-    aspectRatio: "square",
+    size: "wide",
   },
   {
     id: 6,
@@ -56,6 +56,6 @@ export const videoTestimonials: VideoTestimonial[] = [
     condition: "Knee Rehabilitation",
     posterSrc: "/images/vt-6.jpg",
     videoSrc: null,
-    aspectRatio: "landscape",
+    size: "wide",
   },
 ];
