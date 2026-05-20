@@ -27,10 +27,10 @@ function StarRating({ rating }: { rating: number }) {
 
 export function Testimonials() {
   return (
-    <SectionWrapper id="testimonials" className="bg-primary/5">
+    <SectionWrapper id="testimonials" className="bg-primary/8">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col items-center text-center">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-[var(--mdw-primary-dark)]">
             <Quote className="h-3.5 w-3.5" />
             Words of Praise
           </span>
@@ -46,7 +46,7 @@ export function Testimonials() {
           {testimonials.slice(0, 3).map((t) => (
             <Card
               key={t.id}
-              className="h-full border-border bg-white shadow-sm transition-shadow hover:shadow-md"
+              className="h-full border-border bg-white shadow-sm transition-shadow hover:border-primary/25 hover:shadow-md"
             >
               <CardContent className="flex h-full flex-col gap-4 p-6">
                 <div className="flex items-start justify-between">

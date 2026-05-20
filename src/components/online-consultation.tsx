@@ -5,12 +5,13 @@ import { getWhatsAppUrl } from "@/data/site";
 
 export function OnlineConsultation() {
   return (
-    <SectionWrapper id="online-consult" className="bg-primary/5">
-      <div className="mx-auto max-w-[640px] rounded-2xl border border-primary/15 bg-white p-8 shadow-md md:p-10">
-        <div className="relative flex aspect-[21/9] w-full items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-primary/25 via-primary/10 to-[var(--mdw-accent-green)]/10">
+    <SectionWrapper id="online-consult" className="bg-gradient-to-b from-primary/12 via-primary/6 to-primary/10">
+      <div className="relative mx-auto max-w-[640px] overflow-hidden rounded-2xl border border-primary/25 bg-white p-8 shadow-md md:p-10">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-[var(--mdw-primary-dark)] to-primary" />
+        <div className="relative flex aspect-[21/9] w-full items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-primary/35 via-primary/20 to-[var(--mdw-accent-green)]/15">
           <div className="relative flex items-end">
             <HeartPulse
-              className="h-24 w-24 text-primary/40"
+              className="h-24 w-24 text-primary/60"
               strokeWidth={1.5}
               aria-hidden
             />
@@ -20,11 +21,11 @@ export function OnlineConsultation() {
             />
           </div>
         </div>
-        <span className="mt-6 inline-block w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+        <span className="mt-6 inline-block w-fit rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-[var(--mdw-primary-dark)]">
           Online Consultation
         </span>
         <div className="mt-4 flex items-baseline gap-1.5">
-          <span className="text-5xl font-semibold text-foreground">₹499</span>
+          <span className="text-5xl font-semibold text-[var(--mdw-primary-dark)]">₹499</span>
           <span className="text-sm text-muted-foreground">/ session</span>
         </div>
         <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">

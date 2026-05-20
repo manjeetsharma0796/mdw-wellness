@@ -7,7 +7,7 @@ export function WhyChooseUs() {
     <SectionWrapper id="why-us">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col items-center gap-2">
-          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-[var(--mdw-primary-dark)]">
             <Sparkles className="h-3.5 w-3.5" />
             Our Difference
           </div>
@@ -23,9 +23,9 @@ export function WhyChooseUs() {
           {whyChooseUsItems.map((item) => (
             <div
               key={item.id}
-              className="group flex flex-col items-center text-center gap-3 rounded-2xl border border-border bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+              className="group flex flex-col items-center text-center gap-3 rounded-2xl border border-border bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-md"
             >
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary/15 to-primary/5">
                 <item.icon
                   className="h-7 w-7 text-primary"
                   strokeWidth={1.75}

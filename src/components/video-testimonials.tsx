@@ -1,14 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { MessageSquareQuote, Play } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { MessageSquareQuote } from "lucide-react";
 import { SectionWrapper } from "@/components/section-wrapper";
-import { videoTestimonials, type VideoTestimonial, type TileSize } from "@/data/video-testimonials";
+import { videoTestimonials, type TileSize } from "@/data/video-testimonials";
 import { cn } from "@/lib/utils";
 
 const sizeClasses: Record<TileSize, string> = {
@@ -19,25 +13,11 @@ const sizeClasses: Record<TileSize, string> = {
 };
 
 export function VideoTestimonials() {
-  const [active, setActive] = useState<VideoTestimonial | null>(null);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time read of platform media query on mount
-    setPrefersReducedMotion(mq.matches);
-    const onChange = (e: MediaQueryListEvent) =>
-      setPrefersReducedMotion(e.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
-
   return (
     <SectionWrapper id="video-testimonials">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col items-center gap-2">
-          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-[var(--mdw-primary-dark)]">
             <MessageSquareQuote className="h-3.5 w-3.5" />
             Real Stories
           </div>
@@ -51,63 +31,31 @@ export function VideoTestimonials() {
 
         <div className="mt-10 grid auto-rows-[140px] sm:auto-rows-[180px] lg:auto-rows-[200px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 [grid-auto-flow:dense]">
           {videoTestimonials.map((t) => (
-            <div key={t.id} className={cn(sizeClasses[t.size], "h-full w-full")}>
-              <button
-                type="button"
-                onClick={() => setActive(t)}
-                aria-label={`Play testimonial from ${t.name} — ${t.condition}`}
-                className={cn(
-                  "group relative h-full w-full overflow-hidden rounded-2xl bg-muted shadow-sm cursor-pointer transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                )}
-              >
+            <div
+              key={t.id}
+              className={cn(
+                sizeClasses[t.size],
+                "relative h-full w-full overflow-hidden rounded-2xl bg-muted shadow-sm"
+              )}
+            >
+              {t.youtubeId ? (
+                <iframe
+                  src={`https://www.youtube.com/embed/${t.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${t.youtubeId}&controls=0&modestbranding=1&rel=0&playsinline=1`}
+                  title={`${t.name} testimonial`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  className="absolute inset-0 h-full w-full border-0"
+                  loading="lazy"
+                />
+              ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/25 via-primary/10 to-[var(--mdw-accent-green)]/10" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm transition-transform group-hover:scale-110">
-                    <Play
-                      className="h-6 w-6 text-white fill-white"
-                      aria-hidden
-                    />
-                  </div>
-                </div>
-                <div className="absolute bottom-3 left-3 rounded-full bg-black/60 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white">
-                  {t.name} · {t.condition}
-                </div>
-              </button>
+              )}
+
+              <div className="pointer-events-none absolute bottom-3 left-3 z-10 rounded-full bg-black/70 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white">
+                {t.name} · {t.condition}
+              </div>
             </div>
           ))}
         </div>
-
-        <Dialog
-          open={active !== null}
-          onOpenChange={(open) => {
-            if (!open) setActive(null);
-          }}
-        >
-          <DialogContent
-            showCloseButton
-            className="w-full max-w-[min(90vw,720px)] sm:max-w-[min(90vw,720px)] aspect-video overflow-hidden bg-black p-0 ring-0"
-          >
-            <DialogTitle className="sr-only">
-              {active ? `${active.name} testimonial` : "Video testimonial"}
-            </DialogTitle>
-            {active?.videoSrc ? (
-              <video
-                src={active.videoSrc}
-                controls
-                autoPlay={!prefersReducedMotion}
-                loop
-                className="h-full w-full"
-              />
-            ) : (
-              <div className="flex h-full w-full flex-col items-center justify-center gap-3 text-white">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/10">
-                  <Play className="h-7 w-7 text-white fill-white" aria-hidden />
-                </div>
-                <p className="text-sm font-medium">Video coming soon</p>
-              </div>
-            )}
-          </DialogContent>
-        </Dialog>
       </div>
     </SectionWrapper>
   );
