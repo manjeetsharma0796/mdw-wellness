@@ -1,6 +1,7 @@
 "use client";
 
-import { MessageSquareQuote } from "lucide-react";
+import { useState } from "react";
+import { MessageSquareQuote, Play } from "lucide-react";
 import { SectionWrapper } from "@/components/section-wrapper";
 import { videoTestimonials, type TileSize } from "@/data/video-testimonials";
 import { cn } from "@/lib/utils";
@@ -13,6 +14,8 @@ const sizeClasses: Record<TileSize, string> = {
 };
 
 export function VideoTestimonials() {
+  const [playingId, setPlayingId] = useState<number | null>(null);
+
   return (
     <SectionWrapper id="video-testimonials">
       <div className="mx-auto max-w-7xl">
@@ -30,31 +33,58 @@ export function VideoTestimonials() {
         </div>
 
         <div className="mt-10 grid auto-rows-[140px] sm:auto-rows-[180px] lg:auto-rows-[200px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 [grid-auto-flow:dense]">
-          {videoTestimonials.map((t) => (
-            <div
-              key={t.id}
-              className={cn(
-                sizeClasses[t.size],
-                "relative h-full w-full overflow-hidden rounded-2xl bg-muted shadow-sm"
-              )}
-            >
-              {t.youtubeId ? (
-                <iframe
-                  src={`https://www.youtube.com/embed/${t.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${t.youtubeId}&controls=0&modestbranding=1&rel=0&playsinline=1`}
-                  title={`${t.name} testimonial`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  className="absolute inset-0 h-full w-full border-0"
-                  loading="lazy"
-                />
-              ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/25 via-primary/10 to-[var(--mdw-accent-green)]/10" />
-              )}
+          {videoTestimonials.map((t) => {
+            const isPlaying = playingId === t.id && !!t.youtubeId;
 
-              <div className="pointer-events-none absolute bottom-3 left-3 z-10 rounded-full bg-black/70 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white">
-                {t.name} · {t.condition}
+            return (
+              <div
+                key={t.id}
+                className={cn(
+                  sizeClasses[t.size],
+                  "relative h-full w-full overflow-hidden rounded-2xl bg-muted shadow-sm"
+                )}
+              >
+                {isPlaying ? (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${t.youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+                    title={`${t.name} testimonial`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 h-full w-full border-0"
+                  />
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setPlayingId(t.id)}
+                    aria-label={`Play testimonial from ${t.name} — ${t.condition}`}
+                    className="group absolute inset-0 h-full w-full cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  >
+                    {t.youtubeId ? (
+                      // eslint-disable-next-line @next/next/no-img-element -- external YouTube CDN; next/image would require remote pattern config
+                      <img
+                        src={`https://img.youtube.com/vi/${t.youtubeId}/hqdefault.jpg`}
+                        alt=""
+                        className="absolute inset-0 h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/25 via-primary/10 to-[var(--mdw-accent-green)]/10" />
+                    )}
+
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm transition-transform duration-200 group-hover:scale-110">
+                        <Play className="h-6 w-6 fill-white text-white" />
+                      </div>
+                    </div>
+                  </button>
+                )}
+
+                <div className="pointer-events-none absolute bottom-3 left-3 z-10 rounded-full bg-black/70 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white">
+                  {t.name} · {t.condition}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </SectionWrapper>

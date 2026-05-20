@@ -7,9 +7,9 @@ import {
   ChevronLeft,
   ChevronRight,
   Home,
-  Play,
   Stethoscope,
   Trophy,
+  type LucideIcon,
 } from "lucide-react";
 import {
   Carousel,
@@ -21,7 +21,7 @@ import { SectionWrapper } from "@/components/section-wrapper";
 import { services } from "@/data/services";
 import { cn } from "@/lib/utils";
 
-const serviceIcons: Record<string, typeof Play> = {
+const serviceIcons: Record<string, LucideIcon> = {
   "Online Consultation": Stethoscope,
   "Home Therapy": Home,
   "Pain Management": Activity,
@@ -32,13 +32,7 @@ const serviceIcons: Record<string, typeof Play> = {
 export function ServicesCarousel() {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-  const [playingId, setPlayingId] = useState<number | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const playingIdRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    playingIdRef.current = playingId;
-  }, [playingId]);
 
   const startAutoplay = useCallback(() => {
     if (
@@ -46,7 +40,6 @@ export function ServicesCarousel() {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     )
       return;
-    if (playingIdRef.current !== null) return;
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
       api?.scrollNext();
@@ -67,7 +60,6 @@ export function ServicesCarousel() {
     setCurrent(api.selectedScrollSnap());
     const onSelect = () => {
       setCurrent(api.selectedScrollSnap());
-      setPlayingId(null);
     };
     api.on("select", onSelect);
     startAutoplay();
@@ -87,14 +79,6 @@ export function ServicesCarousel() {
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [api, startAutoplay, stopAutoplay]);
-
-  useEffect(() => {
-    if (playingId !== null) {
-      stopAutoplay();
-    } else {
-      startAutoplay();
-    }
-  }, [playingId, startAutoplay, stopAutoplay]);
 
   return (
     <SectionWrapper id="services">
@@ -120,73 +104,38 @@ export function ServicesCarousel() {
           >
             <CarouselContent className="-ml-4">
               {services.map((service) => {
-                const Icon = serviceIcons[service.title] ?? Play;
-                const isPlaying = playingId === service.id;
-                const cardClass =
-                  "relative aspect-[9/16] w-full overflow-hidden rounded-2xl bg-muted shadow-sm transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
-
-                const thumbnail = service.youtubeId ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- Plain img used to avoid configuring img.youtube.com domain
-                  <img
-                    src={`https://img.youtube.com/vi/${service.youtubeId}/hqdefault.jpg`}
-                    alt=""
-                    className="absolute inset-0 h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/25 via-primary/10 to-[var(--mdw-accent-green)]/10">
-                    <Icon
-                      className="h-16 w-16 text-primary/50"
-                      strokeWidth={1.5}
-                      aria-hidden
-                    />
-                  </div>
-                );
+                const Icon = serviceIcons[service.title] ?? Stethoscope;
 
                 return (
                   <CarouselItem
                     key={service.id}
                     className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
                   >
-                    {isPlaying && service.youtubeId ? (
-                      <div className={cardClass}>
+                    <div className="relative aspect-[9/16] w-full overflow-hidden rounded-2xl bg-muted shadow-sm">
+                      {service.youtubeId ? (
                         <iframe
-                          src={`https://www.youtube.com/embed/${service.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
+                          src={`https://www.youtube.com/embed/${service.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${service.youtubeId}&controls=0&modestbranding=1&rel=0&playsinline=1`}
                           title={service.title}
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          className="absolute inset-0 h-full w-full"
+                          className="absolute inset-0 h-full w-full border-0"
+                          loading="lazy"
                         />
-                      </div>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (service.youtubeId) setPlayingId(service.id);
-                        }}
-                        className={cn(cardClass, "text-left")}
-                        aria-label={`Play ${service.title} video`}
-                      >
-                        {thumbnail}
-
-                        {service.youtubeId && (
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="rounded-full bg-black/40 p-4 backdrop-blur-sm">
-                              <Play
-                                className="h-8 w-8 text-white"
-                                fill="currentColor"
-                                aria-hidden
-                              />
-                            </div>
-                          </div>
-                        )}
-
-                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 pt-20">
-                          <h3 className="text-base font-semibold text-white">
-                            {service.title}
-                          </h3>
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/25 via-primary/10 to-[var(--mdw-accent-green)]/10">
+                          <Icon
+                            className="h-16 w-16 text-primary/50"
+                            strokeWidth={1.5}
+                            aria-hidden
+                          />
                         </div>
-                      </button>
-                    )}
+                      )}
+
+                      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-4 pt-16">
+                        <h3 className="text-base font-semibold text-white">
+                          {service.title}
+                        </h3>
+                      </div>
+                    </div>
                   </CarouselItem>
                 );
               })}
