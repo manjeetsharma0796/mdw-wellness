@@ -43,7 +43,7 @@ export function ServicesCarousel() {
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
       api?.scrollNext();
-    }, 5000);
+    }, 2300);
   }, [api]);
 
   const stopAutoplay = useCallback(() => {
@@ -83,7 +83,7 @@ export function ServicesCarousel() {
   return (
     <SectionWrapper id="services">
       <div className="mx-auto max-w-7xl">
-        <h2 className="text-center text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+        <h2 className="text-center text-3xl font-semibold tracking-tight text-[var(--mdw-secondary)] md:text-4xl">
           Our Services
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-center text-muted-foreground">
@@ -92,8 +92,6 @@ export function ServicesCarousel() {
 
         <div
           className="group relative mt-10"
-          onMouseEnter={stopAutoplay}
-          onMouseLeave={startAutoplay}
           aria-roledescription="carousel"
           aria-label="Services"
         >
@@ -121,16 +119,16 @@ export function ServicesCarousel() {
                           loading="lazy"
                         />
                       ) : (
-                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/25 via-primary/10 to-[var(--mdw-accent-green)]/10">
+                        <div className="absolute inset-0 flex items-center justify-center bg-primary">
                           <Icon
-                            className="h-16 w-16 text-primary/50"
+                            className="h-16 w-16 text-white/80"
                             strokeWidth={1.5}
                             aria-hidden
                           />
                         </div>
                       )}
 
-                      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-4 pt-16">
+                      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-[var(--mdw-secondary)]/85 p-3">
                         <h3 className="text-base font-semibold text-white">
                           {service.title}
                         </h3>
@@ -143,14 +141,14 @@ export function ServicesCarousel() {
 
             <button
               onClick={() => api?.scrollPrev()}
-              className="hidden md:inline-flex absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-md transition-opacity hover:bg-white group-hover:opacity-100 lg:opacity-0 opacity-70 md:opacity-50 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              className="hidden md:inline-flex absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 border border-primary/20 p-2 shadow-md transition-opacity hover:bg-white group-hover:opacity-100 lg:opacity-0 opacity-70 md:opacity-50 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               aria-label="Previous service"
             >
               <ChevronLeft className="h-5 w-5 text-foreground" />
             </button>
             <button
               onClick={() => api?.scrollNext()}
-              className="hidden md:inline-flex absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-md transition-opacity hover:bg-white group-hover:opacity-100 lg:opacity-0 opacity-70 md:opacity-50 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              className="hidden md:inline-flex absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 border border-primary/20 p-2 shadow-md transition-opacity hover:bg-white group-hover:opacity-100 lg:opacity-0 opacity-70 md:opacity-50 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               aria-label="Next service"
             >
               <ChevronRight className="h-5 w-5 text-foreground" />
@@ -166,7 +164,7 @@ export function ServicesCarousel() {
                 className={cn(
                   "h-2.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                   current === idx
-                    ? "w-8 bg-primary"
+                    ? "w-8 bg-[var(--mdw-secondary)]"
                     : "w-2.5 bg-primary/30 hover:bg-primary/50"
                 )}
                 aria-label={`Go to service ${idx + 1}`}

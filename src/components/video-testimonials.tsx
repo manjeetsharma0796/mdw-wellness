@@ -20,11 +20,11 @@ export function VideoTestimonials() {
     <SectionWrapper id="video-testimonials">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col items-center gap-2">
-          <div className="inline-flex items-center gap-2 rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-[var(--mdw-primary-dark)]">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[var(--mdw-secondary)] px-3 py-1 text-xs font-medium text-white">
             <MessageSquareQuote className="h-3.5 w-3.5" />
             Real Stories
           </div>
-          <h2 className="text-center text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+          <h2 className="text-center text-3xl font-semibold tracking-tight text-[var(--mdw-secondary)] md:text-4xl">
             What Our Clients Say
           </h2>
           <p className="mx-auto max-w-xl text-center text-muted-foreground">
@@ -68,18 +68,18 @@ export function VideoTestimonials() {
                         loading="lazy"
                       />
                     ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/25 via-primary/10 to-[var(--mdw-accent-green)]/10" />
+                      <div className="absolute inset-0 bg-primary" />
                     )}
 
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm transition-transform duration-200 group-hover:scale-110">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--mdw-secondary)] transition-transform duration-200 group-hover:scale-110">
                         <Play className="h-6 w-6 fill-white text-white" />
                       </div>
                     </div>
                   </button>
                 )}
 
-                <div className="pointer-events-none absolute bottom-3 left-3 z-10 rounded-full bg-black/70 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white">
+                <div className="pointer-events-none absolute bottom-3 left-3 z-10 rounded-full bg-[var(--mdw-secondary)] px-3 py-1 text-xs font-medium text-white">
                   {t.name} · {t.condition}
                 </div>
               </div>

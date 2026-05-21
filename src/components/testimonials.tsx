@@ -27,14 +27,14 @@ function StarRating({ rating }: { rating: number }) {
 
 export function Testimonials() {
   return (
-    <SectionWrapper id="testimonials" className="bg-primary/8">
+    <SectionWrapper id="testimonials" className="bg-muted">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col items-center text-center">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-[var(--mdw-primary-dark)]">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--mdw-secondary)] px-3 py-1 text-xs font-medium text-white">
             <Quote className="h-3.5 w-3.5" />
             Words of Praise
           </span>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-[var(--mdw-secondary)] md:text-4xl">
             From Our Clients
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
@@ -46,22 +46,22 @@ export function Testimonials() {
           {testimonials.slice(0, 3).map((t) => (
             <Card
               key={t.id}
-              className="h-full border-border bg-white shadow-sm transition-shadow hover:border-primary/25 hover:shadow-md"
+              className="h-full border-primary/15 bg-white shadow-sm transition-shadow hover:border-primary hover:shadow-lg"
             >
               <CardContent className="flex h-full flex-col gap-4 p-6">
                 <div className="flex items-start justify-between">
                   <StarRating rating={t.rating} />
-                  <Quote className="h-6 w-6 text-primary/40" />
+                  <Quote className="h-6 w-6 text-primary" />
                 </div>
                 <p className="flex-1 text-sm leading-relaxed text-muted-foreground line-clamp-5">
                   &ldquo;{t.quote}&rdquo;
                 </p>
                 <div className="flex items-center gap-3 border-t border-border pt-4">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-base font-semibold text-primary">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-base font-semibold text-white">
                     {t.name.charAt(0)}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-foreground">
+                    <p className="text-sm font-semibold text-[var(--mdw-secondary)]">
                       {t.name}
                     </p>
                     <p className="text-xs text-muted-foreground">

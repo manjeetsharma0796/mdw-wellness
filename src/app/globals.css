@@ -49,16 +49,18 @@
 }
 
 :root {
-  /* MDW Wellness brand palette */
+  /* MDW Wellness brand palette — solid-color experiment */
   --mdw-primary: #018bc4;
   --mdw-primary-dark: #016a96;
+  --mdw-secondary: #0F3057;
+  --mdw-secondary-soft: #E2E8F0;
   --mdw-background: #FAFBFC;
   --mdw-surface: #FFFFFF;
-  --mdw-text-primary: #1A2B3C;
+  --mdw-text-primary: #0F3057;
   --mdw-text-secondary: #5A6B7C;
   --mdw-border: #E2E8F0;
   --mdw-accent-green: #25D366;
-  --mdw-footer-bg: #1E293B;
+  --mdw-footer-bg: #0F3057;
   --mdw-footer-text: #CBD5E1;
 
   /* shadcn tokens mapped to our palette */
