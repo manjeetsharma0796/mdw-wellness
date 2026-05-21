@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -48,9 +49,10 @@ export function Navbar() {
             <a
               key={item.label}
               href={item.href}
-              className="rounded-md text-sm font-medium text-[var(--mdw-secondary)]/80 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              className="group relative rounded-md text-sm font-medium text-black transition-colors hover:bg-[#018bc4]/10 px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
-              {item.label}
+              <span className="relative z-10">{item.label}</span>
+              <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-[#018bc4] transform scale-x-0 origin-center transition-transform duration-300 group-hover:scale-x-100" />
             </a>
           ))}
           <Button
@@ -62,14 +64,30 @@ export function Navbar() {
           </Button>
         </div>
 
-        <Sheet>
-          <SheetTrigger
-            render={<Button variant="ghost" size="icon" aria-label="Open menu" />}
-            className="md:hidden"
-          >
-            <Menu className="h-6 w-6" />
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger className="md:hidden" aria-label={open ? "Close menu" : "Open menu"}>
+            <span className="relative h-8 w-8 flex items-center justify-center">
+              <span
+                className={cn(
+                  "absolute block h-0.5 w-5 origin-center bg-[var(--mdw-secondary)] transition-transform duration-300",
+                  open ? "translate-y-0 rotate-45" : "-translate-y-2"
+                )}
+              />
+              <span
+                className={cn(
+                  "absolute block h-0.5 w-5 bg-[var(--mdw-secondary)] transition-opacity duration-200",
+                  open ? "opacity-0" : "opacity-100"
+                )}
+              />
+              <span
+                className={cn(
+                  "absolute block h-0.5 w-5 origin-center bg-[var(--mdw-secondary)] transition-transform duration-300",
+                  open ? "translate-y-0 -rotate-45" : "translate-y-2"
+                )}
+              />
+            </span>
           </SheetTrigger>
-          <SheetContent side="right" className="w-72 bg-white sm:w-80">
+          <SheetContent side="right" className="w-72 bg-white sm:w-80 rounded-l-2xl shadow-2xl overflow-hidden">
             <SheetTitle className="px-6 pt-6 text-lg font-semibold">
               {siteConfig.name}
             </SheetTitle>

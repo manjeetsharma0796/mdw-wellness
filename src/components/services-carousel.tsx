@@ -43,7 +43,7 @@ export function ServicesCarousel() {
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
       api?.scrollNext();
-    }, 5000);
+    }, 2300);
   }, [api]);
 
   const stopAutoplay = useCallback(() => {
@@ -92,8 +92,6 @@ export function ServicesCarousel() {
 
         <div
           className="group relative mt-10"
-          onMouseEnter={stopAutoplay}
-          onMouseLeave={startAutoplay}
           aria-roledescription="carousel"
           aria-label="Services"
         >
