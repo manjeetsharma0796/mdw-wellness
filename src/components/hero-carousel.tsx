@@ -93,7 +93,7 @@ export function HeroCarousel() {
                       className="mt-2 w-fit rounded-lg bg-[var(--mdw-accent-green)] px-8 text-base text-white hover:bg-[var(--mdw-accent-green)]/90"
                       render={
                         <a
-                          href={getWhatsAppUrl(slide.headline + " — I'd like to book.")}
+                          href={getWhatsAppUrl(slide.headline + ". I'd like to book.")}
                           target="_blank"
                           rel="noopener noreferrer"
                         />

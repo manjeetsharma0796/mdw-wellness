@@ -27,7 +27,7 @@ export const slides: Slide[] = [
     id: 3,
     headline: "MDW Wellness Vitals Check",
     description:
-      "Comprehensive health screening — vitals, posture analysis, flexibility assessment, and personalized wellness report.",
+      "Comprehensive health screening: vitals, posture analysis, flexibility assessment, and personalized wellness report.",
     ctaText: "Check Your Vitals",
     imagePlaceholder: "/images/slide-vitals.jpg",
   },

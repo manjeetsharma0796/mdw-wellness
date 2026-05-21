@@ -56,7 +56,7 @@ export function VideoTestimonials() {
                   <button
                     type="button"
                     onClick={() => setPlayingId(t.id)}
-                    aria-label={`Play testimonial from ${t.name} — ${t.condition}`}
+                    aria-label={`Play testimonial from ${t.name}, ${t.condition}`}
                     className="group absolute inset-0 h-full w-full cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                   >
                     {t.youtubeId ? (
