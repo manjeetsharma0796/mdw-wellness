@@ -12,12 +12,14 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { navItems } from "@/data/navigation";
-import { siteConfig, getWhatsAppUrl } from "@/data/site";
+import { siteConfig } from "@/data/site";
 import { cn } from "@/lib/utils";
+import { useBookingModal } from "@/components/booking/booking-modal-provider";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { open: openBookingModal } = useBookingModal();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -64,9 +66,8 @@ export function Navbar() {
             </a>
           ))}
           <Button
-            nativeButton={false}
+            onClick={() => openBookingModal()}
             className="rounded-lg bg-[var(--mdw-accent-green)] px-5 text-white hover:bg-[var(--mdw-accent-green)]/90"
-            render={<a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" />}
           >
             Book Now
           </Button>
@@ -114,17 +115,13 @@ export function Navbar() {
                   {item.label}
                 </SheetClose>
               ))}
-              <SheetClose
-                nativeButton={false}
-                render={
-                  <Button
-                    nativeButton={false}
-                    className="mt-4 w-full rounded-lg bg-[var(--mdw-accent-green)] text-white hover:bg-[var(--mdw-accent-green)]/90"
-                    render={<a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" />}
-                  />
-                }
-              >
-                Book Now
+              <SheetClose>
+                <Button
+                  onClick={() => openBookingModal()}
+                  className="mt-4 w-full rounded-lg bg-[var(--mdw-accent-green)] text-white hover:bg-[var(--mdw-accent-green)]/90"
+                >
+                  Book Now
+                </Button>
               </SheetClose>
             </div>
           </SheetContent>

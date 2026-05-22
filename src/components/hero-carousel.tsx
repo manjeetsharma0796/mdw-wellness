@@ -10,13 +10,21 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { slides } from "@/data/slides";
-import { getWhatsAppUrl } from "@/data/site";
 import { cn } from "@/lib/utils";
+import { useBookingModal } from "@/components/booking/booking-modal-provider";
+
+const slideServiceMap: Record<number, "online_consultation" | "home_therapy" | "vitals_check"> = {
+  1: "online_consultation",
+  2: "home_therapy",
+  3: "vitals_check",
+  4: "online_consultation",
+};
 
 export function HeroCarousel() {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const { open: openBookingModal } = useBookingModal();
 
   const startAutoplay = useCallback(() => {
     if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -85,15 +93,12 @@ export function HeroCarousel() {
                     </p>
                     <Button
                       size="lg"
-                      nativeButton={false}
-                      className="mt-2 w-fit rounded-lg bg-[var(--mdw-accent-green)] px-8 text-base text-white hover:bg-[var(--mdw-accent-green)]/90"
-                      render={
-                        <a
-                          href={getWhatsAppUrl(slide.headline + ". I'd like to book.")}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        />
+                      onClick={() =>
+                        openBookingModal({
+                          service: slideServiceMap[slide.id] ?? "online_consultation",
+                        })
                       }
+                      className="mt-2 w-fit rounded-lg bg-[var(--mdw-accent-green)] px-8 text-base text-white hover:bg-[var(--mdw-accent-green)]/90"
                     >
                       {slide.ctaText}
                     </Button>

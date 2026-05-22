@@ -1,9 +1,12 @@
+"use client";
+
 import { HeartPulse, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionWrapper } from "@/components/section-wrapper";
-import { getWhatsAppUrl } from "@/data/site";
+import { useBookingModal } from "@/components/booking/booking-modal-provider";
 
 export function OnlineConsultation() {
+  const { open: openBookingModal } = useBookingModal();
   return (
     <SectionWrapper id="online-consult">
       <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl bg-primary shadow-sm">
@@ -25,15 +28,8 @@ export function OnlineConsultation() {
             </div>
             <Button
               size="lg"
-              nativeButton={false}
+              onClick={() => openBookingModal({ service: "online_consultation" })}
               className="mt-2 w-full rounded-xl bg-[var(--mdw-accent-green)] px-8 py-3 text-base font-semibold text-white shadow-lg shadow-[var(--mdw-accent-green)]/25 hover:bg-[var(--mdw-accent-green)]/90 sm:w-fit"
-              render={
-                <a
-                  href={getWhatsAppUrl("Hi, I'd like to book an Online Consultation (₹499).")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                />
-              }
             >
               Book on WhatsApp
             </Button>
