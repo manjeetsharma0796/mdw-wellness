@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
+import { Stethoscope, Home, HeartPulse } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,13 +19,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { createBooking } from "@/app/actions/bookings";
 import { getWhatsAppUrl } from "@/data/site";
 import type {
@@ -51,6 +46,16 @@ const serviceLabels: Record<Service, string> = {
   home_therapy: "Home Therapy",
   vitals_check: "MDW Wellness Vitals Check",
 };
+
+const serviceOptions: Array<{
+  value: Service;
+  label: string;
+  Icon: React.ComponentType<{ className?: string }>;
+}> = [
+  { value: "online_consultation", label: "Online", Icon: Stethoscope },
+  { value: "home_therapy", label: "Home", Icon: Home },
+  { value: "vitals_check", label: "Vitals", Icon: HeartPulse },
+];
 
 type BookingFormProps = {
   prefill: Partial<BookingPrefill>;
@@ -137,7 +142,7 @@ export function BookingForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="flex flex-col gap-4">
+      <form onSubmit={onSubmit} className="flex flex-col gap-3 sm:gap-4">
         {serverError ? (
           <div
             role="alert"
@@ -147,39 +152,41 @@ export function BookingForm({
           </div>
         ) : null}
 
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Your name" autoComplete="name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Your name" autoComplete="name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Phone</FormLabel>
-              <FormControl>
-                <Input
-                  type="tel"
-                  inputMode="tel"
-                  placeholder="10-digit mobile number"
-                  autoComplete="tel"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone</FormLabel>
+                <FormControl>
+                  <Input
+                    type="tel"
+                    inputMode="tel"
+                    placeholder="10-digit mobile number"
+                    autoComplete="tel"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}
@@ -209,20 +216,43 @@ export function BookingForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Service</FormLabel>
-              <Select value={field.value} onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger className="w-full h-10">
-                    <SelectValue placeholder="Choose a service" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="online_consultation">
-                    Online Consultation
-                  </SelectItem>
-                  <SelectItem value="home_therapy">Home Therapy</SelectItem>
-                  <SelectItem value="vitals_check">Vitals Check</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <div className="grid grid-cols-3 gap-2">
+                  {serviceOptions.map((option) => {
+                    const selected = field.value === option.value;
+                    return (
+                      <button
+                        key={option.value}
+                        type="button"
+                        aria-pressed={selected}
+                        onClick={() => field.onChange(option.value)}
+                        className={
+                          selected
+                            ? "flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-primary bg-primary/10 p-3 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer"
+                            : "flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-border bg-white p-3 text-center transition-colors hover:border-primary/40 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer"
+                        }
+                      >
+                        <option.Icon
+                          className={
+                            selected
+                              ? "h-6 w-6 text-primary"
+                              : "h-6 w-6 text-muted-foreground"
+                          }
+                        />
+                        <span
+                          className={
+                            selected
+                              ? "text-xs font-semibold text-[var(--mdw-secondary)]"
+                              : "text-xs font-medium text-foreground"
+                          }
+                        >
+                          {option.label}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -253,7 +283,7 @@ export function BookingForm({
               <FormLabel>Message</FormLabel>
               <FormControl>
                 <Textarea
-                  rows={3}
+                  rows={2}
                   placeholder="Anything specific we should know?"
                   {...field}
                 />
@@ -274,15 +304,15 @@ export function BookingForm({
         <button
           type="button"
           onClick={onShowAuth}
-          className="mt-1 text-center text-sm text-muted-foreground hover:text-foreground"
+          className="text-xs text-center text-muted-foreground hover:text-foreground"
         >
           Save your details for next time?{" "}
-          <span className="font-medium text-primary underline-offset-2 hover:underline">
+          <span className="font-medium text-primary hover:text-[var(--mdw-secondary)] underline-offset-2 hover:underline">
             Sign in / Sign up
           </span>
         </button>
 
-        <p className="mt-3 text-center text-xs text-muted-foreground">
+        <p className="mt-2 text-center text-[11px] text-muted-foreground">
           We respect your privacy. Details only used to confirm your booking.
         </p>
       </form>
