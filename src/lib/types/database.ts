@@ -1,5 +1,15 @@
 export type ServiceType = "online_consultation" | "home_therapy" | "vitals_check";
 
+export type TimeOfDay = "morning" | "afternoon" | "evening" | "night" | "flexible";
+
+export const TIME_OF_DAY_LABELS: Record<TimeOfDay, string> = {
+  morning: "Morning (8am - 11am)",
+  afternoon: "Afternoon (12pm - 3pm)",
+  evening: "Evening (4pm - 7pm)",
+  night: "Night (7pm - 9pm)",
+  flexible: "I'm flexible",
+};
+
 export interface Profile {
   id: string;
   name: string;
@@ -25,7 +35,7 @@ export interface BookingInput {
   phone: string;
   email?: string;
   service: ServiceType;
-  preferredTime?: string;
+  preferredTime?: TimeOfDay;
   message?: string;
 }
 

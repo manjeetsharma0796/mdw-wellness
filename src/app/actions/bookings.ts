@@ -10,7 +10,9 @@ export async function createBooking(input: BookingInput): Promise<ActionResult> 
     phone: z.string().min(10),
     email: z.string().email().optional().or(z.literal("")),
     service: z.enum(["online_consultation", "home_therapy", "vitals_check"]),
-    preferredTime: z.string().optional().or(z.literal("")),
+    preferredTime: z
+      .enum(["morning", "afternoon", "evening", "night", "flexible"])
+      .optional(),
     message: z.string().max(500).optional().or(z.literal("")),
   });
 

@@ -11,6 +11,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Form,
   FormControl,
   FormDescription,
@@ -21,10 +28,22 @@ import {
 } from "@/components/ui/form";
 import { createBooking } from "@/app/actions/bookings";
 import { getWhatsAppUrl } from "@/data/site";
+import {
+  TIME_OF_DAY_LABELS,
+  type TimeOfDay,
+} from "@/lib/types/database";
 import type {
   BookingPrefill,
   Service,
 } from "@/components/booking/booking-modal-provider";
+
+const TIME_OPTIONS: TimeOfDay[] = [
+  "morning",
+  "afternoon",
+  "evening",
+  "night",
+  "flexible",
+];
 
 const schema = z.object({
   name: z.string().min(2, "Name too short"),
@@ -35,7 +54,13 @@ const schema = z.object({
     .optional()
     .or(z.literal("")),
   service: z.enum(["online_consultation", "home_therapy", "vitals_check"]),
-  preferredTime: z.string().optional().or(z.literal("")),
+  preferredTime: z.enum([
+    "morning",
+    "afternoon",
+    "evening",
+    "night",
+    "flexible",
+  ]),
   message: z.string().max(500, "Too long").optional().or(z.literal("")),
 });
 
@@ -77,7 +102,7 @@ export function BookingForm({
       phone: prefill.phone ?? "",
       email: prefill.email ?? "",
       service: prefill.service ?? "online_consultation",
-      preferredTime: prefill.preferredTime ?? "",
+      preferredTime: (prefill.preferredTime as TimeOfDay) ?? "flexible",
       message: prefill.message ?? "",
     },
   });
@@ -89,7 +114,7 @@ export function BookingForm({
       phone: prefill.phone ?? "",
       email: prefill.email ?? "",
       service: prefill.service ?? "online_consultation",
-      preferredTime: prefill.preferredTime ?? "",
+      preferredTime: (prefill.preferredTime as TimeOfDay) ?? "flexible",
       message: prefill.message ?? "",
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -126,7 +151,7 @@ export function BookingForm({
       `Name: ${values.name}`,
       `Phone: ${values.phone}`,
       `Service: ${serviceLabels[values.service]}`,
-      values.preferredTime ? `Preferred time: ${values.preferredTime}` : null,
+      `Preferred time: ${TIME_OF_DAY_LABELS[values.preferredTime]}`,
       values.message ? `Message: ${values.message}` : null,
     ]
       .filter(Boolean)
@@ -265,10 +290,21 @@ export function BookingForm({
             <FormItem>
               <FormLabel>Preferred time</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="e.g. Tomorrow evening, 7pm"
-                  {...field}
-                />
+                <Select
+                  value={field.value}
+                  onValueChange={(v) => field.onChange(v as TimeOfDay)}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="When works best?" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TIME_OPTIONS.map((value) => (
+                      <SelectItem key={value} value={value}>
+                        {TIME_OF_DAY_LABELS[value]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>
