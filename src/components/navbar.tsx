@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -38,10 +39,18 @@ export function Navbar() {
       >
         <a
           href="#home"
-          aria-label="MDW Wellness home"
-          className="rounded-md text-xl font-bold tracking-tight text-[var(--mdw-secondary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          aria-label={`${siteConfig.name} home`}
+          className="flex items-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
-          {siteConfig.name}
+          <Image
+            src="/assets/mdw-logo.svg"
+            alt={siteConfig.name}
+            width={120}
+            height={48}
+            priority
+            className="h-9 w-auto md:h-10"
+            
+          />
         </a>
 
         <div className="hidden items-center gap-5 md:flex lg:gap-7">
