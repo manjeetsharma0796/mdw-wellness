@@ -38,7 +38,7 @@ export function Navbar() {
         className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-8"
       >
         <a
-          href="#home"
+          href="https://www.mydawaiwala.com/"
           aria-label={`${siteConfig.name} home`}
           className="flex items-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
@@ -49,7 +49,6 @@ export function Navbar() {
             height={48}
             priority
             className="h-9 w-auto md:h-10"
-            
           />
         </a>
 
