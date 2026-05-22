@@ -77,9 +77,9 @@ const serviceOptions: Array<{
   label: string;
   Icon: React.ComponentType<{ className?: string }>;
 }> = [
-  { value: "online_consultation", label: "Online", Icon: Stethoscope },
-  { value: "home_therapy", label: "Home", Icon: Home },
-  { value: "vitals_check", label: "Vitals", Icon: HeartPulse },
+  { value: "online_consultation", label: "Online Consultation", Icon: Stethoscope },
+  { value: "home_therapy", label: "Home Therapy", Icon: Home },
+  { value: "vitals_check", label: "Vitals Check", Icon: HeartPulse },
 ];
 
 type BookingFormProps = {
@@ -267,8 +267,8 @@ export function BookingForm({
                         <span
                           className={
                             selected
-                              ? "text-xs font-semibold text-[var(--mdw-secondary)]"
-                              : "text-xs font-medium text-foreground"
+                              ? "text-[11px] font-semibold leading-tight text-balance text-[var(--mdw-secondary)] sm:text-xs"
+                              : "text-[11px] font-medium leading-tight text-balance text-foreground sm:text-xs"
                           }
                         >
                           {option.label}
