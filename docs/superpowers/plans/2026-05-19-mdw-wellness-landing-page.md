@@ -12,32 +12,33 @@
 
 ## File Map
 
-| File | Responsibility | Created In |
-|------|---------------|------------|
-| `src/data/site.ts` | Site metadata, WhatsApp number, contact info | Task 2 |
-| `src/data/navigation.ts` | Nav items, footer links | Task 2 |
-| `src/data/slides.ts` | Hero carousel slide content | Task 2 |
-| `src/data/services.ts` | Service reel card data | Task 2 |
-| `src/data/testimonials.ts` | Testimonial entries | Task 2 |
-| `src/data/health-tips.ts` | Health tip articles | Task 2 |
-| `src/app/layout.tsx` | Root layout, Inter font, metadata | Task 3 |
-| `src/app/page.tsx` | Landing page composing all sections | Task 3 (extended each task) |
-| `src/app/globals.css` | Tailwind directives, CSS custom properties | Task 3 |
-| `src/components/navbar.tsx` | Sticky navbar + mobile sheet drawer | Task 4 |
-| `src/components/hero-carousel.tsx` | Hero carousel with autoplay | Task 5 |
-| `src/components/services-reels.tsx` | Horizontal scrollable video reel cards | Task 6 |
-| `src/components/testimonials.tsx` | Testimonial carousel | Task 7 |
-| `src/components/health-tips.tsx` | Health tips 3-column grid | Task 8 |
-| `src/components/footer.tsx` | 4-column footer | Task 9 |
-| `src/components/whatsapp-fab.tsx` | Floating WhatsApp button | Task 10 |
-| `src/components/section-wrapper.tsx` | Reusable Framer Motion fade-in wrapper | Task 3 |
-| `src/lib/utils.ts` | shadcn/ui `cn()` utility | Task 1 (scaffolded by shadcn) |
+| File                                 | Responsibility                               | Created In                    |
+| ------------------------------------ | -------------------------------------------- | ----------------------------- |
+| `src/data/site.ts`                   | Site metadata, WhatsApp number, contact info | Task 2                        |
+| `src/data/navigation.ts`             | Nav items, footer links                      | Task 2                        |
+| `src/data/slides.ts`                 | Hero carousel slide content                  | Task 2                        |
+| `src/data/services.ts`               | Service reel card data                       | Task 2                        |
+| `src/data/testimonials.ts`           | Testimonial entries                          | Task 2                        |
+| `src/data/health-tips.ts`            | Health tip articles                          | Task 2                        |
+| `src/app/layout.tsx`                 | Root layout, Inter font, metadata            | Task 3                        |
+| `src/app/page.tsx`                   | Landing page composing all sections          | Task 3 (extended each task)   |
+| `src/app/globals.css`                | Tailwind directives, CSS custom properties   | Task 3                        |
+| `src/components/navbar.tsx`          | Sticky navbar + mobile sheet drawer          | Task 4                        |
+| `src/components/hero-carousel.tsx`   | Hero carousel with autoplay                  | Task 5                        |
+| `src/components/services-reels.tsx`  | Horizontal scrollable video reel cards       | Task 6                        |
+| `src/components/testimonials.tsx`    | Testimonial carousel                         | Task 7                        |
+| `src/components/health-tips.tsx`     | Health tips 3-column grid                    | Task 8                        |
+| `src/components/footer.tsx`          | 4-column footer                              | Task 9                        |
+| `src/components/whatsapp-fab.tsx`    | Floating WhatsApp button                     | Task 10                       |
+| `src/components/section-wrapper.tsx` | Reusable Framer Motion fade-in wrapper       | Task 3                        |
+| `src/lib/utils.ts`                   | shadcn/ui `cn()` utility                     | Task 1 (scaffolded by shadcn) |
 
 ---
 
 ### Task 1: Scaffold Next.js Project + Install Dependencies
 
 **Files:**
+
 - Create: Full Next.js project scaffold
 - Create: `components.json` (shadcn config)
 
@@ -90,6 +91,7 @@ git commit -m "chore: scaffold Next.js 15 with shadcn/ui, Tailwind, Framer Motio
 ### Task 2: Create Static Data Files
 
 **Files:**
+
 - Create: `src/data/site.ts`
 - Create: `src/data/navigation.ts`
 - Create: `src/data/slides.ts`
@@ -105,7 +107,7 @@ export const siteConfig = {
   tagline: "Your Partner in Health & Recovery",
   description:
     "Expert physiotherapy and wellness services — online consultations, home therapy, and comprehensive vitals checks.",
-  whatsappNumber: "919999999999",
+  whatsappNumber: "919230189093",
   whatsappMessage: "Hi, I'd like to book a consultation with MDW Wellness.",
   phone: "+91 99999 99999",
   email: "info@mdwwellness.in",
@@ -376,6 +378,7 @@ git commit -m "feat: add static data files and placeholder assets"
 ### Task 3: Root Layout, Global Styles, Section Wrapper
 
 **Files:**
+
 - Modify: `src/app/layout.tsx`
 - Modify: `src/app/globals.css`
 - Create: `src/components/section-wrapper.tsx`
@@ -392,16 +395,16 @@ Replace the entire file with:
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #FAFBFC;
-  --foreground: #1A2B3C;
-  --primary: #4A90D9;
-  --primary-dark: #2E6BB0;
-  --surface: #FFFFFF;
-  --text-secondary: #5A6B7C;
-  --border: #E2E8F0;
-  --accent-green: #25D366;
-  --footer-bg: #1E293B;
-  --footer-text: #CBD5E1;
+  --background: #fafbfc;
+  --foreground: #1a2b3c;
+  --primary: #4a90d9;
+  --primary-dark: #2e6bb0;
+  --surface: #ffffff;
+  --text-secondary: #5a6b7c;
+  --border: #e2e8f0;
+  --accent-green: #25d366;
+  --footer-bg: #1e293b;
+  --footer-text: #cbd5e1;
   --radius: 0.75rem;
 }
 
@@ -468,7 +471,11 @@ interface SectionWrapperProps {
   className?: string;
 }
 
-export function SectionWrapper({ children, id, className }: SectionWrapperProps) {
+export function SectionWrapper({
+  children,
+  id,
+  className,
+}: SectionWrapperProps) {
   return (
     <motion.section
       id={id}
@@ -520,6 +527,7 @@ git commit -m "feat: root layout with Inter font, design tokens, section wrapper
 ### Task 4: Sticky Navbar + Mobile Drawer
 
 **Files:**
+
 - Create: `src/components/navbar.tsx`
 - Modify: `src/app/page.tsx`
 
@@ -555,13 +563,14 @@ export function Navbar() {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-white/95 backdrop-blur-sm shadow-sm"
-          : "bg-transparent"
+        scrolled ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-transparent",
       )}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-8">
-        <a href="#home" className="text-xl font-semibold text-[var(--foreground)]">
+        <a
+          href="#home"
+          className="text-xl font-semibold text-[var(--foreground)]"
+        >
           {siteConfig.name}
         </a>
 
@@ -579,7 +588,11 @@ export function Navbar() {
             asChild
             className="rounded-lg bg-[var(--accent-green)] px-5 text-white hover:bg-[var(--accent-green)]/90"
           >
-            <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer">
+            <a
+              href={getWhatsAppUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Book Now
             </a>
           </Button>
@@ -611,7 +624,11 @@ export function Navbar() {
                 asChild
                 className="mt-4 w-full rounded-lg bg-[var(--accent-green)] text-white hover:bg-[var(--accent-green)]/90"
               >
-                <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={getWhatsAppUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Book Now
                 </a>
               </Button>
@@ -663,6 +680,7 @@ git commit -m "feat: sticky navbar with mobile sheet drawer and WhatsApp CTA"
 ### Task 5: Hero Carousel
 
 **Files:**
+
 - Create: `src/components/hero-carousel.tsx`
 - Modify: `src/app/page.tsx`
 
@@ -778,7 +796,7 @@ export function HeroCarousel() {
               "h-2.5 rounded-full transition-all",
               current === idx
                 ? "w-8 bg-[var(--primary)]"
-                : "w-2.5 bg-[var(--primary)]/30"
+                : "w-2.5 bg-[var(--primary)]/30",
             )}
             aria-label={`Go to slide ${idx + 1}`}
           />
@@ -827,6 +845,7 @@ git commit -m "feat: hero carousel with autoplay, dot nav, and WhatsApp CTAs"
 ### Task 6: Services Video Reels Section
 
 **Files:**
+
 - Create: `src/components/services-reels.tsx`
 - Modify: `src/app/page.tsx`
 
@@ -970,6 +989,7 @@ git commit -m "feat: services video reels section with snap scroll and hover eff
 ### Task 7: Testimonials Carousel
 
 **Files:**
+
 - Create: `src/components/testimonials.tsx`
 - Modify: `src/app/page.tsx`
 
@@ -1103,6 +1123,7 @@ git commit -m "feat: testimonials carousel with star ratings and client cards"
 ### Task 8: Health Tips Grid
 
 **Files:**
+
 - Create: `src/components/health-tips.tsx`
 - Modify: `src/app/page.tsx`
 
@@ -1162,7 +1183,9 @@ export function HealthTips() {
                   </span>
                 </div>
                 <a
-                  href={getWhatsAppUrl(`Hi, I'd like to know more about: ${tip.title}`)}
+                  href={getWhatsAppUrl(
+                    `Hi, I'd like to know more about: ${tip.title}`,
+                  )}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-1 text-sm font-medium text-[var(--primary)] transition-colors hover:text-[var(--primary-dark)]"
@@ -1223,13 +1246,21 @@ git commit -m "feat: health tips grid with category badges and hover effects"
 ### Task 9: Footer
 
 **Files:**
+
 - Create: `src/components/footer.tsx`
 - Modify: `src/app/page.tsx`
 
 - [ ] **Step 1: Create `src/components/footer.tsx`**
 
 ```tsx
-import { Instagram, Facebook, Youtube, Phone, Mail, MapPin } from "lucide-react";
+import {
+  Instagram,
+  Facebook,
+  Youtube,
+  Phone,
+  Mail,
+  MapPin,
+} from "lucide-react";
 import { siteConfig, getWhatsAppUrl } from "@/data/site";
 import { footerLinks } from "@/data/navigation";
 import { healthTips } from "@/data/health-tips";
@@ -1245,7 +1276,9 @@ export function Footer() {
     <footer className="bg-[var(--footer-bg)] text-[var(--footer-text)]">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:grid-cols-2 md:px-8 lg:grid-cols-4 lg:py-16">
         <div className="flex flex-col gap-4">
-          <h3 className="text-lg font-semibold text-white">{siteConfig.name}</h3>
+          <h3 className="text-lg font-semibold text-white">
+            {siteConfig.name}
+          </h3>
           <p className="text-sm leading-relaxed">{siteConfig.tagline}</p>
           <div className="flex gap-3">
             {socialLinks.map(({ icon: Icon, href, label }) => (
@@ -1289,7 +1322,9 @@ export function Footer() {
             {healthTips.slice(0, 3).map((tip) => (
               <li key={tip.id}>
                 <a
-                  href={getWhatsAppUrl(`Hi, I'd like to know more about: ${tip.title}`)}
+                  href={getWhatsAppUrl(
+                    `Hi, I'd like to know more about: ${tip.title}`,
+                  )}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm transition-colors hover:text-white"
@@ -1314,7 +1349,10 @@ export function Footer() {
             </li>
             <li className="flex items-start gap-2 text-sm">
               <Mail className="mt-0.5 h-4 w-4 flex-shrink-0" />
-              <a href={`mailto:${siteConfig.email}`} className="hover:text-white">
+              <a
+                href={`mailto:${siteConfig.email}`}
+                className="hover:text-white"
+              >
                 {siteConfig.email}
               </a>
             </li>
@@ -1328,10 +1366,17 @@ export function Footer() {
 
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs md:flex-row md:px-8">
-          <p>&copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</p>
+          <p>
+            &copy; {new Date().getFullYear()} {siteConfig.name}. All rights
+            reserved.
+          </p>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-white">Privacy Policy</a>
-            <a href="#" className="hover:text-white">Terms of Service</a>
+            <a href="#" className="hover:text-white">
+              Privacy Policy
+            </a>
+            <a href="#" className="hover:text-white">
+              Terms of Service
+            </a>
           </div>
         </div>
       </div>
@@ -1386,6 +1431,7 @@ git commit -m "feat: footer with quick links, health tips, contact info, and soc
 ### Task 10: Floating WhatsApp FAB
 
 **Files:**
+
 - Create: `src/components/whatsapp-fab.tsx`
 - Modify: `src/app/page.tsx`
 
@@ -1466,6 +1512,7 @@ git commit -m "feat: floating WhatsApp FAB with spring animation"
 ### Task 11: Final Polish — Responsive QA + Smooth Scroll + SEO
 
 **Files:**
+
 - Modify: `src/app/layout.tsx` (add viewport meta if needed)
 - Possibly tweak any component for responsive issues
 
@@ -1476,6 +1523,7 @@ bun run dev
 ```
 
 Test at these widths: 375px (mobile), 768px (tablet), 1024px (laptop), 1440px (desktop). Verify:
+
 - Navbar collapses to hamburger below `lg` (1024px)
 - Carousel text stacks on mobile
 - Service reels snap-scroll on mobile

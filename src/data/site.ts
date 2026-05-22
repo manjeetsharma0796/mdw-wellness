@@ -3,9 +3,9 @@ export const siteConfig = {
   tagline: "Your Partner in Health & Recovery",
   description:
     "Expert physiotherapy and wellness services: online consultations, home therapy, and comprehensive vitals checks.",
-  whatsappNumber: "919999999999",
+  whatsappNumber: "919230189093",
   whatsappMessage: "Hi, I'd like to book a consultation with MDW Wellness.",
-  phone: "+91 6291495007",
+  phone: "+91 9230189093",
   email: "support@mydawaiwala.com",
   address: "26/1A, Ekbalpore Road, Kidderpore, Kolkata 23",
   socials: {
