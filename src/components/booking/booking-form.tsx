@@ -251,10 +251,12 @@ export function BookingForm({
                         type="button"
                         aria-pressed={selected}
                         onClick={() => field.onChange(option.value)}
+                        // min-h-[88px] keeps chips uniform when "Online Consultation" wraps to 2 lines at ~88px chip width (320px sheet)
+                        // p-2 sm:p-3 trims interior padding at narrow widths so the label has more room before wrapping
                         className={
                           selected
-                            ? "flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-primary bg-primary/10 p-3 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer"
-                            : "flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-border bg-white p-3 text-center transition-colors hover:border-primary/40 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer"
+                            ? "flex min-h-[88px] flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-primary bg-primary/10 p-2 sm:p-3 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer"
+                            : "flex min-h-[88px] flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-border bg-white p-2 sm:p-3 text-center transition-colors hover:border-primary/40 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer"
                         }
                       >
                         <option.Icon
@@ -295,7 +297,11 @@ export function BookingForm({
                   onValueChange={(v) => field.onChange(v as TimeOfDay)}
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="When works best?" />
+                    <SelectValue placeholder="When works best?">
+                      {(value: string | null) =>
+                        value ? TIME_OF_DAY_LABELS[value as TimeOfDay] : null
+                      }
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     {TIME_OPTIONS.map((value) => (
@@ -337,12 +343,13 @@ export function BookingForm({
           {isSubmitting ? "Sending..." : "Book on WhatsApp"}
         </Button>
 
+        {/* Two-line layout at narrow widths so the CTA doesn't wrap mid-phrase on 320–360px screens; inline on sm+ */}
         <button
           type="button"
           onClick={onShowAuth}
-          className="text-xs text-center text-muted-foreground hover:text-foreground"
+          className="flex flex-col items-center gap-0.5 text-xs text-muted-foreground hover:text-foreground sm:flex-row sm:justify-center sm:gap-1"
         >
-          Save your details for next time?{" "}
+          <span>Save your details for next time?</span>
           <span className="font-medium text-primary hover:text-[var(--mdw-secondary)] underline-offset-2 hover:underline">
             Sign in / Sign up
           </span>

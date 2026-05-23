@@ -31,7 +31,12 @@ export async function signUp(input: SignUpInput): Promise<ActionResult> {
   });
 
   if (error) {
-    return { ok: false, error: error.message };
+    console.error("signUp error", error);
+    const context =
+      process.env.NODE_ENV !== "production"
+        ? ` [${error.code ?? error.status ?? "unknown"}]`
+        : "";
+    return { ok: false, error: `${error.message}${context}` };
   }
 
   return { ok: true };
@@ -55,7 +60,12 @@ export async function signIn(input: SignInInput): Promise<ActionResult> {
   });
 
   if (error) {
-    return { ok: false, error: error.message };
+    console.error("signIn error", error);
+    const context =
+      process.env.NODE_ENV !== "production"
+        ? ` [${error.code ?? error.status ?? "unknown"}]`
+        : "";
+    return { ok: false, error: `${error.message}${context}` };
   }
 
   revalidatePath("/");

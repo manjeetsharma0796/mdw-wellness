@@ -37,7 +37,14 @@ export async function createBooking(input: BookingInput): Promise<ActionResult> 
 
   if (error) {
     console.error("createBooking error", error);
-    return { ok: false, error: "Could not save your booking. Please try again." };
+    const detail =
+      process.env.NODE_ENV !== "production" && error.message
+        ? ` (${error.message})`
+        : "";
+    return {
+      ok: false,
+      error: `Could not save your booking. Please try again.${detail}`,
+    };
   }
 
   return { ok: true };

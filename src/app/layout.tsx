@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/data/site";
 import { BookingModalProvider } from "@/components/booking/booking-modal-provider";
+import { UrlCodeCleanup } from "@/components/booking/url-code-cleanup";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
+        <UrlCodeCleanup />
         <BookingModalProvider>{children}</BookingModalProvider>
       </body>
     </html>

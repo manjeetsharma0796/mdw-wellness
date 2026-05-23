@@ -57,6 +57,7 @@ export function AuthForm({ onBack, onSuccess }: AuthFormProps) {
       </button>
 
       <Tabs defaultValue="signin" className="w-full">
+        {/* w-full forces 2 tabs to share full width via TabsTrigger's flex-1; px-0 trims default container padding for very narrow widths */}
         <TabsList className="w-full">
           <TabsTrigger value="signin">Sign in</TabsTrigger>
           <TabsTrigger value="signup">Sign up</TabsTrigger>

@@ -34,12 +34,14 @@ export function BookingModal({ isOpen, prefill, onOpenChange }: BookingModalProp
 
   const content = (
     <>
-      <div className="bg-primary px-5 py-4">
+      {/* Header strip — pr-12 reserves room for the absolute X close button on narrow (320px) sheets */}
+      <div className="bg-primary px-5 py-4 pr-12">
         {/* Single compact heading — no eyebrow line. Visible Title also satisfies a11y. */}
         {/* TitleSlot is rendered separately below by Dialog/Sheet wrappers — duplicate visible title is OK for design and a11y */}
         <p className="text-lg font-semibold text-white sm:text-xl">{headerLabel}</p>
       </div>
-      <div className="p-4 sm:p-6">
+      {/* pb-[max(env(safe-area-inset-bottom),1.5rem)] respects iOS Safari home-indicator with a 1.5rem floor so Submit clears the toolbar */}
+      <div className="p-4 sm:p-6 pb-[max(env(safe-area-inset-bottom),1.5rem)]">
         {view === "booking" ? (
           <BookingForm
             prefill={prefill}
@@ -73,7 +75,8 @@ export function BookingModal({ isOpen, prefill, onOpenChange }: BookingModalProp
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md sm:max-w-lg p-0 overflow-hidden gap-0">
+      {/* w-[calc(100%-2rem)] safety net: twMerge strips shadcn's base max-w viewport guard when we add max-w-md, so we re-enforce 1rem side gutters at narrow widths */}
+      <DialogContent className="w-[calc(100%-2rem)] max-w-md sm:max-w-lg p-0 overflow-hidden gap-0">
         <DialogTitle className="sr-only">{headerLabel}</DialogTitle>
         {content}
       </DialogContent>
