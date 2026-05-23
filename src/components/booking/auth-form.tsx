@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -23,6 +24,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 import { signIn, signUp } from "@/app/actions/auth";
+import { useAuth } from "@/components/auth/auth-provider";
 
 const signUpSchema = z.object({
   name: z.string().min(2, "Name too short"),
@@ -76,6 +78,8 @@ export function AuthForm({ onBack, onSuccess }: AuthFormProps) {
 }
 
 function SignInPanel({ onSuccess }: { onSuccess: () => void }) {
+  const router = useRouter();
+  const { refresh: refreshAuth } = useAuth();
   const [serverError, setServerError] = React.useState<string | null>(null);
 
   const form = useForm<SignInValues>({
@@ -92,6 +96,11 @@ function SignInPanel({ onSuccess }: { onSuccess: () => void }) {
       setServerError(result.error);
       return;
     }
+    // Pull the new user + profile into AuthProvider state immediately so the
+    // navbar avatar shows up the moment the modal closes.
+    await refreshAuth();
+    // Also re-fetch server components so any cached auth-aware render is fresh.
+    router.refresh();
     onSuccess();
     form.reset();
   });
@@ -159,6 +168,8 @@ function SignInPanel({ onSuccess }: { onSuccess: () => void }) {
 }
 
 function SignUpPanel({ onSuccess }: { onSuccess: () => void }) {
+  const router = useRouter();
+  const { refresh: refreshAuth } = useAuth();
   const [serverError, setServerError] = React.useState<string | null>(null);
 
   const form = useForm<SignUpValues>({
@@ -175,6 +186,11 @@ function SignUpPanel({ onSuccess }: { onSuccess: () => void }) {
       setServerError(result.error);
       return;
     }
+    // Pull the new user + profile into AuthProvider state immediately so the
+    // navbar avatar shows up the moment the modal closes.
+    await refreshAuth();
+    // Also re-fetch server components so any cached auth-aware render is fresh.
+    router.refresh();
     onSuccess();
     form.reset();
   });
