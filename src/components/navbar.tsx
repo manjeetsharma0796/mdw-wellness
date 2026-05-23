@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -10,15 +11,29 @@ import {
   SheetClose,
   SheetTitle,
 } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { navItems } from "@/data/navigation";
 import { siteConfig } from "@/data/site";
 import { cn } from "@/lib/utils";
 import { useBookingModal } from "@/components/booking/booking-modal-provider";
+import { useAuth } from "@/components/auth/auth-provider";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { open: openBookingModal } = useBookingModal();
+  const { user, profile, signOut } = useAuth();
+
+  const firstName =
+    profile?.name?.trim().split(" ")[0] ?? user?.email?.split("@")[0] ?? "";
+  const initial = (firstName || "U").charAt(0).toUpperCase();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -64,6 +79,40 @@ export function Navbar() {
               <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-[#018bc4] transform scale-x-0 origin-center transition-transform duration-300 group-hover:scale-x-100" />
             </a>
           ))}
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                nativeButton={false}
+                render={
+                  <button
+                    type="button"
+                    aria-label="Account menu"
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white shadow-sm transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  >
+                    {initial}
+                  </button>
+                }
+              />
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel className="flex flex-col gap-0.5 py-2">
+                  <span className="text-sm font-semibold text-[var(--mdw-secondary)]">
+                    {profile?.name || firstName}
+                  </span>
+                  <span className="text-xs font-normal text-muted-foreground truncate">
+                    {user.email}
+                  </span>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => void signOut()}
+                  className="text-sm cursor-pointer"
+                >
+                  <LogOut className="mr-2 h-4 w-4" aria-hidden />
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : null}
           <Button
             onClick={() => openBookingModal()}
             className="rounded-lg bg-[var(--mdw-accent-green)] px-5 text-white hover:bg-[var(--mdw-accent-green)]/90"
@@ -96,9 +145,41 @@ export function Navbar() {
             </span>
           </SheetTrigger>
           <SheetContent side="right" className="w-72 bg-white sm:w-80 rounded-l-2xl shadow-2xl overflow-hidden">
-            <SheetTitle className="px-6 pt-6 text-lg font-semibold">
-              {siteConfig.name}
-            </SheetTitle>
+            <SheetTitle className="sr-only">Menu</SheetTitle>
+            {user ? (
+              <div className="border-b border-border px-6 pb-4 pt-6">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white">
+                    {initial}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-semibold text-[var(--mdw-secondary)] truncate">
+                      {profile?.name || firstName}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {user.email}
+                    </p>
+                  </div>
+                </div>
+                <SheetClose
+                  nativeButton={false}
+                  render={
+                    <button
+                      type="button"
+                      onClick={() => void signOut()}
+                      className="mt-3 flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-destructive"
+                    >
+                      <LogOut className="h-3.5 w-3.5" aria-hidden />
+                      Sign out
+                    </button>
+                  }
+                />
+              </div>
+            ) : (
+              <div className="px-6 pt-6 text-lg font-semibold">
+                {siteConfig.name}
+              </div>
+            )}
             <div className="mt-6 flex flex-col gap-1 px-4">
               {navItems.map((item) => (
                 <SheetClose

@@ -36,6 +36,7 @@ import type {
   BookingPrefill,
   Service,
 } from "@/components/booking/booking-modal-provider";
+import { useAuth } from "@/components/auth/auth-provider";
 
 const TIME_OPTIONS: TimeOfDay[] = [
   "morning",
@@ -93,39 +94,41 @@ export function BookingForm({
   onShowAuth,
   onSuccess,
 }: BookingFormProps) {
+  const { user, profile } = useAuth();
   const [serverError, setServerError] = React.useState<string | null>(null);
+
+  const initialValues = React.useMemo<BookingFormValues>(
+    () => ({
+      name: prefill.name ?? profile?.name ?? "",
+      phone: prefill.phone ?? profile?.phone ?? "",
+      email: prefill.email ?? profile?.email ?? "",
+      service: (prefill.service ?? "online_consultation") as BookingFormValues["service"],
+      preferredTime: (prefill.preferredTime as TimeOfDay) ?? "flexible",
+      message: prefill.message ?? "",
+    }),
+    [
+      prefill.name,
+      prefill.phone,
+      prefill.email,
+      prefill.service,
+      prefill.preferredTime,
+      prefill.message,
+      profile?.name,
+      profile?.phone,
+      profile?.email,
+    ],
+  );
 
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      name: prefill.name ?? "",
-      phone: prefill.phone ?? "",
-      email: prefill.email ?? "",
-      service: prefill.service ?? "online_consultation",
-      preferredTime: (prefill.preferredTime as TimeOfDay) ?? "flexible",
-      message: prefill.message ?? "",
-    },
+    defaultValues: initialValues,
   });
 
-  // Re-apply prefill whenever the modal is re-opened with different values.
+  // Re-apply prefill (merged with profile) whenever inputs change.
   React.useEffect(() => {
-    form.reset({
-      name: prefill.name ?? "",
-      phone: prefill.phone ?? "",
-      email: prefill.email ?? "",
-      service: prefill.service ?? "online_consultation",
-      preferredTime: (prefill.preferredTime as TimeOfDay) ?? "flexible",
-      message: prefill.message ?? "",
-    });
+    form.reset(initialValues);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    prefill.name,
-    prefill.phone,
-    prefill.email,
-    prefill.service,
-    prefill.preferredTime,
-    prefill.message,
-  ]);
+  }, [initialValues]);
 
   const isSubmitting = form.formState.isSubmitting;
 
@@ -344,16 +347,25 @@ export function BookingForm({
         </Button>
 
         {/* Two-line layout at narrow widths so the CTA doesn't wrap mid-phrase on 320–360px screens; inline on sm+ */}
-        <button
-          type="button"
-          onClick={onShowAuth}
-          className="flex flex-col items-center gap-0.5 text-xs text-muted-foreground hover:text-foreground sm:flex-row sm:justify-center sm:gap-1"
-        >
-          <span>Save your details for next time?</span>
-          <span className="font-medium text-primary hover:text-[var(--mdw-secondary)] underline-offset-2 hover:underline">
-            Sign in / Sign up
-          </span>
-        </button>
+        {!user ? (
+          <button
+            type="button"
+            onClick={onShowAuth}
+            className="flex flex-col items-center gap-0.5 text-xs text-muted-foreground hover:text-foreground sm:flex-row sm:justify-center sm:gap-1"
+          >
+            <span>Save your details for next time?</span>
+            <span className="font-medium text-primary hover:text-[var(--mdw-secondary)] underline-offset-2 hover:underline">
+              Sign in / Sign up
+            </span>
+          </button>
+        ) : (
+          <p className="text-center text-[11px] text-muted-foreground">
+            Signed in as{" "}
+            <span className="font-semibold text-[var(--mdw-secondary)]">
+              {profile?.name || user.email}
+            </span>
+          </p>
+        )}
 
         <p className="mt-2 text-center text-[11px] text-muted-foreground">
           We respect your privacy. Details only used to confirm your booking.
