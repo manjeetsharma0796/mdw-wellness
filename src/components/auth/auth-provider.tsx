@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import type { Profile } from "@/lib/types/database";
@@ -17,6 +18,7 @@ interface AuthContextValue {
 const AuthContext = React.createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
   const [user, setUser] = React.useState<User | null>(null);
   const [profile, setProfile] = React.useState<Profile | null>(null);
   const [loading, setLoading] = React.useState(true);
@@ -86,7 +88,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await supabase.auth.signOut().catch(() => undefined);
     setUser(null);
     setProfile(null);
-  }, [supabase]);
+    // Force Next.js to re-fetch server components so any cached auth state
+    // (e.g. the navbar pre-rendered with the previous user) is invalidated.
+    router.refresh();
+  }, [supabase, router]);
 
   const value = React.useMemo<AuthContextValue>(
     () => ({ user, profile, loading, signOut, refresh }),
