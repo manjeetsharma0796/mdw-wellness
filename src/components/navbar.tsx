@@ -79,6 +79,12 @@ export function Navbar() {
               <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-[#018bc4] transform scale-x-0 origin-center transition-transform duration-300 group-hover:scale-x-100" />
             </a>
           ))}
+          <Button
+            onClick={() => openBookingModal()}
+            className="rounded-lg bg-[var(--mdw-accent-green)] px-5 text-white hover:bg-[var(--mdw-accent-green)]/90"
+          >
+            Book Now
+          </Button>
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger
@@ -113,12 +119,6 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : null}
-          <Button
-            onClick={() => openBookingModal()}
-            className="rounded-lg bg-[var(--mdw-accent-green)] px-5 text-white hover:bg-[var(--mdw-accent-green)]/90"
-          >
-            Book Now
-          </Button>
         </div>
 
         <Sheet open={open} onOpenChange={setOpen}>
