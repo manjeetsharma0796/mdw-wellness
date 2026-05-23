@@ -88,17 +88,11 @@ export function Navbar() {
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger
-                nativeButton={false}
-                render={
-                  <button
-                    type="button"
-                    aria-label="Account menu"
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white shadow-sm transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                  >
-                    {initial}
-                  </button>
-                }
-              />
+                aria-label="Account menu"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white shadow-sm transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              >
+                {initial}
+              </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel className="flex flex-col gap-0.5 py-2">
                   <span className="text-sm font-semibold text-[var(--mdw-secondary)]">
@@ -162,18 +156,12 @@ export function Navbar() {
                   </div>
                 </div>
                 <SheetClose
-                  nativeButton={false}
-                  render={
-                    <button
-                      type="button"
-                      onClick={() => void signOut()}
-                      className="mt-3 flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-destructive"
-                    >
-                      <LogOut className="h-3.5 w-3.5" aria-hidden />
-                      Sign out
-                    </button>
-                  }
-                />
+                  onClick={() => void signOut()}
+                  className="mt-3 flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-destructive"
+                >
+                  <LogOut className="h-3.5 w-3.5" aria-hidden />
+                  Sign out
+                </SheetClose>
               </div>
             ) : (
               <div className="px-6 pt-6 text-lg font-semibold">
