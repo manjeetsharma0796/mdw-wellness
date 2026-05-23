@@ -15,7 +15,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -94,14 +93,14 @@ export function Navbar() {
                 {initial}
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel className="flex flex-col gap-0.5 py-2">
+                <div className="flex flex-col gap-0.5 px-2 py-2">
                   <span className="text-sm font-semibold text-[var(--mdw-secondary)]">
                     {profile?.name || firstName}
                   </span>
                   <span className="text-xs font-normal text-muted-foreground truncate">
                     {user.email}
                   </span>
-                </DropdownMenuLabel>
+                </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={() => void signOut()}
