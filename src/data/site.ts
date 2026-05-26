@@ -13,7 +13,7 @@ export const siteConfig = {
     facebook: "https://facebook.com/mydawaiwala",
     youtube: "https://youtube.com/@mydawaiwala",
     x: "https://x.com/mydawaiwala",
-    linkedin: "https://linkedin.com/company/mydawaiwala",
+    linkedin: "https://www.linkedin.com/company/my-dawai-wala/",
     medial: "https://medial.app/user/my-dawai-wala-2a2cbadfe91d9",
   },
 } as const;
