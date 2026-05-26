@@ -97,16 +97,23 @@ export function Footer() {
             Our Policies
           </h4>
           <ul className="flex flex-col gap-2.5">
-            {footerLinks.policies.map((link) => (
-              <li key={link.label}>
-                <a
-                  href={link.href}
-                  className="text-sm transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
+            {footerLinks.policies.map((link) => {
+              const isExternal = link.href.startsWith("http");
+              const externalProps = isExternal
+                ? { target: "_blank", rel: "noopener noreferrer" as const }
+                : {};
+              return (
+                <li key={link.label}>
+                  <a
+                    href={link.href}
+                    {...externalProps}
+                    className="text-sm transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </div>
 
