@@ -9,10 +9,12 @@
  */
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import pngToIco from "png-to-ico";
 
-const ROOT = path.resolve(import.meta.dir, "..");
+const HERE = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(HERE, "..");
 const SOURCE_SVG = path.join(ROOT, "src/app/icon.svg");
 const OUT_FAVICON_ICO = path.join(ROOT, "src/app/favicon.ico");
 const OUT_APPLE_PNG = path.join(ROOT, "src/app/apple-icon.png");
