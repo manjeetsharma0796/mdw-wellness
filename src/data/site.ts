@@ -1,8 +1,8 @@
 export const siteConfig = {
   name: "MDW Wellness",
-  tagline: "Your Partner in Health & Recovery",
+  tagline: "Therapy-led mobility and wellness support",
   description:
-    "Expert physiotherapy and wellness services: online consultations, home therapy, and comprehensive vitals checks.",
+    "Supportive rehabilitation services: online consultations, home therapy, and comprehensive vitals checks.",
   whatsappNumber: "919230189093",
   whatsappMessage: "Hi, I'd like to book a consultation with MDW Wellness.",
   phone: "+91 9230189093",

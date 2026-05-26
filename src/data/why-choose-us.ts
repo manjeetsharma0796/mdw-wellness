@@ -17,8 +17,8 @@ export interface WhyChooseUsItem {
 export const whyChooseUsItems: WhyChooseUsItem[] = [
   {
     id: 1,
-    title: "Best Treatment",
-    subtitle: "Evidence-based therapies from certified physiotherapists",
+    title: "Personalized wellness support",
+    subtitle: "Therapy-led care from qualified physiotherapists",
     icon: ThumbsUp,
   },
   {
@@ -42,7 +42,7 @@ export const whyChooseUsItems: WhyChooseUsItem[] = [
   {
     id: 5,
     title: "Customised Care Plan",
-    subtitle: "Treatment tailored to your specific condition and goals",
+    subtitle: "Care tailored to your specific condition and goals",
     icon: ClipboardList,
   },
 ];

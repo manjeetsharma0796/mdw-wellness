@@ -16,10 +16,10 @@ export function OnlineConsultation() {
               <Stethoscope className="h-3.5 w-3.5" /> Online Consultation
             </span>
             <h2 className="text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl md:text-5xl lg:text-6xl">
-              Expert <span className="text-white underline decoration-white/40 decoration-4 underline-offset-4">Online</span> Consultations
+              Personalized <span className="text-white underline decoration-white/40 decoration-4 underline-offset-4">Online</span> Consultations
             </h2>
             <p className="max-w-md text-base text-white/85 md:text-lg">
-              Connect with certified physiotherapists from the comfort of your home. Personalized treatment plans via video call.
+              Connect with qualified physiotherapists from the comfort of your home. Personalized wellness plans via video call.
             </p>
             <div className="flex items-baseline gap-2">
               <span className="text-sm font-medium text-white/60 line-through">₹999</span>

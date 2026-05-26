@@ -9,9 +9,9 @@ export interface Slide {
 export const slides: Slide[] = [
   {
     id: 1,
-    headline: "Expert Online Consultations",
+    headline: "Personalized Online Consultations",
     description:
-      "Connect with certified physiotherapists from the comfort of your home. Get personalized treatment plans via video call.",
+      "Connect with qualified physiotherapists from the comfort of your home. Get personalized wellness plans via video call.",
     ctaText: "Book on WhatsApp",
     imagePlaceholder: "/images/slide-online.jpg",
   },
@@ -19,7 +19,7 @@ export const slides: Slide[] = [
     id: 2,
     headline: "Home Therapy Sessions",
     description:
-      "Our therapists come to you. Professional physiotherapy treatments delivered at your doorstep.",
+      "Our therapists come to you. Comfort-focused therapy services delivered at your doorstep.",
     ctaText: "Book Home Visit",
     imagePlaceholder: "/images/slide-home.jpg",
   },
@@ -33,9 +33,9 @@ export const slides: Slide[] = [
   },
   {
     id: 4,
-    headline: "Your Recovery, Our Mission",
+    headline: "Your Wellness, Our Focus",
     description:
-      "Trusted by hundreds of clients. Evidence-based physiotherapy for pain relief, mobility, and long-term wellness.",
+      "Trusted by hundreds of clients. Therapy-led support for mobility, comfort, and long-term wellness.",
     ctaText: "Get Started",
     imagePlaceholder: "/images/slide-wellness.jpg",
   },

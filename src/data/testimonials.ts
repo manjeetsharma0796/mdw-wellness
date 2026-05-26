@@ -13,7 +13,7 @@ export const testimonials: Testimonial[] = [
     name: "Priya Sharma",
     condition: "Back Pain Recovery",
     quote:
-      "After just 4 sessions, my chronic back pain reduced significantly. The therapist was incredibly knowledgeable and caring.",
+      "After a few sessions, my mobility and comfort improved noticeably. The therapist was incredibly knowledgeable and caring.",
     rating: 5,
     avatarSrc: "/images/avatar-1.jpg",
   },
@@ -22,7 +22,7 @@ export const testimonials: Testimonial[] = [
     name: "Rajesh Kumar",
     condition: "Sports Injury",
     quote:
-      "Got back on the field in half the expected recovery time. The home therapy sessions made it so convenient.",
+      "Got back on the field feeling stronger thanks to the support. The home therapy sessions made it so convenient.",
     rating: 5,
     avatarSrc: "/images/avatar-2.jpg",
   },
@@ -31,7 +31,7 @@ export const testimonials: Testimonial[] = [
     name: "Anita Desai",
     condition: "Post-Surgery Rehab",
     quote:
-      "The online consultation was a lifesaver when I couldn't travel. Professional, punctual, and effective treatment.",
+      "The online consultation was so helpful when I couldn't travel. Professional, punctual, and supportive sessions.",
     rating: 4,
     avatarSrc: "/images/avatar-3.jpg",
   },
@@ -40,7 +40,7 @@ export const testimonials: Testimonial[] = [
     name: "Vikram Singh",
     condition: "Neck & Shoulder Pain",
     quote:
-      "I was skeptical about online physio, but the results speak for themselves. Highly recommend MDW Wellness.",
+      "I was skeptical about online physio, but the support has been wonderful. Highly recommend MDW Wellness.",
     rating: 5,
     avatarSrc: "/images/avatar-4.jpg",
   },

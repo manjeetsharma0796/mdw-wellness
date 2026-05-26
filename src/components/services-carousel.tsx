@@ -87,7 +87,7 @@ export function ServicesCarousel() {
           Our Services
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-center text-muted-foreground">
-          Expert care tailored to your needs.
+          Structured exercise and recovery guidance.
         </p>
 
         <div
