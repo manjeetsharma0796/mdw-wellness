@@ -6,6 +6,6 @@ export const legalContact: LegalContact = {
   address:
     "26/1A, Ekbalpore Road, Kidderpore, Kolkata - 700023, West Bengal, India",
   supportPhone: "+91 92301 89093",
-  supportEmail: "support@gmail.com",
+  supportEmail: "support@mydawaiwala.com",
   grievanceEmail: "mdwinfowellness@gmail.com",
 };
