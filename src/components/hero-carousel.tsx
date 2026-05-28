@@ -106,9 +106,8 @@ export function HeroCarousel() {
                   </div>
                   <div className="order-1 flex items-center justify-center md:order-2">
                     <div className="relative mx-auto aspect-[4/3] w-full max-w-md md:aspect-square md:h-80 md:w-80 md:max-w-none lg:h-96 lg:w-96">
-                      <div className="absolute inset-0 rounded-[2rem] bg-primary" />
                       {slide.imageSrc ? (
-                        <div className="absolute inset-4 overflow-hidden rounded-[1.75rem] bg-white shadow-xl">
+                        <div className="relative h-full w-full overflow-hidden rounded-[2rem] shadow-2xl shadow-primary/20 ring-1 ring-foreground/5">
                           <Image
                             src={slide.imageSrc}
                             alt={slide.imageAlt ?? slide.headline}
@@ -119,15 +118,12 @@ export function HeroCarousel() {
                           />
                         </div>
                       ) : (
-                        <>
-                          <div className="absolute inset-4 rounded-[1.75rem] bg-white shadow-xl" />
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <HeartPulse
-                              className="h-20 w-20 text-primary"
-                              strokeWidth={1.75}
-                            />
-                          </div>
-                        </>
+                        <div className="relative flex h-full w-full items-center justify-center rounded-[2rem] bg-primary/15 shadow-2xl shadow-primary/20 ring-1 ring-primary/20">
+                          <HeartPulse
+                            className="h-24 w-24 text-primary"
+                            strokeWidth={1.5}
+                          />
+                        </div>
                       )}
                     </div>
                   </div>
