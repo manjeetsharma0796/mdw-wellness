@@ -99,7 +99,7 @@ export function HeroCarousel() {
                           service: slideServiceMap[slide.id] ?? "online_consultation",
                         })
                       }
-                      className="mt-2 w-fit rounded-lg bg-[var(--mdw-accent-green)] px-8 text-base text-white hover:bg-[var(--mdw-accent-green)]/90"
+                      className="mt-2 w-fit rounded-lg bg-[var(--mdw-accent-green)] px-8 text-base text-white shadow-lg shadow-[var(--mdw-accent-green)]/30 transition-shadow hover:bg-[var(--mdw-accent-green)]/90 hover:shadow-xl hover:shadow-[var(--mdw-accent-green)]/40"
                     >
                       {slide.ctaText}
                     </Button>
@@ -107,7 +107,7 @@ export function HeroCarousel() {
                   <div className="order-1 flex items-center justify-center md:order-2">
                     <div className="relative mx-auto aspect-[4/3] w-full max-w-md md:aspect-square md:h-80 md:w-80 md:max-w-none lg:h-96 lg:w-96">
                       {slide.imageSrc ? (
-                        <div className="relative h-full w-full overflow-hidden rounded-[2rem] shadow-2xl shadow-primary/20 ring-1 ring-foreground/5">
+                        <div className="relative h-full w-full overflow-hidden rounded-[2rem] shadow-2xl shadow-primary/25 ring-1 ring-primary/25">
                           <Image
                             src={slide.imageSrc}
                             alt={slide.imageAlt ?? slide.headline}
@@ -118,7 +118,7 @@ export function HeroCarousel() {
                           />
                         </div>
                       ) : (
-                        <div className="relative flex h-full w-full items-center justify-center rounded-[2rem] bg-primary/15 shadow-2xl shadow-primary/20 ring-1 ring-primary/20">
+                        <div className="relative flex h-full w-full items-center justify-center rounded-[2rem] bg-primary/15 shadow-2xl shadow-primary/25 ring-1 ring-primary/25">
                           <HeartPulse
                             className="h-24 w-24 text-primary"
                             strokeWidth={1.5}
