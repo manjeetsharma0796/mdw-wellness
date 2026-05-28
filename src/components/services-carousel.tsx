@@ -1,14 +1,17 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
   Activity,
-  Bandage,
   ChevronLeft,
   ChevronRight,
-  Home,
+  Droplets,
+  HandHeart,
+  Sparkles,
   Stethoscope,
   Trophy,
+  Zap,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -22,11 +25,12 @@ import { services } from "@/data/services";
 import { cn } from "@/lib/utils";
 
 const serviceIcons: Record<string, LucideIcon> = {
-  "Online Consultation": Stethoscope,
-  "Home Therapy": Home,
-  "Pain Management": Activity,
+  Physiotherapy: Activity,
+  "Dry Cupping Therapy": Droplets,
+  Acupuncture: Sparkles,
+  "Dry Needling": Zap,
+  "Massage Therapy": HandHeart,
   "Sports Rehabilitation": Trophy,
-  "Post-Surgery Recovery": Bandage,
 };
 
 export function ServicesCarousel() {
@@ -109,14 +113,25 @@ export function ServicesCarousel() {
                     key={service.id}
                     className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
                   >
-                    <div className="relative aspect-[9/16] w-full overflow-hidden rounded-2xl bg-muted shadow-sm">
+                    <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-muted shadow-lg shadow-primary/15 ring-1 ring-primary/20">
                       {service.youtubeId ? (
+                        // When a real video is uploaded for a service, populate
+                        // `youtubeId` in src/data/services.ts and this branch will
+                        // take precedence over the photo render path.
                         <iframe
                           src={`https://www.youtube.com/embed/${service.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${service.youtubeId}&controls=0&modestbranding=1&rel=0&playsinline=1`}
                           title={service.title}
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           className="absolute inset-0 h-full w-full border-0"
                           loading="lazy"
+                        />
+                      ) : service.imageSrc ? (
+                        <Image
+                          src={service.imageSrc}
+                          alt={service.imageAlt}
+                          fill
+                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                          className="object-cover"
                         />
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center bg-primary">
@@ -128,7 +143,7 @@ export function ServicesCarousel() {
                         </div>
                       )}
 
-                      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-[var(--mdw-secondary)]/85 p-3">
+                      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[var(--mdw-secondary)]/95 via-[var(--mdw-secondary)]/70 to-transparent p-4 pt-10">
                         <h3 className="text-base font-semibold text-white">
                           {service.title}
                         </h3>

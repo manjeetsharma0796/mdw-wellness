@@ -3,7 +3,8 @@ import { HeroCarousel } from "@/components/hero-carousel";
 import { OnlineConsultation } from "@/components/online-consultation";
 import { ServicesCarousel } from "@/components/services-carousel";
 import { WhyChooseUs } from "@/components/why-choose-us";
-import { VideoTestimonials } from "@/components/video-testimonials";
+// Re-enable when real client videos are uploaded.
+// import { VideoTestimonials } from "@/components/video-testimonials";
 import { Testimonials } from "@/components/testimonials";
 import { HealthTips } from "@/components/health-tips";
 import { Footer } from "@/components/footer";
@@ -18,7 +19,8 @@ export default function Home() {
         <OnlineConsultation />
         <ServicesCarousel />
         <WhyChooseUs />
-        <VideoTestimonials />
+        {/* Re-enable when real client videos are uploaded. */}
+        {/* <VideoTestimonials /> */}
         <Testimonials />
         <HealthTips />
       </main>
