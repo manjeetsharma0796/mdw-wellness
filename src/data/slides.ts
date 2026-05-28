@@ -4,6 +4,10 @@ export interface Slide {
   description: string;
   ctaText: string;
   imagePlaceholder: string;
+  /** Actual photo path. When set, the carousel renders this instead of the icon placeholder. */
+  imageSrc?: string;
+  /** Accessible alt text. Required when `imageSrc` is set. */
+  imageAlt?: string;
 }
 
 export const slides: Slide[] = [
@@ -13,7 +17,10 @@ export const slides: Slide[] = [
     description:
       "Connect with qualified physiotherapists from the comfort of your home. Get personalized wellness plans via video call.",
     ctaText: "Book on WhatsApp",
-    imagePlaceholder: "/images/slide-online.jpg",
+    imagePlaceholder: "/images/img3.jpg",
+    imageSrc: "/images/img3.jpg",
+    imageAlt:
+      "MDW Wellness physiotherapist on a video consultation, shown on a laptop in a home setting.",
   },
   {
     id: 2,
@@ -21,7 +28,10 @@ export const slides: Slide[] = [
     description:
       "Our therapists come to you. Comfort-focused therapy services delivered at your doorstep.",
     ctaText: "Book Home Visit",
-    imagePlaceholder: "/images/slide-home.jpg",
+    imagePlaceholder: "/images/img6.jpg",
+    imageSrc: "/images/img6.jpg",
+    imageAlt:
+      "MDW Wellness therapist assisting an elderly client with knee mobility exercises in her living room.",
   },
   {
     id: 3,

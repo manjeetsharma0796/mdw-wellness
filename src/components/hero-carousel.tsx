@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback, useState } from "react";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight, HeartPulse } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -78,9 +79,9 @@ export function HeroCarousel() {
         <CarouselContent>
           {slides.map((slide) => (
             <CarouselItem key={slide.id}>
-              <div className="relative flex min-h-[460px] items-center bg-primary/8 md:min-h-[600px]">
-                <div className="relative mx-auto grid w-full max-w-7xl gap-8 px-4 md:grid-cols-2 md:px-8">
-                  <div className="flex flex-col justify-center gap-5 py-12">
+              <div className="relative bg-primary/8 md:flex md:min-h-[600px] md:items-center">
+                <div className="relative mx-auto grid w-full max-w-7xl gap-6 px-4 py-8 md:grid-cols-2 md:gap-8 md:px-8 md:py-0">
+                  <div className="order-2 flex flex-col justify-center gap-5 md:order-1 md:py-12">
                     <div className="inline-flex w-fit items-center gap-2 rounded-full bg-white text-[var(--mdw-secondary)] border border-primary/20 shadow-sm px-3 py-1 text-xs font-medium">
                       <HeartPulse className="h-3.5 w-3.5" />
                       MDW Wellness
@@ -103,13 +104,31 @@ export function HeroCarousel() {
                       {slide.ctaText}
                     </Button>
                   </div>
-                  <div className="hidden items-center justify-center md:flex">
-                    <div className="relative h-80 w-80 lg:h-96 lg:w-96">
+                  <div className="order-1 flex items-center justify-center md:order-2">
+                    <div className="relative mx-auto aspect-[4/3] w-full max-w-md md:aspect-square md:h-80 md:w-80 md:max-w-none lg:h-96 lg:w-96">
                       <div className="absolute inset-0 rounded-[2rem] bg-primary" />
-                      <div className="absolute inset-4 rounded-[1.75rem] bg-white shadow-xl" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <HeartPulse className="h-20 w-20 text-primary" strokeWidth={1.75} />
-                      </div>
+                      {slide.imageSrc ? (
+                        <div className="absolute inset-4 overflow-hidden rounded-[1.75rem] bg-white shadow-xl">
+                          <Image
+                            src={slide.imageSrc}
+                            alt={slide.imageAlt ?? slide.headline}
+                            fill
+                            sizes="(min-width: 1024px) 384px, (min-width: 768px) 320px, (min-width: 640px) 448px, 100vw"
+                            className="object-cover"
+                            priority={slide.id === 1}
+                          />
+                        </div>
+                      ) : (
+                        <>
+                          <div className="absolute inset-4 rounded-[1.75rem] bg-white shadow-xl" />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <HeartPulse
+                              className="h-20 w-20 text-primary"
+                              strokeWidth={1.75}
+                            />
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
