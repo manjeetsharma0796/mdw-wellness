@@ -98,15 +98,16 @@ export function Footer() {
           </h4>
           <ul className="flex flex-col gap-2.5">
             {footerLinks.policies.map((link) => {
-              const isExternal = link.href.startsWith("http");
-              const externalProps = isExternal
+              const opensInNewTab =
+                link.newTab ?? link.href.startsWith("http");
+              const newTabProps = opensInNewTab
                 ? { target: "_blank", rel: "noopener noreferrer" as const }
                 : {};
               return (
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    {...externalProps}
+                    {...newTabProps}
                     className="text-sm transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
                   >
                     {link.label}

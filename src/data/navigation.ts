@@ -3,6 +3,17 @@ export interface NavItem {
   href: string;
 }
 
+export interface FooterLink {
+  label: string;
+  href: string;
+  /**
+   * Force the link to open in a new tab. External (http) hrefs already open
+   * in a new tab automatically; set this for internal hrefs that should also
+   * open in a new tab (e.g. legal pages opened from the footer).
+   */
+  newTab?: boolean;
+}
+
 export const navItems: NavItem[] = [
   { label: "Home", href: "#home" },
   { label: "Online Consultation", href: "#services" },
@@ -11,10 +22,13 @@ export const navItems: NavItem[] = [
   { label: "MDW Wellness Vitals Check", href: "#vitals" },
 ];
 
-export const footerLinks = {
+export const footerLinks: {
+  policies: FooterLink[];
+  knowUs: FooterLink[];
+} = {
   policies: [
-    { label: "Terms and Conditions", href: "https://docs.google.com/document/d/1PgXybDcd5Xn4xG9fpz-XtUrInAvrf8b3/edit?usp=drivesdk&ouid=112207226859408290059&rtpof=true&sd=true" },
-    { label: "Privacy Policy", href: "https://docs.google.com/document/d/1b7MwzhXs42Vvp9oBzQd7HbbQpKt61kUz/edit?usp=drivesdk&ouid=112207226859408290059&rtpof=true&sd=true" },
+    { label: "Terms & Conditions", href: "/terms", newTab: true },
+    { label: "Privacy Policy", href: "/privacy", newTab: true },
     { label: "Grievance Redressal", href: "#grievance" },
   ],
   knowUs: [
