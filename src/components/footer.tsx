@@ -180,7 +180,7 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-7xl px-4 py-5 text-center text-xs md:px-8">
           <p>
-            &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
+            &copy; {new Date().getFullYear()} My Dawai Wala. Unit of SwiftMeds Pharma Pvt. Ltd. All rights reserved.
           </p>
         </div>
       </div>
