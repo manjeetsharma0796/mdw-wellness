@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "MDW Wellness",
-  tagline: "Therapy-led mobility and wellness support",
+  tagline: "Your Wellness, Our Focus",
   description:
     "Supportive rehabilitation services: online consultations, home therapy, and comprehensive vitals checks.",
   whatsappNumber: "919230189093",
