@@ -27,7 +27,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { createBooking } from "@/app/actions/bookings";
 import { getWhatsAppUrl } from "@/data/site";
 import {
   submitPublicBooking,
@@ -137,7 +136,6 @@ export function BookingForm({
   onSuccess,
 }: BookingFormProps) {
   const { user, profile } = useAuth();
-  const [serverError, setServerError] = React.useState<string | null>(null);
 
   const initialValues = React.useMemo<BookingFormValues>(
     () => ({
@@ -178,27 +176,10 @@ export function BookingForm({
   const locationRequired = watchedService !== "online_consultation";
 
   const onSubmit = form.handleSubmit(async (values) => {
-    setServerError(null);
-
-    // 1. Local Supabase record (existing).
-    const result = await createBooking({
-      name: values.name,
-      phone: values.phone,
-      email: values.email || undefined,
-      location: values.location || undefined,
-      service: values.service,
-      preferredTime: values.preferredTime || undefined,
-      message: values.message || undefined,
-    });
-
-    if (!result.ok) {
-      setServerError(result.error);
-      return;
-    }
-
-    // 2. Backend POST so the enquiry lands on the back-office dashboard.
-    // Soft-fail: a backend or network error must not block the WhatsApp
-    // path so the customer always has a way to reach us.
+    // 1. POST to the wellness backend so the enquiry lands on the
+    // back-office dashboard. This is the single source of truth for
+    // bookings (see ARCHITECTURE.md). On failure or timeout we still
+    // open WhatsApp so the customer always has a path forward.
     const backend = await submitPublicBooking({
       name: values.name,
       phone: values.phone,
@@ -213,14 +194,21 @@ export function BookingForm({
       toast.success(
         backend.message ?? "Booking received. Our team will reach out shortly.",
       );
+    } else if (backend.timedOut) {
+      toast.warning(
+        backend.message ??
+          "Our team is taking longer than expected. Sending you to WhatsApp instead.",
+      );
     } else {
       console.warn("[booking] backend submission failed:", backend.message);
       toast.error(
-        backend.message ?? "Couldn't save booking. Opening WhatsApp instead.",
+        backend.message ??
+          "Couldn't reach our team. Please send your details via WhatsApp.",
       );
     }
 
-    // 3. Open the WhatsApp deep-link (existing behaviour).
+    // 2. Open the WhatsApp deep-link. Always fires — architecture
+    // mandates the customer always has a path forward.
     const msg = [
       `Hi! I'd like to book a session.`,
       ``,
@@ -245,15 +233,6 @@ export function BookingForm({
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className="flex flex-col gap-3 sm:gap-4">
-        {serverError ? (
-          <div
-            role="alert"
-            className="rounded-md border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive"
-          >
-            {serverError}
-          </div>
-        ) : null}
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <FormField
             control={form.control}
@@ -450,7 +429,7 @@ export function BookingForm({
           disabled={isSubmitting}
           className="mt-2 h-11 w-full rounded-xl bg-[var(--mdw-accent-green)] text-base font-semibold text-white shadow-md shadow-[var(--mdw-accent-green)]/25 hover:bg-[var(--mdw-accent-green)]/90"
         >
-          {isSubmitting ? "Sending..." : "Book on WhatsApp"}
+          {isSubmitting ? "Submitting..." : "Book on WhatsApp"}
         </Button>
 
         {/* Two-line layout at narrow widths so the CTA doesn't wrap mid-phrase on 320–360px screens; inline on sm+ */}

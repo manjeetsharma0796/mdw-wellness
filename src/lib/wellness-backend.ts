@@ -33,7 +33,17 @@ export interface PublicBookingResult {
   success: boolean;
   enquiryId?: string;
   message?: string;
+  /** True when the request was aborted because it exceeded the timeout. */
+  timedOut?: boolean;
 }
+
+/**
+ * Request timeout for the backend POST. Render free-tier cold starts
+ * are usually 10-15s; 20s gives them a buffer without keeping the user
+ * waiting forever on a dead backend. On timeout the form falls back to
+ * the WhatsApp deep-link.
+ */
+const REQUEST_TIMEOUT_MS = 20_000;
 
 const TIME_PRESETS: Record<TimePreset, { from: string; to: string } | undefined> = {
   Morning: { from: "09:00", to: "12:00" },
@@ -93,11 +103,18 @@ export async function submitPublicBooking(
     source: "public_booking_form",
   };
 
+  const controller = new AbortController();
+  const timeoutId = setTimeout(
+    () => controller.abort(),
+    REQUEST_TIMEOUT_MS,
+  );
+
   try {
     const res = await fetch(`${BACKEND_URL}/api/appointments/public`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
+      signal: controller.signal,
     });
     const body = (await res.json().catch(() => ({}))) as {
       success?: boolean;
@@ -116,11 +133,25 @@ export async function submitPublicBooking(
       message: body.message,
     };
   } catch (err) {
+    if (
+      err instanceof DOMException &&
+      err.name === "AbortError"
+    ) {
+      console.warn("[submitPublicBooking] aborted (timeout)");
+      return {
+        success: false,
+        timedOut: true,
+        message:
+          "Our team is taking longer than expected. Sending you to WhatsApp instead.",
+      };
+    }
     console.error("[submitPublicBooking]", err);
     return {
       success: false,
       message:
         "Network error. Please try again or reach us on WhatsApp.",
     };
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
