@@ -70,8 +70,6 @@ export function HeroCarousel() {
   return (
     <section
       className="group relative w-full overflow-hidden"
-      onMouseEnter={stopAutoplay}
-      onMouseLeave={startAutoplay}
       aria-roledescription="carousel"
       aria-label="Featured services"
     >
