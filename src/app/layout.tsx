@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 import { siteConfig } from "@/data/site";
 import { BookingModalProvider } from "@/components/booking/booking-modal-provider";
@@ -33,6 +34,7 @@ export default function RootLayout({
         <AuthProvider>
           <BookingModalProvider>{children}</BookingModalProvider>
         </AuthProvider>
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   );

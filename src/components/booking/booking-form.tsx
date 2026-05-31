@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { Stethoscope, Home, HeartPulse } from "lucide-react";
@@ -29,6 +30,11 @@ import {
 import { createBooking } from "@/app/actions/bookings";
 import { getWhatsAppUrl } from "@/data/site";
 import {
+  submitPublicBooking,
+  type ServiceChoice,
+  type TimePreset,
+} from "@/lib/wellness-backend";
+import {
   TIME_OF_DAY_LABELS,
   type TimeOfDay,
 } from "@/lib/types/database";
@@ -46,24 +52,41 @@ const TIME_OPTIONS: TimeOfDay[] = [
   "flexible",
 ];
 
-const schema = z.object({
-  name: z.string().min(2, "Name too short"),
-  phone: z.string().min(10, "Enter a valid phone"),
-  email: z
-    .string()
-    .email("Enter a valid email")
-    .optional()
-    .or(z.literal("")),
-  service: z.enum(["online_consultation", "home_therapy", "vitals_check"]),
-  preferredTime: z.enum([
-    "morning",
-    "afternoon",
-    "evening",
-    "night",
-    "flexible",
-  ]),
-  message: z.string().max(500, "Too long").optional().or(z.literal("")),
-});
+const schema = z
+  .object({
+    name: z.string().min(2, "Name too short"),
+    phone: z.string().min(10, "Enter a valid phone"),
+    email: z
+      .string()
+      .email("Enter a valid email")
+      .optional()
+      .or(z.literal("")),
+    location: z.string().max(120, "Too long").optional().or(z.literal("")),
+    service: z.enum(["online_consultation", "home_therapy", "vitals_check"]),
+    preferredTime: z.enum([
+      "morning",
+      "afternoon",
+      "evening",
+      "night",
+      "flexible",
+    ]),
+    message: z.string().max(500, "Too long").optional().or(z.literal("")),
+  })
+  .superRefine((data, ctx) => {
+    // Location is required for the in-person services so the back-office
+    // team knows where to dispatch a therapist. Online consultations don't
+    // need it.
+    if (
+      data.service !== "online_consultation" &&
+      (!data.location || data.location.trim().length < 2)
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["location"],
+        message: "City / Area is required for Home Therapy and Vitals Check",
+      });
+    }
+  });
 
 type BookingFormValues = z.infer<typeof schema>;
 
@@ -82,6 +105,25 @@ const serviceOptions: Array<{
   { value: "home_therapy", label: "Home Therapy", Icon: Home },
   { value: "vitals_check", label: "Vitals Check", Icon: HeartPulse },
 ];
+
+// Mapping from the form's internal enums to the wellness backend's
+// human-readable ServiceChoice / TimePreset strings. Kept here so this
+// component is the only file that has to know both naming conventions.
+const backendServiceMap: Record<Service, ServiceChoice> = {
+  online_consultation: "Online Consultation",
+  home_therapy: "Home Therapy",
+  vitals_check: "Vitals Check",
+};
+
+const backendTimeMap: Record<TimeOfDay, TimePreset> = {
+  morning: "Morning",
+  afternoon: "Afternoon",
+  evening: "Evening",
+  // The backend doesn't model a separate Night window. Round to Evening so
+  // the customer's preference still maps to a reasonable outreach slot.
+  night: "Evening",
+  flexible: "I'm flexible",
+};
 
 type BookingFormProps = {
   prefill: Partial<BookingPrefill>;
@@ -102,6 +144,7 @@ export function BookingForm({
       name: prefill.name ?? profile?.name ?? "",
       phone: prefill.phone ?? profile?.phone ?? "",
       email: prefill.email ?? profile?.email ?? "",
+      location: "",
       service: (prefill.service ?? "online_consultation") as BookingFormValues["service"],
       preferredTime: (prefill.preferredTime as TimeOfDay) ?? "flexible",
       message: prefill.message ?? "",
@@ -131,9 +174,13 @@ export function BookingForm({
   }, [initialValues]);
 
   const isSubmitting = form.formState.isSubmitting;
+  const watchedService = form.watch("service");
+  const locationRequired = watchedService !== "online_consultation";
 
   const onSubmit = form.handleSubmit(async (values) => {
     setServerError(null);
+
+    // 1. Local Supabase record (existing).
     const result = await createBooking({
       name: values.name,
       phone: values.phone,
@@ -148,11 +195,37 @@ export function BookingForm({
       return;
     }
 
+    // 2. Backend POST so the enquiry lands on the back-office dashboard.
+    // Soft-fail: a backend or network error must not block the WhatsApp
+    // path so the customer always has a way to reach us.
+    const backend = await submitPublicBooking({
+      name: values.name,
+      phone: values.phone,
+      email: values.email || undefined,
+      location: values.location || undefined,
+      service: backendServiceMap[values.service],
+      preferredTime: backendTimeMap[values.preferredTime],
+      message: values.message || undefined,
+    });
+
+    if (backend.success) {
+      toast.success(
+        backend.message ?? "Booking received. Our team will reach out shortly.",
+      );
+    } else {
+      console.warn("[booking] backend submission failed:", backend.message);
+      toast.error(
+        backend.message ?? "Couldn't save booking. Opening WhatsApp instead.",
+      );
+    }
+
+    // 3. Open the WhatsApp deep-link (existing behaviour).
     const msg = [
       `Hi! I'd like to book a session.`,
       ``,
       `Name: ${values.name}`,
       `Phone: ${values.phone}`,
+      values.location ? `City: ${values.location}` : null,
       `Service: ${serviceLabels[values.service]}`,
       `Preferred time: ${TIME_OF_DAY_LABELS[values.preferredTime]}`,
       values.message ? `Message: ${values.message}` : null,
@@ -231,7 +304,40 @@ export function BookingForm({
                 />
               </FormControl>
               <FormDescription>
-                Optional — for receipts and reminders
+                Optional. For receipts and reminders.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="location"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                City / Area
+                {locationRequired ? (
+                  <span className="text-destructive" aria-hidden>
+                    {" "}
+                    *
+                  </span>
+                ) : null}
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="text"
+                  placeholder="e.g. Ekbalpore, Kolkata"
+                  autoComplete="address-level2"
+                  aria-required={locationRequired}
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                {locationRequired
+                  ? "Required for Home Therapy and Vitals Check."
+                  : "Optional for online consultations."}
               </FormDescription>
               <FormMessage />
             </FormItem>
