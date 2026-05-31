@@ -25,6 +25,7 @@ export interface Booking {
   phone: string;
   service: ServiceType;
   preferred_time: string | null;
+  location: string | null;
   message: string | null;
   status: string;
   created_at: string;
@@ -34,6 +35,7 @@ export interface BookingInput {
   name: string;
   phone: string;
   email?: string;
+  location?: string;
   service: ServiceType;
   preferredTime?: TimeOfDay;
   message?: string;

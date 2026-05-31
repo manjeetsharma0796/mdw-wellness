@@ -9,6 +9,7 @@ export async function createBooking(input: BookingInput): Promise<ActionResult> 
     name: z.string().min(2),
     phone: z.string().min(10),
     email: z.string().email().optional().or(z.literal("")),
+    location: z.string().max(120).optional().or(z.literal("")),
     service: z.enum(["online_consultation", "home_therapy", "vitals_check"]),
     preferredTime: z
       .enum(["morning", "afternoon", "evening", "night", "flexible"])
@@ -32,6 +33,7 @@ export async function createBooking(input: BookingInput): Promise<ActionResult> 
     phone: parsed.data.phone,
     service: parsed.data.service,
     preferred_time: parsed.data.preferredTime || null,
+    location: parsed.data.location || null,
     message: parsed.data.message || null,
   });
 

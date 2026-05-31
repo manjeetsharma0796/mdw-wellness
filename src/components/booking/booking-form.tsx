@@ -185,6 +185,7 @@ export function BookingForm({
       name: values.name,
       phone: values.phone,
       email: values.email || undefined,
+      location: values.location || undefined,
       service: values.service,
       preferredTime: values.preferredTime || undefined,
       message: values.message || undefined,
