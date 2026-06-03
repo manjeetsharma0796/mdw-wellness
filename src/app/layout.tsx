@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -15,11 +15,21 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: siteConfig.name,
   description: siteConfig.description,
+  manifest: "/site.webmanifest",
   openGraph: {
     title: siteConfig.name,
     description: siteConfig.description,
     type: "website",
   },
+  appleWebApp: {
+    title: "MDW Wellness",
+    capable: true,
+    statusBarStyle: "default",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#018bc4",
 };
 
 export default function RootLayout({
