@@ -8,10 +8,12 @@ import { Reveal } from "@/components/vitals/reveal";
 import { vitalSteps } from "@/data/vitals";
 import { cn } from "@/lib/utils";
 
-// Node x-centers (matching 4-column grid centers) and a gentle wave that
-// passes through each node center, bumping up/down between them.
-const WAVE_PATH =
-  "M125,28 Q250,10 375,28 Q500,46 625,28 Q750,10 875,28";
+// Vertical serpentine connector: passes through 4 node centers down the
+// middle (x=60), bowing right / left / right between them. Node y-centers
+// land at 1/8, 3/8, 5/8, 7/8 of the height, so the path stays aligned
+// regardless of total height (preserveAspectRatio="none").
+const SERPENTINE =
+  "M60,4 L60,64 C100,96 100,160 60,192 C20,224 20,288 60,320 C100,352 100,416 60,448 L60,508";
 
 export function HowItWorks() {
   const [active, setActive] = React.useState<number | null>(null);
@@ -19,24 +21,23 @@ export function HowItWorks() {
 
   return (
     <SectionWrapper id="how-it-works" className="bg-muted">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-4xl">
         <SectionHeading title="How MDW Wellness Vitals Checks Works" />
 
-        {/* Desktop: wave-connected stepper with hover focus */}
+        {/* Desktop: vertical serpentine timeline with hover focus */}
         <ol
-          className="relative mt-14 hidden grid-cols-4 gap-6 md:grid"
+          className="relative mt-14 hidden md:block"
           onMouseLeave={() => setActive(null)}
         >
-          {/* Continuous wave behind the node row */}
+          {/* Curved connector down the center */}
           <svg
-            className="pointer-events-none absolute inset-x-0 top-0 h-14 w-full"
-            viewBox="0 0 1000 56"
+            className="pointer-events-none absolute left-1/2 top-0 h-full w-32 -translate-x-1/2"
+            viewBox="0 0 120 512"
             preserveAspectRatio="none"
             aria-hidden
           >
-            {/* faint base track */}
             <path
-              d={WAVE_PATH}
+              d={SERPENTINE}
               fill="none"
               stroke="var(--mdw-primary)"
               strokeOpacity={0.18}
@@ -44,9 +45,8 @@ export function HowItWorks() {
               strokeLinecap="round"
               vectorEffect="non-scaling-stroke"
             />
-            {/* brand line that draws in on scroll */}
             <motion.path
-              d={WAVE_PATH}
+              d={SERPENTINE}
               fill="none"
               stroke="var(--mdw-primary)"
               strokeWidth={2.5}
@@ -54,16 +54,15 @@ export function HowItWorks() {
               vectorEffect="non-scaling-stroke"
               initial={shouldReduce ? false : { pathLength: 0, opacity: 0 }}
               whileInView={{ pathLength: 1, opacity: 1 }}
-              viewport={{ once: true, amount: 0.5 }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={
-                shouldReduce
-                  ? undefined
-                  : { duration: 1.1, ease: [0.16, 1, 0.3, 1] }
+                shouldReduce ? undefined : { duration: 1.4, ease: [0.16, 1, 0.3, 1] }
               }
             />
           </svg>
 
           {vitalSteps.map((step, i) => {
+            const onLeft = i % 2 === 0;
             const dimmed = active !== null && active !== i;
             const focused = active === i;
             return (
@@ -71,11 +70,18 @@ export function HowItWorks() {
                 key={step.number}
                 onMouseEnter={() => setActive(i)}
                 className={cn(
-                  "group relative flex flex-col items-center gap-3 text-center transition-all duration-300",
-                  dimmed ? "opacity-40" : "opacity-100",
-                  focused && "-translate-y-1.5"
+                  "grid min-h-[8rem] grid-cols-[1fr_auto_1fr] items-center gap-6 transition-opacity duration-300",
+                  dimmed ? "opacity-40" : "opacity-100"
                 )}
               >
+                {/* Left content */}
+                <div className={cn("flex", onLeft ? "justify-end" : "")}>
+                  {onLeft ? (
+                    <StepCard step={step} focused={focused} align="right" />
+                  ) : null}
+                </div>
+
+                {/* Center node */}
                 <div
                   className={cn(
                     "relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white transition-all duration-300",
@@ -92,12 +98,13 @@ export function HowItWorks() {
                     {step.number}
                   </span>
                 </div>
-                <h3 className="text-base font-semibold text-[var(--mdw-secondary)]">
-                  {step.title}
-                </h3>
-                <p className="max-w-[15rem] text-sm text-muted-foreground">
-                  {step.subtitle}
-                </p>
+
+                {/* Right content */}
+                <div className={cn("flex", onLeft ? "" : "justify-start")}>
+                  {!onLeft ? (
+                    <StepCard step={step} focused={focused} align="left" />
+                  ) : null}
+                </div>
               </li>
             );
           })}
@@ -137,5 +144,32 @@ export function HowItWorks() {
         </ol>
       </div>
     </SectionWrapper>
+  );
+}
+
+function StepCard({
+  step,
+  focused,
+  align,
+}: {
+  step: (typeof vitalSteps)[number];
+  focused: boolean;
+  align: "left" | "right";
+}) {
+  return (
+    <div
+      className={cn(
+        "max-w-xs rounded-2xl px-5 py-4 transition-all duration-300",
+        align === "right" ? "text-right" : "text-left",
+        focused
+          ? "-translate-y-0.5 border border-primary/15 bg-white shadow-lg shadow-primary/10"
+          : "border border-transparent"
+      )}
+    >
+      <h3 className="text-base font-semibold text-[var(--mdw-secondary)]">
+        {step.title}
+      </h3>
+      <p className="mt-1 text-sm text-muted-foreground">{step.subtitle}</p>
+    </div>
   );
 }
