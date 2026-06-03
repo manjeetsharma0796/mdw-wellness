@@ -6,6 +6,12 @@
  *   - src/app/apple-icon.png (180x180 PNG for iOS home screen)
  *
  * Run: bun run scripts/generate-favicons.ts
+ *
+ * The source of truth is `src/app/icon.svg` (the brand "d" mark on a
+ * brand-blue tile). The canonical app-icon PDF lives at
+ * `public/assets/mdw-logo-app.pdf` for reference; pixel-faithful
+ * conversion from that PDF requires native canvas binaries that aren't
+ * installable in this environment, so this script reads the SVG instead.
  */
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
