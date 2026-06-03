@@ -33,23 +33,11 @@ export const slides: Slide[] = [
     imageAlt:
       "MDW Wellness therapist assisting an elderly client with knee mobility exercises in her living room.",
   },
-  // PENDING (2026-06-03): Owner is considering new copy for the Vitals
-  // Check slide. Provided wording:
-  //
-  //   Headline:    "Home Wellness Vitals Checks"
-  //   Description: "Track your Blood Pressure, Weight, Pulse and Oxygen
-  //                 Level from the comfort of your home. Professional
-  //                 wellness monitoring starting at ₹99."
-  //   CTA / image: unchanged
-  //
-  // Decision pending: replace the slide 3 entry below with the wording
-  // above, OR add the new wording as a 5th slide (keeping slide 3 as-is).
-  // Owner will confirm; do not change without their go-ahead.
   {
     id: 3,
-    headline: "MDW Wellness Vitals Check",
+    headline: "Home Wellness Vitals Checks",
     description:
-      "Comprehensive health screening: vitals, posture analysis, flexibility assessment, and personalized wellness report.",
+      "Track your Blood Pressure, Weight, Pulse and Oxygen Level from the comfort of your home. Professional wellness monitoring starting at ₹99.",
     ctaText: "Check Your Vitals",
     imagePlaceholder: "/images/img9.jpg",
     imageSrc: "/images/img9.jpg",
