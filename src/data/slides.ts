@@ -62,6 +62,9 @@ export const slides: Slide[] = [
     description:
       "Trusted by hundreds of clients. Therapy-led support for mobility, comfort, and long-term wellness.",
     ctaText: "Get Started",
-    imagePlaceholder: "/images/slide-wellness.jpg",
+    imagePlaceholder: "/images/your_wellness.jpg",
+    imageSrc: "/images/your_wellness.jpg",
+    imageAlt:
+      "The MDW Wellness team of physiotherapists in branded shirts at a wellness studio.",
   },
 ];
