@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
 import { SectionWrapper } from "@/components/section-wrapper";
 import { SectionHeading } from "@/components/vitals/section-heading";
 import { Reveal } from "@/components/vitals/reveal";
@@ -38,17 +37,6 @@ export function HowItWorks() {
               shouldReduce ? undefined : { duration: 1.1, ease: [0.16, 1, 0.3, 1] }
             }
           />
-          {/* Direction arrow at the end of the rail */}
-          <motion.span
-            className="absolute -bottom-1 left-1/2 z-0 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full bg-primary text-white shadow-sm"
-            aria-hidden
-            initial={shouldReduce ? false : { opacity: 0, y: -6 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={shouldReduce ? undefined : { duration: 0.4, delay: 1 }}
-          >
-            <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
-          </motion.span>
 
           {vitalSteps.map((step, i) => {
             const onLeft = i % 2 === 0;
