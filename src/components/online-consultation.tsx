@@ -39,12 +39,14 @@ export function OnlineConsultation() {
               Connect with qualified physiotherapists from the comfort of your home. Personalized wellness plans via video call.
             </p>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <span
-                className="text-lg font-semibold line-through"
-                style={{ color: "#FF6B6B" }}
-              >
+              <s className="relative inline-block text-lg font-semibold text-white/70 [text-decoration:none]">
                 ₹999
-              </span>
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-[-3px] top-1/2 h-[3px] -translate-y-1/2 -rotate-[12deg] rounded-full"
+                  style={{ backgroundColor: "#FF6B6B" }}
+                />
+              </s>
               <span className="text-5xl font-bold tracking-tight text-white">
                 ₹500
               </span>
