@@ -97,7 +97,7 @@ export function WhyChooseUs() {
                   key={item.id}
                   className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/5"
                 >
-                  <div className="group/card flex h-full flex-col items-center text-center gap-3 rounded-2xl border border-primary/15 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary hover:shadow-lg">
+                  <div className="group/card flex h-full flex-col items-center text-center gap-3 rounded-2xl border border-primary/15 bg-white p-6 shadow-sm transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/20">
                     <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary">
                       <item.icon
                         className="h-7 w-7 text-white"
