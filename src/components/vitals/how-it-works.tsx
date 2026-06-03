@@ -8,13 +8,6 @@ import { Reveal } from "@/components/vitals/reveal";
 import { vitalSteps } from "@/data/vitals";
 import { cn } from "@/lib/utils";
 
-// Vertical serpentine connector: passes through 4 node centers down the
-// middle (x=60), bowing right / left / right between them. Node y-centers
-// land at 1/8, 3/8, 5/8, 7/8 of the height, so the path stays aligned
-// regardless of total height (preserveAspectRatio="none").
-const SERPENTINE =
-  "M60,4 L60,64 C100,96 100,160 60,192 C20,224 20,288 60,320 C100,352 100,416 60,448 L60,508";
-
 export function HowItWorks() {
   const [active, setActive] = React.useState<number | null>(null);
   const shouldReduce = useReducedMotion();
@@ -24,42 +17,26 @@ export function HowItWorks() {
       <div className="mx-auto max-w-4xl">
         <SectionHeading title="How MDW Wellness Vitals Checks Works" />
 
-        {/* Desktop: vertical serpentine timeline with hover focus */}
+        {/* Desktop: center rail, alternating cards, hover focus */}
         <ol
           className="relative mt-14 hidden md:block"
           onMouseLeave={() => setActive(null)}
         >
-          {/* Curved connector down the center */}
-          <svg
-            className="pointer-events-none absolute left-1/2 top-0 h-full w-32 -translate-x-1/2"
-            viewBox="0 0 120 512"
-            preserveAspectRatio="none"
+          {/* Center rail: faint track + line that draws in on scroll */}
+          <span
+            className="absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 bg-primary/15"
             aria-hidden
-          >
-            <path
-              d={SERPENTINE}
-              fill="none"
-              stroke="var(--mdw-primary)"
-              strokeOpacity={0.18}
-              strokeWidth={2}
-              strokeLinecap="round"
-              vectorEffect="non-scaling-stroke"
-            />
-            <motion.path
-              d={SERPENTINE}
-              fill="none"
-              stroke="var(--mdw-primary)"
-              strokeWidth={2.5}
-              strokeLinecap="round"
-              vectorEffect="non-scaling-stroke"
-              initial={shouldReduce ? false : { pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={
-                shouldReduce ? undefined : { duration: 1.4, ease: [0.16, 1, 0.3, 1] }
-              }
-            />
-          </svg>
+          />
+          <motion.span
+            className="absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 origin-top bg-primary"
+            aria-hidden
+            initial={shouldReduce ? false : { scaleY: 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={
+              shouldReduce ? undefined : { duration: 1.1, ease: [0.16, 1, 0.3, 1] }
+            }
+          />
 
           {vitalSteps.map((step, i) => {
             const onLeft = i % 2 === 0;
@@ -70,18 +47,16 @@ export function HowItWorks() {
                 key={step.number}
                 onMouseEnter={() => setActive(i)}
                 className={cn(
-                  "grid min-h-[8rem] grid-cols-[1fr_auto_1fr] items-center gap-6 transition-opacity duration-300",
+                  "grid min-h-[8.5rem] grid-cols-[1fr_auto_1fr] items-center gap-6 transition-opacity duration-300",
                   dimmed ? "opacity-40" : "opacity-100"
                 )}
               >
-                {/* Left content */}
                 <div className={cn("flex", onLeft ? "justify-end" : "")}>
                   {onLeft ? (
                     <StepCard step={step} focused={focused} align="right" />
                   ) : null}
                 </div>
 
-                {/* Center node */}
                 <div
                   className={cn(
                     "relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white transition-all duration-300",
@@ -99,7 +74,6 @@ export function HowItWorks() {
                   </span>
                 </div>
 
-                {/* Right content */}
                 <div className={cn("flex", onLeft ? "" : "justify-start")}>
                   {!onLeft ? (
                     <StepCard step={step} focused={focused} align="left" />
