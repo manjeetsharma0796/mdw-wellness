@@ -39,7 +39,7 @@ export function OnlineConsultation() {
               Connect with qualified physiotherapists from the comfort of your home. Personalized wellness plans via video call.
             </p>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <s className="relative inline-block text-lg font-semibold text-white/70 [text-decoration:none]">
+              <s className="relative inline-block text-2xl font-light text-white/70 [text-decoration:none]">
                 ₹999
                 <span
                   aria-hidden
