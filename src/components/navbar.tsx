@@ -68,16 +68,34 @@ export function Navbar() {
         </a>
 
         <div className="hidden items-center gap-5 md:flex lg:gap-7">
-          {navItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className="group relative rounded-md text-sm font-medium text-black transition-colors hover:bg-[#018bc4]/10 px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-            >
-              <span className="relative z-10">{item.label}</span>
-              <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-[#018bc4] transform scale-x-0 origin-center transition-transform duration-300 group-hover:scale-x-100" />
-            </a>
-          ))}
+          {navItems.map((item) => {
+            const className =
+              "group relative rounded-md text-sm font-medium text-black transition-colors hover:bg-[#018bc4]/10 px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
+            const inner = (
+              <>
+                <span className="relative z-10">{item.label}</span>
+                <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-[#018bc4] transform scale-x-0 origin-center transition-transform duration-300 group-hover:scale-x-100" />
+              </>
+            );
+            if (item.bookingService) {
+              const service = item.bookingService;
+              return (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={() => openBookingModal({ service })}
+                  className={cn(className, "cursor-pointer")}
+                >
+                  {inner}
+                </button>
+              );
+            }
+            return (
+              <a key={item.label} href={item.href} className={className}>
+                {inner}
+              </a>
+            );
+          })}
           <Button
             onClick={() => openBookingModal()}
             className="rounded-lg bg-[var(--mdw-accent-green)] px-5 text-white hover:bg-[var(--mdw-accent-green)]/90"
@@ -168,20 +186,31 @@ export function Navbar() {
               </div>
             )}
             <div className="mt-6 flex flex-col gap-1 px-4">
-              {navItems.map((item) => (
-                <SheetClose
-                  key={item.label}
-                  nativeButton={false}
-                  render={
-                    <a
-                      href={item.href}
-                      className="rounded-md px-2 py-2.5 text-base font-medium text-[var(--mdw-secondary)]/80 transition-colors hover:bg-accent hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                    />
-                  }
-                >
-                  {item.label}
-                </SheetClose>
-              ))}
+              {navItems.map((item) => {
+                const linkClass =
+                  "rounded-md px-2 py-2.5 text-base font-medium text-[var(--mdw-secondary)]/80 transition-colors hover:bg-accent hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
+                if (item.bookingService) {
+                  const service = item.bookingService;
+                  return (
+                    <SheetClose
+                      key={item.label}
+                      onClick={() => openBookingModal({ service })}
+                      className={cn(linkClass, "text-left cursor-pointer")}
+                    >
+                      {item.label}
+                    </SheetClose>
+                  );
+                }
+                return (
+                  <SheetClose
+                    key={item.label}
+                    nativeButton={false}
+                    render={<a href={item.href} className={linkClass} />}
+                  >
+                    {item.label}
+                  </SheetClose>
+                );
+              })}
               <SheetClose>
                 <Button
                   onClick={() => openBookingModal()}

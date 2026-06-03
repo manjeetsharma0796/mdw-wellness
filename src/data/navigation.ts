@@ -1,6 +1,15 @@
+import type { Service } from "@/components/booking/booking-modal-provider";
+
 export interface NavItem {
   label: string;
   href: string;
+  /**
+   * When set, clicking the nav item opens the booking modal with this
+   * service pre-selected instead of scrolling to `href`. The `href` is
+   * kept for accessibility (right-click → open in new tab still works
+   * for hash links) but the click handler intercepts.
+   */
+  bookingService?: Service;
 }
 
 export interface FooterLink {
@@ -17,7 +26,7 @@ export interface FooterLink {
 export const navItems: NavItem[] = [
   { label: "Home", href: "#home" },
   { label: "Online Consultation", href: "#online-consult" },
-  { label: "Home Therapy", href: "#services" },
+  { label: "Home Therapy", href: "#home", bookingService: "home_therapy" },
   { label: "About Us", href: "#about" },
   { label: "MDW Wellness Vitals Check", href: "#vitals" },
 ];
