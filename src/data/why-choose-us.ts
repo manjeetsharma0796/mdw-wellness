@@ -1,9 +1,11 @@
 import {
-  ThumbsUp,
-  Users,
-  Activity,
+  BadgeCheck,
+  Clock,
+  Heart,
+  Home,
+  LineChart,
   ShieldCheck,
-  ClipboardList,
+  ThumbsUp,
   type LucideIcon,
 } from "lucide-react";
 
@@ -23,26 +25,39 @@ export const whyChooseUsItems: WhyChooseUsItem[] = [
   },
   {
     id: 2,
-    title: "Consult & Collaborate",
-    subtitle: "We work with your existing doctors for unified care",
-    icon: Users,
+    title: "Verified & Trained Therapists",
+    subtitle:
+      "All physiotherapists are credential-verified and undergo regular training",
+    icon: BadgeCheck,
   },
   {
     id: 3,
-    title: "Self-Care Interventions",
-    subtitle: "Daily exercises and routines you can do at home",
-    icon: Activity,
+    title: "Home Visit at Your Convenience",
+    subtitle: "Sessions delivered at your doorstep on your schedule",
+    icon: Home,
   },
   {
     id: 4,
-    title: "Secure Payment",
-    subtitle: "Encrypted, transparent billing with no hidden charges",
-    icon: ShieldCheck,
+    title: "Safe, Hygienic & Trusted Care",
+    subtitle: "Strict hygiene protocols and trusted clinical practices",
+    icon: Heart,
   },
   {
     id: 5,
-    title: "Customised Care Plan",
-    subtitle: "Care tailored to your specific condition and goals",
-    icon: ClipboardList,
+    title: "Flexible Time Slots",
+    subtitle: "Morning to evening slots that work around your day",
+    icon: Clock,
+  },
+  {
+    id: 6,
+    title: "Ongoing Support & Progress Tracking",
+    subtitle: "Continuous follow-up with structured progress notes",
+    icon: LineChart,
+  },
+  {
+    id: 7,
+    title: "Secure Payment",
+    subtitle: "Encrypted, transparent billing with no hidden charges",
+    icon: ShieldCheck,
   },
 ];
