@@ -104,6 +104,23 @@ export function HeroCarousel() {
                   </div>
                   <div className="order-1 flex items-center justify-center md:order-2">
                     <div className="relative mx-auto aspect-[4/3] w-full max-w-md md:aspect-square md:h-80 md:w-80 md:max-w-none lg:h-96 lg:w-96">
+                      {slide.priceBurst ? (
+                        <div className="absolute -left-3 -top-3 z-10 flex -rotate-[8deg] flex-col items-center rounded-2xl bg-[#FF6B6B] px-4 py-2 text-center text-white shadow-xl ring-2 ring-white/80">
+                          {slide.priceBurst.prefix ? (
+                            <span className="text-[10px] font-medium uppercase leading-tight tracking-wide">
+                              {slide.priceBurst.prefix}
+                            </span>
+                          ) : null}
+                          <span className="text-2xl font-extrabold leading-none">
+                            {slide.priceBurst.amount}
+                          </span>
+                          {slide.priceBurst.suffix ? (
+                            <span className="text-[10px] font-semibold leading-tight">
+                              {slide.priceBurst.suffix}
+                            </span>
+                          ) : null}
+                        </div>
+                      ) : null}
                       {slide.imageSrc ? (
                         <div className="relative h-full w-full overflow-hidden rounded-[2rem] shadow-2xl shadow-primary/25 ring-1 ring-primary/25">
                           <Image

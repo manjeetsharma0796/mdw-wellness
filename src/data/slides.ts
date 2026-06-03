@@ -8,6 +8,12 @@ export interface Slide {
   imageSrc?: string;
   /** Accessible alt text. Required when `imageSrc` is set. */
   imageAlt?: string;
+  /** Optional coral price-burst sticker pinned to the slide image. */
+  priceBurst?: {
+    prefix?: string;
+    amount: string;
+    suffix?: string;
+  };
 }
 
 export const slides: Slide[] = [
@@ -43,6 +49,7 @@ export const slides: Slide[] = [
     imageSrc: "/images/img9.jpg",
     imageAlt:
       "MDW Wellness therapist with a clipboard during a vitals assessment with an elderly client.",
+    priceBurst: { prefix: "Starting at", amount: "₹99", suffix: "only" },
   },
   {
     id: 4,
