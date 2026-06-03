@@ -10,9 +10,26 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import { slides } from "@/data/slides";
+import { slides, type Slide } from "@/data/slides";
 import { cn } from "@/lib/utils";
 import { useBookingModal } from "@/components/booking/booking-modal-provider";
+
+// Render the slide description, highlighting the price amount (if any)
+// in bold coral so it stands out within the sentence.
+function renderDescription(slide: Slide) {
+  const amount = slide.priceBurst?.amount;
+  if (!amount || !slide.description.includes(amount)) {
+    return slide.description;
+  }
+  const idx = slide.description.indexOf(amount);
+  return (
+    <>
+      {slide.description.slice(0, idx)}
+      <span className="font-bold text-[#FF6B6B]">{amount}</span>
+      {slide.description.slice(idx + amount.length)}
+    </>
+  );
+}
 
 const slideServiceMap: Record<number, "online_consultation" | "home_therapy" | "vitals_check"> = {
   1: "online_consultation",
@@ -88,7 +105,7 @@ export function HeroCarousel() {
                       {slide.headline}
                     </h1>
                     <p className="max-w-lg text-base text-muted-foreground md:text-lg">
-                      {slide.description}
+                      {renderDescription(slide)}
                     </p>
                     <Button
                       size="lg"
