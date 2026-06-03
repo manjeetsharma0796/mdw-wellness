@@ -12,7 +12,7 @@ import { SectionWrapper } from "@/components/section-wrapper";
 import { whyChooseUsItems } from "@/data/why-choose-us";
 import { cn } from "@/lib/utils";
 
-const AUTOPLAY_INTERVAL_MS = 4000;
+const AUTOPLAY_INTERVAL_MS = 1500;
 
 export function WhyChooseUs() {
   const [api, setApi] = useState<CarouselApi>();
@@ -85,8 +85,6 @@ export function WhyChooseUs() {
           className="group relative mt-10"
           aria-roledescription="carousel"
           aria-label="Why choose MDW Wellness"
-          onMouseEnter={stopAutoplay}
-          onMouseLeave={startAutoplay}
         >
           <Carousel
             setApi={setApi}
@@ -97,7 +95,7 @@ export function WhyChooseUs() {
               {whyChooseUsItems.map((item) => (
                 <CarouselItem
                   key={item.id}
-                  className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                  className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/5"
                 >
                   <div className="group/card flex h-full flex-col items-center text-center gap-3 rounded-2xl border border-primary/15 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary hover:shadow-lg">
                     <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary">
