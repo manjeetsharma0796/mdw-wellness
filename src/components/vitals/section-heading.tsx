@@ -1,29 +1,38 @@
-import type { LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
-  eyebrowIcon: LucideIcon;
-  eyebrowLabel: string;
   title: string;
   subtitle?: string;
+  align?: "center" | "left";
+  className?: string;
 }
 
 export function SectionHeading({
-  eyebrowIcon: EyebrowIcon,
-  eyebrowLabel,
   title,
   subtitle,
+  align = "center",
+  className,
 }: SectionHeadingProps) {
   return (
-    <div className="flex flex-col items-center gap-3 text-center">
-      <span className="inline-flex items-center gap-2 rounded-full bg-[var(--mdw-secondary)] px-3 py-1 text-xs font-medium text-white">
-        <EyebrowIcon className="h-3.5 w-3.5" aria-hidden />
-        {eyebrowLabel}
-      </span>
+    <div
+      className={cn(
+        "flex flex-col gap-3",
+        align === "center" ? "items-center text-center" : "items-start text-left",
+        className
+      )}
+    >
       <h2 className="text-3xl font-semibold tracking-tight text-[var(--mdw-secondary)] md:text-4xl">
         {title}
       </h2>
       {subtitle ? (
-        <p className="mx-auto max-w-xl text-muted-foreground">{subtitle}</p>
+        <p
+          className={cn(
+            "text-muted-foreground",
+            align === "center" && "mx-auto max-w-xl"
+          )}
+        >
+          {subtitle}
+        </p>
       ) : null}
     </div>
   );

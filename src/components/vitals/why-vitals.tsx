@@ -1,38 +1,43 @@
-import { ShieldCheck } from "lucide-react";
 import { SectionWrapper } from "@/components/section-wrapper";
 import { SectionHeading } from "@/components/vitals/section-heading";
+import { Reveal } from "@/components/vitals/reveal";
 import { vitalReasons } from "@/data/vitals";
 
 export function WhyVitals() {
   return (
     <SectionWrapper id="why-vitals">
-      <div className="mx-auto max-w-6xl">
-        <SectionHeading
-          eyebrowIcon={ShieldCheck}
-          eyebrowLabel="Our Difference"
-          title="Why Choose MDW Wellness Vitals Checks"
-        />
-
-        <div className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {vitalReasons.map((reason) => (
-            <div
-              key={reason.title}
-              className="flex flex-col items-center gap-3 rounded-2xl border border-primary/15 bg-white p-6 text-center shadow-sm transition-all duration-300 hover:border-primary hover:shadow-lg"
-            >
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary">
-                <reason.icon
-                  className="h-7 w-7 text-white"
-                  strokeWidth={1.75}
-                  aria-hidden
-                />
-              </div>
-              <h3 className="text-base font-semibold text-[var(--mdw-secondary)]">
-                {reason.title}
-              </h3>
-              <p className="text-sm text-muted-foreground">{reason.subtitle}</p>
-            </div>
-          ))}
+      <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-5">
+          <SectionHeading
+            align="left"
+            title="Why Choose MDW Wellness Vitals Checks"
+            subtitle="Clinical-grade monitoring, delivered with the comfort and privacy of home."
+          />
         </div>
+
+        <ul className="lg:col-span-7 lg:divide-y lg:divide-primary/10">
+          {vitalReasons.map((reason, i) => (
+            <Reveal key={reason.title} delay={i * 0.06}>
+              <li className="flex items-start gap-4 py-5">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary text-white">
+                  <reason.icon
+                    className="h-6 w-6"
+                    strokeWidth={1.75}
+                    aria-hidden
+                  />
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[var(--mdw-secondary)]">
+                    {reason.title}
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {reason.subtitle}
+                  </p>
+                </div>
+              </li>
+            </Reveal>
+          ))}
+        </ul>
       </div>
     </SectionWrapper>
   );

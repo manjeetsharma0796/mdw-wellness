@@ -1,66 +1,93 @@
-import { FileText } from "lucide-react";
+import { FileText, Check } from "lucide-react";
 import { SectionWrapper } from "@/components/section-wrapper";
 import { SectionHeading } from "@/components/vitals/section-heading";
+import { Reveal } from "@/components/vitals/reveal";
 
-// Stylised report mockups standing in for real report screenshots.
-// When real images are ready, replace each card body with an <Image>.
-const reportMocks = [
-  { title: "Vitals Summary", rows: ["Blood Pressure", "Pulse Rate", "SpO2"] },
-  { title: "Trend Report", rows: ["Weekly Average", "Comparison", "Notes"] },
-  { title: "Wellness Card", rows: ["Readings", "Observations", "Next Visit"] },
+const reportRows = ["Blood Pressure", "Pulse Rate", "SpO2", "Weight"];
+const highlights = [
+  "Digital report shared after every visit",
+  "Readings tracked so you can see trends over time",
+  "Quarterly printed summary for subscribers",
 ];
+
+function ReportMock({ className }: { className?: string }) {
+  return (
+    <div
+      className={
+        "w-full overflow-hidden rounded-2xl border border-primary/15 bg-white shadow-lg shadow-primary/10 " +
+        (className ?? "")
+      }
+    >
+      <div className="flex items-center gap-2 bg-primary px-5 py-4 text-white">
+        <FileText className="h-5 w-5" strokeWidth={1.75} aria-hidden />
+        <span className="text-sm font-semibold">Vitals Report</span>
+      </div>
+      <div className="space-y-4 p-5">
+        {reportRows.map((row) => (
+          <div key={row} className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-[var(--mdw-secondary)]">
+                {row}
+              </span>
+              <span className="h-2 w-10 rounded-full bg-primary/20" />
+            </div>
+            <div className="h-2 w-full rounded-full bg-muted">
+              <div
+                className="h-2 rounded-full bg-primary/40"
+                style={{ width: "68%" }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function WellnessReports() {
   return (
     <SectionWrapper id="wellness-reports" className="bg-muted">
-      <div className="mx-auto max-w-6xl">
-        <SectionHeading
-          eyebrowIcon={FileText}
-          eyebrowLabel="Reports"
-          title="Professional Wellness Reports"
-        />
-
-        <div className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {reportMocks.map((report) => (
-            <div
-              key={report.title}
-              className="overflow-hidden rounded-2xl border border-primary/15 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
-            >
-              {/* Report header bar */}
-              <div className="flex items-center gap-2 bg-primary px-5 py-4 text-white">
-                <FileText className="h-5 w-5" strokeWidth={1.75} aria-hidden />
-                <span className="text-sm font-semibold">{report.title}</span>
-              </div>
-              {/* Skeleton report body */}
-              <div className="space-y-4 p-5">
-                {report.rows.map((row) => (
-                  <div key={row} className="space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-medium text-[var(--mdw-secondary)]">
-                        {row}
-                      </span>
-                      <span className="h-2 w-10 rounded-full bg-primary/20" />
-                    </div>
-                    <div className="h-2 w-full rounded-full bg-muted">
-                      <div className="h-2 rounded-full bg-primary/40" style={{ width: "70%" }} />
-                    </div>
-                  </div>
-                ))}
-                <div className="flex items-center gap-2 pt-1">
-                  <span className="h-2 w-2 rounded-full bg-[var(--mdw-accent-green)]" />
-                  <span className="text-[11px] text-muted-foreground">
-                    Digital report shared after the visit
-                  </span>
-                </div>
-              </div>
+      <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        {/* Overlapping report-mock stack */}
+        <Reveal className="order-2 lg:order-1">
+          <div className="relative mx-auto max-w-sm">
+            <div className="absolute -right-4 top-4 hidden w-full rotate-6 opacity-60 sm:block">
+              <ReportMock />
             </div>
-          ))}
-        </div>
+            <div className="absolute -left-4 top-2 hidden w-full -rotate-6 opacity-60 sm:block">
+              <ReportMock />
+            </div>
+            <div className="relative">
+              <ReportMock />
+            </div>
+          </div>
+        </Reveal>
 
-        <p className="mx-auto mt-8 max-w-2xl text-center text-muted-foreground">
-          Get a digital report after every visit and track your wellness over
-          time.
-        </p>
+        {/* Copy */}
+        <Reveal delay={0.1} className="order-1 lg:order-2">
+          <div className="flex flex-col gap-5">
+            <SectionHeading
+              align="left"
+              title="Professional Wellness Reports"
+            />
+            <p className="text-base text-muted-foreground md:text-lg">
+              Get a digital report after every visit and track your wellness
+              over time.
+            </p>
+            <ul className="mt-1 flex flex-col gap-3">
+              {highlights.map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-sm">
+                  <Check
+                    className="mt-0.5 h-4 w-4 shrink-0 text-[var(--mdw-accent-green)]"
+                    strokeWidth={2.5}
+                    aria-hidden
+                  />
+                  <span className="text-foreground">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
       </div>
     </SectionWrapper>
   );

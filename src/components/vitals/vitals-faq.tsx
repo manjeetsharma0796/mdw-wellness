@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { HelpCircle } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -54,7 +53,7 @@ export function VitalsFaq() {
   return (
     <SectionWrapper id="vitals-faq" className="bg-muted">
       <div className="mx-auto max-w-3xl">
-        <SectionHeading eyebrowIcon={HelpCircle} eyebrowLabel="Questions" title="FAQ" />
+        <SectionHeading title="Frequently Asked Questions" />
 
         <Accordion
           value={value}

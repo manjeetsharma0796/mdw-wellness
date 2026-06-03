@@ -4,6 +4,7 @@ import { Check, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionWrapper } from "@/components/section-wrapper";
 import { SectionHeading } from "@/components/vitals/section-heading";
+import { Reveal } from "@/components/vitals/reveal";
 import { useBookingModal } from "@/components/booking/booking-modal-provider";
 import { wellnessPlans } from "@/data/vitals";
 import { cn } from "@/lib/utils";
@@ -15,17 +16,16 @@ export function WellnessPlans() {
     <SectionWrapper id="wellness-plans">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
-          eyebrowIcon={Sparkles}
-          eyebrowLabel="Plans"
           title="Choose Wellness Plan"
+          subtitle="One-time or ongoing care, with reports after every visit."
         />
 
         <div className="mt-12 grid items-stretch gap-6 grid-cols-1 md:grid-cols-3">
-          {wellnessPlans.map((plan) => (
+          {wellnessPlans.map((plan, i) => (
+            <Reveal key={plan.id} delay={i * 0.08} className="flex">
             <div
-              key={plan.id}
               className={cn(
-                "relative flex flex-col rounded-2xl border p-6 shadow-sm transition-all duration-300 sm:p-8",
+                "relative flex w-full flex-col rounded-2xl border p-6 shadow-sm transition-all duration-300 sm:p-8",
                 plan.highlighted
                   ? "border-primary bg-primary/5 ring-2 ring-primary/40 shadow-xl shadow-primary/15 md:-translate-y-2"
                   : "border-primary/15 bg-white hover:border-primary hover:shadow-lg"
@@ -82,6 +82,7 @@ export function WellnessPlans() {
                 {plan.ctaLabel}
               </Button>
             </div>
+            </Reveal>
           ))}
         </div>
       </div>
