@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import { SectionWrapper } from "@/components/section-wrapper";
 import { SectionHeading } from "@/components/vitals/section-heading";
 import { Reveal } from "@/components/vitals/reveal";
@@ -22,13 +23,13 @@ export function HowItWorks() {
           className="relative mt-14 hidden md:block"
           onMouseLeave={() => setActive(null)}
         >
-          {/* Center rail: faint track + line that draws in on scroll */}
+          {/* Center rail: faint track + line that draws in on scroll (z-0, sits behind the solid nodes) */}
           <span
-            className="absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 bg-primary/15"
+            className="absolute left-1/2 top-0 z-0 h-full w-0.5 -translate-x-1/2 bg-primary/15"
             aria-hidden
           />
           <motion.span
-            className="absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 origin-top bg-primary"
+            className="absolute left-1/2 top-0 z-0 h-full w-0.5 -translate-x-1/2 origin-top bg-primary"
             aria-hidden
             initial={shouldReduce ? false : { scaleY: 0 }}
             whileInView={{ scaleY: 1 }}
@@ -37,6 +38,17 @@ export function HowItWorks() {
               shouldReduce ? undefined : { duration: 1.1, ease: [0.16, 1, 0.3, 1] }
             }
           />
+          {/* Direction arrow at the end of the rail */}
+          <motion.span
+            className="absolute -bottom-1 left-1/2 z-0 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full bg-primary text-white shadow-sm"
+            aria-hidden
+            initial={shouldReduce ? false : { opacity: 0, y: -6 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={shouldReduce ? undefined : { duration: 0.4, delay: 1 }}
+          >
+            <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
+          </motion.span>
 
           {vitalSteps.map((step, i) => {
             const onLeft = i % 2 === 0;
@@ -46,12 +58,14 @@ export function HowItWorks() {
               <li
                 key={step.number}
                 onMouseEnter={() => setActive(i)}
-                className={cn(
-                  "grid min-h-[8.5rem] grid-cols-[1fr_auto_1fr] items-center gap-3 transition-opacity duration-300",
-                  dimmed ? "opacity-50" : "opacity-100"
-                )}
+                className="grid min-h-[8.5rem] grid-cols-[1fr_auto_1fr] items-center gap-3"
               >
-                <div className="flex items-center justify-end">
+                <div
+                  className={cn(
+                    "flex items-center justify-end transition-opacity duration-300",
+                    dimmed && "opacity-50"
+                  )}
+                >
                   {onLeft ? (
                     <>
                       <StepCard step={step} focused={focused} align="right" />
@@ -80,7 +94,12 @@ export function HowItWorks() {
                   </span>
                 </div>
 
-                <div className="flex items-center justify-start">
+                <div
+                  className={cn(
+                    "flex items-center justify-start transition-opacity duration-300",
+                    dimmed && "opacity-50"
+                  )}
+                >
                   {!onLeft ? (
                     <>
                       <span
