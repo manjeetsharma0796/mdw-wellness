@@ -1,8 +1,9 @@
 "use client";
 
-import { Check } from "lucide-react";
+import { Check, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionWrapper } from "@/components/section-wrapper";
+import { SectionHeading } from "@/components/vitals/section-heading";
 import { useBookingModal } from "@/components/booking/booking-modal-provider";
 import { wellnessPlans } from "@/data/vitals";
 import { cn } from "@/lib/utils";
@@ -13,23 +14,26 @@ export function WellnessPlans() {
   return (
     <SectionWrapper id="wellness-plans">
       <div className="mx-auto max-w-6xl">
-        <h2 className="text-center text-3xl font-semibold tracking-tight text-[var(--mdw-secondary)] md:text-4xl">
-          Choose Wellness Plan
-        </h2>
+        <SectionHeading
+          eyebrowIcon={Sparkles}
+          eyebrowLabel="Plans"
+          title="Choose Wellness Plan"
+        />
 
-        <div className="mt-10 grid items-stretch gap-6 grid-cols-1 md:grid-cols-3">
+        <div className="mt-12 grid items-stretch gap-6 grid-cols-1 md:grid-cols-3">
           {wellnessPlans.map((plan) => (
             <div
               key={plan.id}
               className={cn(
-                "relative flex flex-col rounded-2xl border bg-white p-6 shadow-sm transition-all duration-300 sm:p-8",
+                "relative flex flex-col rounded-2xl border p-6 shadow-sm transition-all duration-300 sm:p-8",
                 plan.highlighted
-                  ? "border-primary ring-2 ring-primary/40 shadow-lg md:-translate-y-2"
-                  : "border-primary/15 hover:border-primary hover:shadow-lg"
+                  ? "border-primary bg-primary/5 ring-2 ring-primary/40 shadow-xl shadow-primary/15 md:-translate-y-2"
+                  : "border-primary/15 bg-white hover:border-primary hover:shadow-lg"
               )}
             >
               {plan.badge ? (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#FF6B6B] px-3 py-1 text-xs font-bold text-white shadow-md">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 rounded-full bg-[var(--mdw-secondary)] px-3 py-1 text-xs font-bold text-white shadow-md">
+                  <Sparkles className="h-3 w-3" aria-hidden />
                   {plan.badge}
                 </span>
               ) : null}

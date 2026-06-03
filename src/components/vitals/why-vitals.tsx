@@ -1,13 +1,17 @@
+import { ShieldCheck } from "lucide-react";
 import { SectionWrapper } from "@/components/section-wrapper";
+import { SectionHeading } from "@/components/vitals/section-heading";
 import { vitalReasons } from "@/data/vitals";
 
 export function WhyVitals() {
   return (
     <SectionWrapper id="why-vitals">
       <div className="mx-auto max-w-6xl">
-        <h2 className="text-center text-3xl font-semibold tracking-tight text-[var(--mdw-secondary)] md:text-4xl">
-          Why Choose MDW Wellness Vitals Checks
-        </h2>
+        <SectionHeading
+          eyebrowIcon={ShieldCheck}
+          eyebrowLabel="Our Difference"
+          title="Why Choose MDW Wellness Vitals Checks"
+        />
 
         <div className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {vitalReasons.map((reason) => (

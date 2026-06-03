@@ -1,13 +1,17 @@
+import { Activity } from "lucide-react";
 import { SectionWrapper } from "@/components/section-wrapper";
+import { SectionHeading } from "@/components/vitals/section-heading";
 import { vitalChecks } from "@/data/vitals";
 
 export function WhatWeCheck() {
   return (
     <SectionWrapper id="what-we-check">
       <div className="mx-auto max-w-6xl">
-        <h2 className="text-center text-3xl font-semibold tracking-tight text-[var(--mdw-secondary)] md:text-4xl">
-          What We Check
-        </h2>
+        <SectionHeading
+          eyebrowIcon={Activity}
+          eyebrowLabel="Wellness Vitals"
+          title="What We Check"
+        />
 
         <div className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {vitalChecks.map((check) => (
@@ -15,9 +19,9 @@ export function WhatWeCheck() {
               key={check.title}
               className="flex flex-col items-center gap-3 rounded-2xl border border-primary/15 bg-white p-6 text-center shadow-sm transition-all duration-300 hover:border-primary hover:shadow-lg"
             >
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary">
                 <check.icon
-                  className="h-8 w-8 text-primary"
+                  className="h-7 w-7 text-white"
                   strokeWidth={1.75}
                   aria-hidden
                 />

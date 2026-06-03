@@ -17,7 +17,7 @@ export function VitalsHero() {
             <HeartPulse className="h-3.5 w-3.5" />
             MDW Wellness
           </span>
-          <h1 className="text-3xl font-semibold leading-tight tracking-tight text-[var(--mdw-secondary)] md:text-5xl">
+          <h1 className="text-3xl font-bold leading-tight tracking-tight text-[var(--mdw-secondary)] md:text-5xl lg:text-6xl">
             Home Wellness Vitals Checks
           </h1>
           <p className="max-w-lg text-base text-muted-foreground md:text-lg">
@@ -28,7 +28,7 @@ export function VitalsHero() {
           <Button
             size="lg"
             onClick={() => openBookingModal({ service: "vitals_check" })}
-            className="mt-2 w-fit rounded-lg bg-[var(--mdw-accent-green)] px-8 text-base text-white hover:bg-[var(--mdw-accent-green)]/90"
+            className="mt-2 w-fit rounded-xl bg-[var(--mdw-accent-green)] px-8 text-base font-semibold text-white shadow-lg shadow-[var(--mdw-accent-green)]/25 hover:bg-[var(--mdw-accent-green)]/90"
           >
             Check Your Vitals
           </Button>

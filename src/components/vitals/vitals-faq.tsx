@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { HelpCircle } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -8,33 +9,66 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { SectionWrapper } from "@/components/section-wrapper";
+import { SectionHeading } from "@/components/vitals/section-heading";
 import { vitalFaqs } from "@/data/vitals";
 
+const CLOSE_DELAY_MS = 140;
+
 export function VitalsFaq() {
-  // Controlled so the panel can open on hover (desktop) while click +
-  // keyboard still work for touch devices and accessibility.
-  const [openItems, setOpenItems] = React.useState<(string | number)[]>([]);
+  // Click/keyboard drive `openItems` (the source of truth, accessible).
+  // Hover is an additive enhancement on fine-pointer devices only: it opens
+  // an item while hovered without destroying the click-driven state, and
+  // closes after a short delay so moving the cursor onto the expanding
+  // panel doesn't cause flicker.
+  const [openItems, setOpenItems] = React.useState<string[]>([]);
+  const [hovered, setHovered] = React.useState<string | null>(null);
+  const canHover = React.useRef(false);
+  const closeTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  React.useEffect(() => {
+    canHover.current =
+      typeof window !== "undefined" &&
+      window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    return () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, []);
+
+  const handleEnter = (value: string) => {
+    if (!canHover.current) return;
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setHovered(value);
+  };
+
+  const handleLeave = () => {
+    if (!canHover.current) return;
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setHovered(null), CLOSE_DELAY_MS);
+  };
+
+  // Displayed open set = whatever the user clicked open, plus the hovered one.
+  const value = hovered
+    ? Array.from(new Set([...openItems, hovered]))
+    : openItems;
 
   return (
     <SectionWrapper id="vitals-faq" className="bg-muted">
       <div className="mx-auto max-w-3xl">
-        <h2 className="text-center text-3xl font-semibold tracking-tight text-[var(--mdw-secondary)] md:text-4xl">
-          FAQ
-        </h2>
+        <SectionHeading eyebrowIcon={HelpCircle} eyebrowLabel="Questions" title="FAQ" />
 
         <Accordion
-          value={openItems}
-          onValueChange={setOpenItems}
-          className="mt-8 rounded-2xl border border-border bg-white px-5 sm:px-6"
+          value={value}
+          onValueChange={(v) => setOpenItems(v as string[])}
+          className="mt-8 overflow-hidden rounded-2xl border border-border bg-white px-5 shadow-sm sm:px-6"
         >
-          {vitalFaqs.map((faq, idx) => {
-            const value = `faq-${idx}`;
+          {vitalFaqs.map((faq) => {
+            const itemValue = faq.question;
             return (
               <AccordionItem
-                key={idx}
-                value={value}
-                onMouseEnter={() => setOpenItems([value])}
-                onMouseLeave={() => setOpenItems([])}
+                key={faq.question}
+                value={itemValue}
+                onMouseEnter={() => handleEnter(itemValue)}
+                onMouseLeave={handleLeave}
               >
                 <AccordionTrigger>{faq.question}</AccordionTrigger>
                 <AccordionContent>{faq.answer}</AccordionContent>
