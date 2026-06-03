@@ -49,7 +49,7 @@ export function HeroCarousel() {
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
       api?.scrollNext();
-    }, 3000);
+    }, 3500);
   }, [api]);
 
   const stopAutoplay = useCallback(() => {
