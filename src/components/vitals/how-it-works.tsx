@@ -47,13 +47,19 @@ export function HowItWorks() {
                 key={step.number}
                 onMouseEnter={() => setActive(i)}
                 className={cn(
-                  "grid min-h-[8.5rem] grid-cols-[1fr_auto_1fr] items-center gap-6 transition-opacity duration-300",
-                  dimmed ? "opacity-40" : "opacity-100"
+                  "grid min-h-[8.5rem] grid-cols-[1fr_auto_1fr] items-center gap-3 transition-opacity duration-300",
+                  dimmed ? "opacity-50" : "opacity-100"
                 )}
               >
-                <div className={cn("flex", onLeft ? "justify-end" : "")}>
+                <div className="flex items-center justify-end">
                   {onLeft ? (
-                    <StepCard step={step} focused={focused} align="right" />
+                    <>
+                      <StepCard step={step} focused={focused} align="right" />
+                      <span
+                        className="h-px w-6 shrink-0 bg-primary/40"
+                        aria-hidden
+                      />
+                    </>
                   ) : null}
                 </div>
 
@@ -74,9 +80,15 @@ export function HowItWorks() {
                   </span>
                 </div>
 
-                <div className={cn("flex", onLeft ? "" : "justify-start")}>
+                <div className="flex items-center justify-start">
                   {!onLeft ? (
-                    <StepCard step={step} focused={focused} align="left" />
+                    <>
+                      <span
+                        className="h-px w-6 shrink-0 bg-primary/40"
+                        aria-hidden
+                      />
+                      <StepCard step={step} focused={focused} align="left" />
+                    </>
                   ) : null}
                 </div>
               </li>
