@@ -14,6 +14,8 @@ export interface Slide {
     amount: string;
     suffix?: string;
   };
+  /** When set, the slide CTA navigates to this route instead of opening the booking modal. */
+  ctaHref?: string;
 }
 
 export const slides: Slide[] = [
@@ -50,6 +52,7 @@ export const slides: Slide[] = [
     imageAlt:
       "MDW Wellness therapist with a clipboard during a vitals assessment with an elderly client.",
     priceBurst: { prefix: "Starting at", amount: "₹99", suffix: "only" },
+    ctaHref: "/vitals",
   },
   {
     id: 4,

@@ -107,17 +107,28 @@ export function HeroCarousel() {
                     <p className="max-w-lg text-base text-muted-foreground md:text-lg">
                       {renderDescription(slide)}
                     </p>
-                    <Button
-                      size="lg"
-                      onClick={() =>
-                        openBookingModal({
-                          service: slideServiceMap[slide.id] ?? "online_consultation",
-                        })
-                      }
-                      className="mt-2 w-fit rounded-lg bg-[var(--mdw-accent-green)] px-8 text-base text-white shadow-lg shadow-[var(--mdw-accent-green)]/30 transition-shadow hover:bg-[var(--mdw-accent-green)]/90 hover:shadow-xl hover:shadow-[var(--mdw-accent-green)]/40"
-                    >
-                      {slide.ctaText}
-                    </Button>
+                    {slide.ctaHref ? (
+                      <Button
+                        size="lg"
+                        nativeButton={false}
+                        render={<a href={slide.ctaHref} />}
+                        className="mt-2 w-fit rounded-lg bg-[var(--mdw-accent-green)] px-8 text-base text-white shadow-lg shadow-[var(--mdw-accent-green)]/30 transition-shadow hover:bg-[var(--mdw-accent-green)]/90 hover:shadow-xl hover:shadow-[var(--mdw-accent-green)]/40"
+                      >
+                        {slide.ctaText}
+                      </Button>
+                    ) : (
+                      <Button
+                        size="lg"
+                        onClick={() =>
+                          openBookingModal({
+                            service: slideServiceMap[slide.id] ?? "online_consultation",
+                          })
+                        }
+                        className="mt-2 w-fit rounded-lg bg-[var(--mdw-accent-green)] px-8 text-base text-white shadow-lg shadow-[var(--mdw-accent-green)]/30 transition-shadow hover:bg-[var(--mdw-accent-green)]/90 hover:shadow-xl hover:shadow-[var(--mdw-accent-green)]/40"
+                      >
+                        {slide.ctaText}
+                      </Button>
+                    )}
                   </div>
                   <div className="order-1 flex items-center justify-center md:order-2">
                     <div className="relative mx-auto aspect-[4/3] w-full max-w-md md:aspect-square md:h-80 md:w-80 md:max-w-none lg:h-96 lg:w-96">

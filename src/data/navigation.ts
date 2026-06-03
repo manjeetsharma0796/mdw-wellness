@@ -28,7 +28,7 @@ export const navItems: NavItem[] = [
   { label: "Online Consultation", href: "#online-consult" },
   { label: "Home Therapy", href: "#home", bookingService: "home_therapy" },
   { label: "About Us", href: "#about" },
-  { label: "MDW Wellness Vitals Check", href: "#vitals" },
+  { label: "MDW Wellness Vitals Check", href: "/vitals" },
 ];
 
 export const footerLinks: {
