@@ -16,7 +16,7 @@ export interface FooterLink {
 
 export const navItems: NavItem[] = [
   { label: "Home", href: "#home" },
-  { label: "Online Consultation", href: "#services" },
+  { label: "Online Consultation", href: "#online-consult" },
   { label: "Home Therapy", href: "#services" },
   { label: "About Us", href: "#about" },
   { label: "MDW Wellness Vitals Check", href: "#vitals" },
