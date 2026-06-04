@@ -38,7 +38,7 @@ export const footerLinks: {
   policies: [
     { label: "Terms & Conditions", href: "/terms", newTab: true },
     { label: "Privacy Policy", href: "/privacy", newTab: true },
-    { label: "Grievance Redressal", href: "#grievance" },
+    { label: "Grievance Redressal", href: "/grievance", newTab: true },
   ],
   knowUs: [
     { label: "FAQ", href: "#faq" },
