@@ -232,7 +232,8 @@ export function BookingForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="flex flex-col gap-3 sm:gap-4">
+      <form onSubmit={onSubmit} className="flex min-h-0 flex-1 flex-col">
+        <div className="flex flex-col gap-3 overflow-y-auto p-4 sm:gap-4 sm:p-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <FormField
             control={form.control}
@@ -424,38 +425,44 @@ export function BookingForm({
           )}
         />
 
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="mt-2 h-11 w-full rounded-xl bg-[var(--mdw-accent-green)] text-base font-semibold text-white shadow-md shadow-[var(--mdw-accent-green)]/25 hover:bg-[var(--mdw-accent-green)]/90"
-        >
-          {isSubmitting ? "Submitting..." : "Book on WhatsApp"}
-        </Button>
+        </div>
 
-        {/* Two-line layout at narrow widths so the CTA doesn't wrap mid-phrase on 320–360px screens; inline on sm+ */}
-        {!user ? (
-          <button
-            type="button"
-            onClick={onShowAuth}
-            className="flex flex-col items-center gap-0.5 text-xs text-muted-foreground hover:text-foreground sm:flex-row sm:justify-center sm:gap-1"
+        {/* Pinned footer — stays visible while the fields above scroll.
+            Safe-area padding clears the iOS home indicator. */}
+        <div className="shrink-0 border-t border-border bg-white px-4 py-3 pb-[max(env(safe-area-inset-bottom),0.85rem)] sm:px-6">
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="h-11 w-full rounded-xl bg-[var(--mdw-accent-green)] text-base font-semibold text-white shadow-md shadow-[var(--mdw-accent-green)]/25 hover:bg-[var(--mdw-accent-green)]/90"
           >
-            <span>Save your details for next time?</span>
-            <span className="font-medium text-primary hover:text-[var(--mdw-secondary)] underline-offset-2 hover:underline">
-              Sign in / Sign up
-            </span>
-          </button>
-        ) : (
-          <p className="text-center text-[11px] text-muted-foreground">
-            Signed in as{" "}
-            <span className="font-semibold text-[var(--mdw-secondary)]">
-              {profile?.name || user.email}
-            </span>
-          </p>
-        )}
+            {isSubmitting ? "Submitting..." : "Book on WhatsApp"}
+          </Button>
 
-        <p className="mt-2 text-center text-[11px] text-muted-foreground">
-          We respect your privacy. Details only used to confirm your booking.
-        </p>
+          {/* Two-line layout at narrow widths so the CTA doesn't wrap mid-phrase on 320–360px screens; inline on sm+ */}
+          {!user ? (
+            <button
+              type="button"
+              onClick={onShowAuth}
+              className="mt-2.5 flex w-full flex-col items-center gap-0.5 text-xs text-muted-foreground hover:text-foreground sm:flex-row sm:justify-center sm:gap-1"
+            >
+              <span>Save your details for next time?</span>
+              <span className="font-medium text-primary hover:text-[var(--mdw-secondary)] underline-offset-2 hover:underline">
+                Sign in / Sign up
+              </span>
+            </button>
+          ) : (
+            <p className="mt-2.5 text-center text-[11px] text-muted-foreground">
+              Signed in as{" "}
+              <span className="font-semibold text-[var(--mdw-secondary)]">
+                {profile?.name || user.email}
+              </span>
+            </p>
+          )}
+
+          <p className="mt-1.5 text-center text-[11px] text-muted-foreground">
+            We respect your privacy. Details only used to confirm your booking.
+          </p>
+        </div>
       </form>
     </Form>
   );

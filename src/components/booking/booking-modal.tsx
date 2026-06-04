@@ -34,14 +34,13 @@ export function BookingModal({ isOpen, prefill, onOpenChange }: BookingModalProp
 
   const content = (
     <>
-      {/* Header strip — pr-12 reserves room for the absolute X close button on narrow (320px) sheets */}
-      <div className="bg-primary px-5 py-4 pr-12">
-        {/* Single compact heading — no eyebrow line. Visible Title also satisfies a11y. */}
-        {/* TitleSlot is rendered separately below by Dialog/Sheet wrappers — duplicate visible title is OK for design and a11y */}
+      {/* Fixed header — stays put while the body scrolls. pr-12 reserves
+          room for the absolute X close button on narrow (320px) sheets */}
+      <div className="shrink-0 bg-primary px-5 py-4 pr-12">
         <p className="text-lg font-semibold text-white sm:text-xl">{headerLabel}</p>
       </div>
-      {/* pb-[max(env(safe-area-inset-bottom),1.5rem)] respects iOS Safari home-indicator with a 1.5rem floor so Submit clears the toolbar */}
-      <div className="p-4 sm:p-6 pb-[max(env(safe-area-inset-bottom),1.5rem)]">
+      {/* Body fills remaining height; min-h-0 lets its child scroll region work */}
+      <div className="flex min-h-0 flex-1 flex-col">
         {view === "booking" ? (
           <BookingForm
             prefill={prefill}
@@ -49,10 +48,12 @@ export function BookingModal({ isOpen, prefill, onOpenChange }: BookingModalProp
             onSuccess={handleSuccess}
           />
         ) : (
-          <AuthForm
-            onBack={() => setView("booking")}
-            onSuccess={handleSuccess}
-          />
+          <div className="overflow-y-auto p-4 pb-[max(env(safe-area-inset-bottom),1.5rem)] sm:p-6">
+            <AuthForm
+              onBack={() => setView("booking")}
+              onSuccess={handleSuccess}
+            />
+          </div>
         )}
       </div>
     </>
@@ -63,7 +64,7 @@ export function BookingModal({ isOpen, prefill, onOpenChange }: BookingModalProp
       <Sheet open={isOpen} onOpenChange={onOpenChange}>
         <SheetContent
           side="bottom"
-          className="max-h-[92vh] overflow-y-auto rounded-t-2xl p-0"
+          className="flex max-h-[92dvh] flex-col overflow-hidden rounded-t-2xl p-0"
           showCloseButton
         >
           <SheetTitle className="sr-only">{headerLabel}</SheetTitle>
@@ -75,8 +76,9 @@ export function BookingModal({ isOpen, prefill, onOpenChange }: BookingModalProp
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      {/* w-[calc(100%-2rem)] safety net: twMerge strips shadcn's base max-w viewport guard when we add max-w-md, so we re-enforce 1rem side gutters at narrow widths */}
-      <DialogContent className="w-[calc(100%-2rem)] max-w-md sm:max-w-lg p-0 overflow-hidden gap-0">
+      {/* w-[calc(100%-2rem)] safety net: twMerge strips shadcn's base max-w viewport guard when we add max-w-md, so we re-enforce 1rem side gutters at narrow widths.
+          max-h-[90dvh] + flex column keeps the modal inside the viewport (even at 125% zoom) so the body can scroll and the footer stays pinned. */}
+      <DialogContent className="flex max-h-[90dvh] w-[calc(100%-2rem)] max-w-md flex-col gap-0 overflow-hidden p-0 sm:max-w-lg">
         <DialogTitle className="sr-only">{headerLabel}</DialogTitle>
         {content}
       </DialogContent>
