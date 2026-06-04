@@ -164,28 +164,31 @@ export interface VitalFaq {
   answer: string;
 }
 
+// Answers may use **double-asterisks** to bold key phrases. The accordion
+// renders these as <strong>; the FAQ JSON-LD strips them to plain text.
 export const vitalFaqs: VitalFaq[] = [
   {
     question: "Is this a medical diagnosis?",
-    answer: "No. This is a wellness vitals monitoring service.",
+    answer:
+      "**No.** This is a **wellness vitals monitoring service**, not a medical diagnosis.",
   },
   {
     question: "Which devices are used?",
     answer:
-      "Omron BP monitors and other professional medical wellness tools are used.",
+      "**Omron BP monitors** and other professional medical wellness tools are used.",
   },
   {
     question: "Will I receive a report?",
-    answer: "Yes. A digital report is shared after every check.",
+    answer: "**Yes.** A **digital report** is shared after every check.",
   },
   {
     question: "Do you check sugar / diabetes?",
-    answer: "Currently not included.",
+    answer: "Sugar and diabetes testing is **currently not included**.",
   },
   {
     question: "How fast is booking?",
     answer:
-      "Based on slot availability. We try to deliver within 30 minutes.",
+      "Based on slot availability. We try to deliver **within 30 minutes**.",
   },
 ];
 

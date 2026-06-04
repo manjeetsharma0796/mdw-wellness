@@ -11,6 +11,19 @@ import { SectionWrapper } from "@/components/section-wrapper";
 import { SectionHeading } from "@/components/vitals/section-heading";
 import { vitalFaqs } from "@/data/vitals";
 
+// Render an answer string, converting **phrases** into bold spans.
+function renderAnswer(text: string) {
+  return text.split(/\*\*(.+?)\*\*/g).map((part, i) =>
+    i % 2 === 1 ? (
+      <strong key={i} className="font-semibold text-[var(--mdw-secondary)]">
+        {part}
+      </strong>
+    ) : (
+      part
+    ),
+  );
+}
+
 const CLOSE_DELAY_MS = 140;
 
 export function VitalsFaq() {
@@ -70,7 +83,7 @@ export function VitalsFaq() {
                 onMouseLeave={handleLeave}
               >
                 <AccordionTrigger>{faq.question}</AccordionTrigger>
-                <AccordionContent>{faq.answer}</AccordionContent>
+                <AccordionContent>{renderAnswer(faq.answer)}</AccordionContent>
               </AccordionItem>
             );
           })}

@@ -54,7 +54,8 @@ export function faqJsonLd() {
     mainEntity: vitalFaqs.map((f) => ({
       "@type": "Question",
       name: f.question,
-      acceptedAnswer: { "@type": "Answer", text: f.answer },
+      // Strip the **bold** display markers — JSON-LD must be plain text.
+      acceptedAnswer: { "@type": "Answer", text: f.answer.replace(/\*\*/g, "") },
     })),
   };
 }
