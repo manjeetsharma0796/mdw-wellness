@@ -51,8 +51,8 @@ export function Navbar() {
       return;
     }
     const ids = navItems
-      .filter((i) => i.href.startsWith("#"))
-      .map((i) => i.href.slice(1));
+      .filter((i) => i.sectionId)
+      .map((i) => i.sectionId as string);
     const els = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
@@ -75,10 +75,17 @@ export function Navbar() {
 
   const isActive = (item: (typeof navItems)[number]) => {
     if (item.bookingService) return false;
-    if (item.href.startsWith("/")) return pathname === item.href;
-    if (item.href.startsWith("#")) {
-      return pathname === "/" && activeSection === item.href.slice(1);
+    // Scrollspy item: active when on the homepage and its section is in view.
+    // "home" also wins at the very top before any section registers.
+    if (item.sectionId) {
+      if (pathname !== "/") return false;
+      return (
+        activeSection === item.sectionId ||
+        (item.sectionId === "home" && activeSection === "")
+      );
     }
+    // Plain route item (e.g. /vitals).
+    if (item.href.startsWith("/")) return pathname === item.href;
     return false;
   };
 

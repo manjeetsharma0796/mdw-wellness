@@ -5,11 +5,15 @@ export interface NavItem {
   href: string;
   /**
    * When set, clicking the nav item opens the booking modal with this
-   * service pre-selected instead of scrolling to `href`. The `href` is
-   * kept for accessibility (right-click → open in new tab still works
-   * for hash links) but the click handler intercepts.
+   * service pre-selected instead of navigating to `href`.
    */
   bookingService?: Service;
+  /**
+   * Homepage section id that should highlight this item via scrollspy.
+   * Decoupled from `href` so the link can point to a route (e.g. "/") while
+   * still lighting up when its section is in view.
+   */
+  sectionId?: string;
 }
 
 export interface FooterLink {
@@ -24,9 +28,9 @@ export interface FooterLink {
 }
 
 export const navItems: NavItem[] = [
-  { label: "Home", href: "#home" },
-  { label: "Online Consultation", href: "#online-consult" },
-  { label: "Home Therapy", href: "#home", bookingService: "home_therapy" },
+  { label: "Home", href: "/", sectionId: "home" },
+  { label: "Online Consultation", href: "/#online-consult", sectionId: "online-consult" },
+  { label: "Home Therapy", href: "/", bookingService: "home_therapy" },
   { label: "About Us", href: "#about" },
   { label: "MDW Wellness Vitals Check", href: "/vitals" },
 ];
