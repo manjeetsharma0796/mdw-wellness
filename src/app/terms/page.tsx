@@ -6,10 +6,10 @@ import { LegalPage } from "@/components/legal-page";
 import { termsDocument } from "@/data/legal/terms";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | MDW Wellness",
+  title: "Terms & Conditions",
   description:
     "Terms & Conditions for MDW Wellness wellness, rehabilitation-support, and therapist-assisted services.",
-  robots: { index: true, follow: true },
+  alternates: { canonical: "/terms" },
 };
 
 export default function TermsPage() {

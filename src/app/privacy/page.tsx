@@ -6,10 +6,10 @@ import { LegalPage } from "@/components/legal-page";
 import { privacyDocument } from "@/data/legal/privacy";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | MDW Wellness",
+  title: "Privacy Policy",
   description:
     "Privacy Policy describing how MDW Wellness collects, stores, uses, and protects personal and wellness-related information.",
-  robots: { index: true, follow: true },
+  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {
