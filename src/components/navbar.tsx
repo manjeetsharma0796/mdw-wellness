@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,8 +28,10 @@ import { useAuth } from "@/components/auth/auth-provider";
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const { open: openBookingModal } = useBookingModal();
   const { user, profile, signOut } = useAuth();
+  const pathname = usePathname();
 
   const firstName =
     profile?.name?.trim().split(" ")[0] ?? user?.email?.split("@")[0] ?? "";
@@ -40,6 +43,44 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Scrollspy: highlight the nav item whose section is in view (homepage only).
+  useEffect(() => {
+    if (pathname !== "/") {
+      setActiveSection("");
+      return;
+    }
+    const ids = navItems
+      .filter((i) => i.href.startsWith("#"))
+      .map((i) => i.href.slice(1));
+    const els = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (els.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort(
+            (a, b) => a.boundingClientRect.top - b.boundingClientRect.top
+          );
+        if (visible[0]) setActiveSection(visible[0].target.id);
+      },
+      { rootMargin: "-72px 0px -55% 0px", threshold: 0 }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  const isActive = (item: (typeof navItems)[number]) => {
+    if (item.bookingService) return false;
+    if (item.href.startsWith("/")) return pathname === item.href;
+    if (item.href.startsWith("#")) {
+      return pathname === "/" && activeSection === item.href.slice(1);
+    }
+    return false;
+  };
 
   return (
     <header
@@ -69,12 +110,20 @@ export function Navbar() {
 
         <div className="hidden items-center gap-5 md:flex lg:gap-7">
           {navItems.map((item) => {
-            const className =
-              "group relative rounded-md text-sm font-medium text-black transition-colors hover:bg-[#018bc4]/10 px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
+            const active = isActive(item);
+            const className = cn(
+              "group relative rounded-md text-sm font-medium transition-colors hover:bg-[#018bc4]/10 px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+              active ? "text-[#018bc4]" : "text-black"
+            );
             const inner = (
               <>
                 <span className="relative z-10">{item.label}</span>
-                <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-[#018bc4] transform scale-x-0 origin-center transition-transform duration-300 group-hover:scale-x-100" />
+                <span
+                  className={cn(
+                    "absolute left-0 -bottom-1 h-0.5 w-full origin-center bg-[#018bc4] transition-transform duration-300",
+                    active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                  )}
+                />
               </>
             );
             if (item.bookingService) {
@@ -91,7 +140,12 @@ export function Navbar() {
               );
             }
             return (
-              <a key={item.label} href={item.href} className={className}>
+              <a
+                key={item.label}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={className}
+              >
                 {inner}
               </a>
             );
@@ -187,8 +241,13 @@ export function Navbar() {
             )}
             <div className="mt-6 flex flex-col gap-1 px-4">
               {navItems.map((item) => {
-                const linkClass =
-                  "rounded-md px-2 py-2.5 text-base font-medium text-[var(--mdw-secondary)]/80 transition-colors hover:bg-accent hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
+                const active = isActive(item);
+                const linkClass = cn(
+                  "rounded-md px-2 py-2.5 text-base font-medium transition-colors hover:bg-accent hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+                  active
+                    ? "bg-accent text-primary"
+                    : "text-[var(--mdw-secondary)]/80"
+                );
                 if (item.bookingService) {
                   const service = item.bookingService;
                   return (
@@ -205,7 +264,13 @@ export function Navbar() {
                   <SheetClose
                     key={item.label}
                     nativeButton={false}
-                    render={<a href={item.href} className={linkClass} />}
+                    render={
+                      <a
+                        href={item.href}
+                        aria-current={active ? "page" : undefined}
+                        className={linkClass}
+                      />
+                    }
                   >
                     {item.label}
                   </SheetClose>

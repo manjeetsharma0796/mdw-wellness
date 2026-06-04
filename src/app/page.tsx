@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main id="home" className="flex-1 pt-16">
+      <main className="flex-1 pt-16">
         <HeroCarousel />
         <OnlineConsultation />
         <ServicesCarousel />

@@ -86,7 +86,8 @@ export function HeroCarousel() {
 
   return (
     <section
-      className="group relative w-full overflow-hidden"
+      id="home"
+      className="group relative w-full overflow-hidden scroll-mt-16"
       aria-roledescription="carousel"
       aria-label="Featured services"
     >
