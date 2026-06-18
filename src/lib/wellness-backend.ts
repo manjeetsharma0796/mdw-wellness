@@ -38,12 +38,13 @@ export interface PublicBookingResult {
 }
 
 /**
- * Request timeout for the backend POST. Render free-tier cold starts
- * are usually 10-15s; 20s gives them a buffer without keeping the user
- * waiting forever on a dead backend. On timeout the form falls back to
- * the WhatsApp deep-link.
+ * Request timeout for the BACKGROUND backend POST. Render free-tier cold
+ * starts can run 30-60s. Because the form now fires this in the background
+ * (WhatsApp opens first and never awaits this), a long timeout is safe — it
+ * lets the booking still land after a cold start without the customer waiting.
+ * `keepalive` (set on the fetch) lets the request finish even if the tab closes.
  */
-const REQUEST_TIMEOUT_MS = 20_000;
+const REQUEST_TIMEOUT_MS = 60_000;
 
 const TIME_PRESETS: Record<TimePreset, { from: string; to: string } | undefined> = {
   Morning: { from: "09:00", to: "12:00" },
@@ -115,6 +116,7 @@ export async function submitPublicBooking(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
       signal: controller.signal,
+      keepalive: true,
     });
     const body = (await res.json().catch(() => ({}))) as {
       success?: boolean;

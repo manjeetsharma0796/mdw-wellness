@@ -175,40 +175,14 @@ export function BookingForm({
   const watchedService = form.watch("service");
   const locationRequired = watchedService !== "online_consultation";
 
-  const onSubmit = form.handleSubmit(async (values) => {
-    // 1. POST to the wellness backend so the enquiry lands on the
-    // back-office dashboard. This is the single source of truth for
-    // bookings (see ARCHITECTURE.md). On failure or timeout we still
-    // open WhatsApp so the customer always has a path forward.
-    const backend = await submitPublicBooking({
-      name: values.name,
-      phone: values.phone,
-      email: values.email || undefined,
-      location: values.location || undefined,
-      service: backendServiceMap[values.service],
-      preferredTime: backendTimeMap[values.preferredTime],
-      message: values.message || undefined,
-    });
+  const onSubmit = form.handleSubmit((values) => {
+    // Decoupled flow: open WhatsApp instantly, sync to the dashboard in the
+    // background. The customer is never blocked on the backend (Render can
+    // cold-start ~30-60s) and we never lose the lead.
 
-    if (backend.success) {
-      toast.success(
-        backend.message ?? "Booking received. Our team will reach out shortly.",
-      );
-    } else if (backend.timedOut) {
-      toast.warning(
-        backend.message ??
-          "Our team is taking longer than expected. Sending you to WhatsApp instead.",
-      );
-    } else {
-      console.warn("[booking] backend submission failed:", backend.message);
-      toast.error(
-        backend.message ??
-          "Couldn't reach our team. Please send your details via WhatsApp.",
-      );
-    }
-
-    // 2. Open the WhatsApp deep-link. Always fires — architecture
-    // mandates the customer always has a path forward.
+    // 1. Open the WhatsApp deep-link FIRST — synchronously inside the submit
+    //    handler so popup blockers don't eat it (an await before window.open
+    //    loses the user-gesture context).
     const msg = [
       `Hi! I'd like to book a session.`,
       ``,
@@ -226,6 +200,26 @@ export function BookingForm({
       window.open(getWhatsAppUrl(msg), "_blank", "noopener,noreferrer");
     }
 
+    // 2. Fire the dashboard sync in the BACKGROUND — do NOT await. keepalive +
+    //    a long timeout (see wellness-backend.ts) let it complete through a
+    //    Render cold start, even if this tab closes. The customer already has
+    //    WhatsApp, so on failure we only log.
+    void submitPublicBooking({
+      name: values.name,
+      phone: values.phone,
+      email: values.email || undefined,
+      location: values.location || undefined,
+      service: backendServiceMap[values.service],
+      preferredTime: backendTimeMap[values.preferredTime],
+      message: values.message || undefined,
+    }).then((backend) => {
+      if (!backend.success && !backend.timedOut) {
+        console.warn("[booking] dashboard sync failed:", backend.message);
+      }
+    });
+
+    // 3. Optimistic confirmation + close.
+    toast.success("Opening WhatsApp — we’ve got your details.");
     onSuccess();
     form.reset();
   });
