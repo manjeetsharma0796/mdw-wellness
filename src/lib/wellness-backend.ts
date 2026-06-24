@@ -27,6 +27,8 @@ export interface PublicBookingInput {
   service: ServiceChoice;
   preferredTime: TimePreset;
   message?: string;
+  /** Vitals Check sub-selections (e.g. "Blood Pressure (BP)", "Other: ..."). */
+  vitals?: string[];
 }
 
 export interface PublicBookingResult {
@@ -102,6 +104,9 @@ export async function submitPublicBooking(
     preferredReachOutTime: preferred,
     note: notePieces.join("\n"),
     source: "public_booking_form",
+    // Structured service capture (no longer only in the note text).
+    service: serviceLabel,
+    vitals: input.vitals?.length ? input.vitals : undefined,
   };
 
   const controller = new AbortController();

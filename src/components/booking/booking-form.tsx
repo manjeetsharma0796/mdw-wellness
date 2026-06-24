@@ -108,6 +108,9 @@ const serviceOptions: Array<{
 // Mapping from the form's internal enums to the wellness backend's
 // human-readable ServiceChoice / TimePreset strings. Kept here so this
 // component is the only file that has to know both naming conventions.
+// Vitals Check sub-options shown to the customer (multi-select + "Other").
+const VITALS_OPTIONS = ["Blood Pressure (BP)", "Blood Sugar", "Other"];
+
 const backendServiceMap: Record<Service, ServiceChoice> = {
   online_consultation: "Online Consultation",
   home_therapy: "Home Therapy",
@@ -172,10 +175,23 @@ export function BookingForm({
   }, [initialValues]);
 
   const isSubmitting = form.formState.isSubmitting;
+  const [vitals, setVitals] = React.useState<string[]>([]);
+  const [vitalsOther, setVitalsOther] = React.useState("");
   const watchedService = form.watch("service");
   const locationRequired = watchedService !== "online_consultation";
 
   const onSubmit = form.handleSubmit((values) => {
+    // Vitals sub-selections only apply to the Vitals Check service. Replace the
+    // bare "Other" with the typed text when provided.
+    const selectedVitals =
+      values.service === "vitals_check"
+        ? vitals.map((v) =>
+            v === "Other" && vitalsOther.trim()
+              ? `Other: ${vitalsOther.trim()}`
+              : v,
+          )
+        : [];
+
     // Decoupled flow: open WhatsApp instantly, sync to the dashboard in the
     // background. The customer is never blocked on the backend (Render can
     // cold-start ~30-60s) and we never lose the lead.
@@ -190,6 +206,7 @@ export function BookingForm({
       `Phone: ${values.phone}`,
       values.location ? `City: ${values.location}` : null,
       `Service: ${serviceLabels[values.service]}`,
+      selectedVitals.length ? `Vitals: ${selectedVitals.join(", ")}` : null,
       `Preferred time: ${TIME_OF_DAY_LABELS[values.preferredTime]}`,
       values.message ? `Message: ${values.message}` : null,
     ]
@@ -212,6 +229,7 @@ export function BookingForm({
       service: backendServiceMap[values.service],
       preferredTime: backendTimeMap[values.preferredTime],
       message: values.message || undefined,
+      vitals: selectedVitals.length ? selectedVitals : undefined,
     }).then((backend) => {
       if (!backend.success && !backend.timedOut) {
         console.warn("[booking] dashboard sync failed:", backend.message);
@@ -222,6 +240,8 @@ export function BookingForm({
     toast.success("Opening WhatsApp — we’ve got your details.");
     onSuccess();
     form.reset();
+    setVitals([]);
+    setVitalsOther("");
   });
 
   return (
@@ -368,6 +388,40 @@ export function BookingForm({
             </FormItem>
           )}
         />
+
+        {watchedService === "vitals_check" && (
+          <div className="space-y-2">
+            <FormLabel>Which vitals?</FormLabel>
+            <div className="flex flex-col gap-2">
+              {VITALS_OPTIONS.map((opt) => (
+                <label
+                  key={opt}
+                  className="flex items-center gap-2 text-sm cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    checked={vitals.includes(opt)}
+                    onChange={(e) =>
+                      setVitals((prev) =>
+                        e.target.checked
+                          ? [...prev, opt]
+                          : prev.filter((v) => v !== opt),
+                      )
+                    }
+                  />
+                  {opt}
+                </label>
+              ))}
+            </div>
+            {vitals.includes("Other") && (
+              <Input
+                placeholder="Tell us which measurement"
+                value={vitalsOther}
+                onChange={(e) => setVitalsOther(e.target.value)}
+              />
+            )}
+          </div>
+        )}
 
         <FormField
           control={form.control}
